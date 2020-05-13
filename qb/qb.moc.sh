@@ -25,7 +25,7 @@ if [ "$HAVE_QT" = "yes" ]; then
 		QT_SELECT="$QT_VERSION" \
 		"$MOC" -o "$TEMP_CPP" "$TEMP_MOC" >/dev/null 2>&1 &&
 			$(printf %s "$CXX") -o "$TEMP_EXE" \
-			$(printf %s "$QT_FLAGS") -fPIC -c "$TEMP_CPP" \
+			$(printf %s "$QT_FLAGS") -c "$TEMP_CPP" \
 			>/dev/null 2>&1 &&
 		moc_works=1
 	else
@@ -36,7 +36,7 @@ if [ "$HAVE_QT" = "yes" ]; then
 				"$MOC" -o "$TEMP_CPP" "$TEMP_MOC" >/dev/null 2>&1 ||
 					continue
 				if $(printf %s "$CXX") -o "$TEMP_EXE" \
-						$(printf %s "$QT_FLAGS") -fPIC -c \
+						$(printf %s "$QT_FLAGS") -c \
 						"$TEMP_CPP" >/dev/null 2>&1; then
 					moc_works=1
 					break
