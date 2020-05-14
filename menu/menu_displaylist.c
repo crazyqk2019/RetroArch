@@ -4470,7 +4470,7 @@ unsigned menu_displaylist_build_list(
             {
                char msg[128];
                char msg_lbl[128];
-               snprintf(msg, sizeof(msg), "Mixer Stream #%d :\n", i+1);
+               snprintf(msg, sizeof(msg), "混音流 #%d :\n", i+1);
                snprintf(msg_lbl, sizeof(msg_lbl), "audio_mixer_stream_%d\n", i);
                if (menu_entries_append_enum(list, msg, msg_lbl,
                         MSG_UNKNOWN,
@@ -4800,7 +4800,7 @@ unsigned menu_displaylist_build_list(
             for (p = 0; p < max_users; p++)
             {
                char val_s[16], val_d[16];
-               snprintf(val_s, sizeof(val_s), "Port %d Controls", p+1);
+               snprintf(val_s, sizeof(val_s), "端口 %d 控制", p+1);
                snprintf(val_d, sizeof(val_d), "%d", p);
                if (menu_entries_append_enum(list, val_s, val_d,
                         MSG_UNKNOWN,

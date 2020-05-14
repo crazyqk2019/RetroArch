@@ -793,7 +793,7 @@ static int action_bind_sublabel_systeminfo_controller_entry(
    {
       if (input_is_autoconfigured(controller))
       {
-            snprintf(tmp, sizeof(tmp), "Port #%d device name: %s (#%d)",
+            snprintf(tmp, sizeof(tmp), "端口 #%d 设备名：%s (#%d)",
                controller,
                input_config_get_device_name(controller),
                input_autoconfigure_get_device_name_index(controller));
@@ -802,7 +802,7 @@ static int action_bind_sublabel_systeminfo_controller_entry(
                break;
       }
    }
-   snprintf(tmp, sizeof(tmp), "Device display name: %s\nDevice config name: %s\nDevice identifiers: %d/%d",
+   snprintf(tmp, sizeof(tmp), "设备显示名：%s\n设备配置名：%s\n设备标识符：%d/%d",
       input_config_get_device_display_name(controller) ? input_config_get_device_display_name(controller) : "N/A",
       input_config_get_device_display_name(controller) ? input_config_get_device_config_name(controller) : "N/A",
       input_config_get_vid(controller), input_config_get_pid(controller));
@@ -855,7 +855,7 @@ static int action_bind_sublabel_subsystem_add(
    if (subsystem && subsystem_current_count > 0)
    {
       if (content_get_subsystem_rom_id() < subsystem->num_roms)
-         snprintf(s, len, " Current Content: %s",
+         snprintf(s, len, " 当前游戏：%s",
             content_get_subsystem() == type - MENU_SETTINGS_SUBSYSTEM_ADD
             ? subsystem->roms[content_get_subsystem_rom_id()].desc
             : subsystem->roms[0].desc);
@@ -930,20 +930,20 @@ static int action_bind_sublabel_audio_mixer_stream(
                sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_STOPPED:
-         strlcpy(msg, "Stopped", sizeof(msg));
+         strlcpy(msg, "停止", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING:
-         strlcpy(msg, "Playing", sizeof(msg));
+         strlcpy(msg, "播放", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING_LOOPED:
-         strlcpy(msg, "Playing (Looped)", sizeof(msg));
+         strlcpy(msg, "播放（循环）", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING_SEQUENTIAL:
-         strlcpy(msg, "Playing (Sequential)", sizeof(msg));
+         strlcpy(msg, "播放（顺序）", sizeof(msg));
          break;
    }
 
-   snprintf(s, len, "State : %s | %s: %.2f dB", msg,
+   snprintf(s, len, "状态：%s | %s: %.2f dB", msg,
          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_MIXER_ACTION_VOLUME),
          stream->volume);
    return 0;
@@ -981,9 +981,9 @@ static int action_bind_sublabel_cheat_desc(
    if (cheat_manager_state.cheats)
    {
       if (cheat_manager_state.cheats[offset].handler == CHEAT_HANDLER_TYPE_EMU)
-         strlcpy(s, "Emulator-Handled", len);
+         strlcpy(s, "模拟器处理", len);
       else
-         strlcpy(s, "RetroArch-Handled", len);
+         strlcpy(s, "RetroArch处理", len);
    }
 
    return 0;
@@ -1021,7 +1021,7 @@ static int action_bind_sublabel_netplay_room(
    if (string_is_empty(subsystem) || string_is_equal(subsystem, "N/A"))
    {
       snprintf(s, len,
-         "RetroArch: %s (%s)\nCore: %s (%s)\nGame: %s (%08x)",
+         "RetroArch：%s (%s)\n内核：%s (%s)\n游戏：%s (%08x)",
          string_is_empty(ra_version)    ? na : ra_version,
          string_is_empty(frontend)      ? na : frontend,
          corename, core_ver,
@@ -1046,7 +1046,7 @@ static int action_bind_sublabel_netplay_room(
                strlcat(buf, "\n", sizeof(buf));
          }
          snprintf(s, len,
-            "RetroArch: %s (%s)\nCore: %s (%s)\nSubsystem: %s\nGames:\n%s",
+            "RetroArch：%s (%s)\n内核：%s (%s)\n子系统：%s\n游戏：\n%s",
             string_is_empty(ra_version)    ? na : ra_version,
             string_is_empty(frontend)      ? na : frontend,
             corename, core_ver, subsystem,
@@ -1057,7 +1057,7 @@ static int action_bind_sublabel_netplay_room(
       else
       {
          snprintf(s, len,
-            "RetroArch: %s (%s)\nCore: %s (%s)\nSubsystem: %s\nGame: %s (%08x)",
+            "RetroArch：%s (%s)\n内核：%s (%s)\n子系统：%s\n游戏：%s (%08x)",
             string_is_empty(ra_version)    ? na : ra_version,
             string_is_empty(frontend)      ? na : frontend,
             corename, core_ver, subsystem,

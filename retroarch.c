@@ -3068,10 +3068,10 @@ struct aspect_ratio_elem aspectratio_lut[ASPECT_RATIO_END] = {
    { "19:14",         1.3571f },
    { "30:17",         1.7647f },
    { "32:9",          3.5555f },
-   { "Config",        0.0f },
-   { "Square pixel",  1.0f },
-   { "Core provided", 1.0f },
-   { "Custom",        0.0f }
+   { "配置文件",       0.0f },
+   { "方形像素",       1.0f },
+   { "内核提供",       1.0f },
+   { "自定义",         0.0f }
 };
 
 static gfx_api_gpu_map gpu_map[] = {
@@ -21323,7 +21323,7 @@ static void video_driver_set_viewport_square_pixel(void)
 
    snprintf(aspectratio_lut[ASPECT_RATIO_SQUARE].name,
          sizeof(aspectratio_lut[ASPECT_RATIO_SQUARE].name),
-         "1:1 PAR (%u:%u DAR)", aspect_x, aspect_y);
+         "1:1 像素宽高比 (%u:%u 显示宽高比)", aspect_x, aspect_y);
 
    aspectratio_lut[ASPECT_RATIO_SQUARE].value = (float)aspect_x / aspect_y;
 }

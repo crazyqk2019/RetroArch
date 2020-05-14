@@ -81,7 +81,7 @@ static int action_get_title_remap_port(const char *path, const char *label,
       unsigned menu_type, char *s, size_t len)
 {
    char lbl[128];
-   snprintf(lbl, sizeof(lbl), "Port %d Controls", atoi(path) + 1);
+   snprintf(lbl, sizeof(lbl), "端口 %d 控制", atoi(path) + 1);
    sanitize_to_string(s, lbl, len);
    return 1;
 }
@@ -271,7 +271,7 @@ static int action_get_title_mixer_stream_actions(const char *path, const char *l
 {
    unsigned         offset      = (menu_type - MENU_SETTINGS_AUDIO_MIXER_STREAM_ACTIONS_BEGIN);
 
-   snprintf(s, len, "Mixer Stream #%d: %s", offset + 1, audio_driver_mixer_get_stream_name(offset));
+   snprintf(s, len, "混音流 #%d: %s", offset + 1, audio_driver_mixer_get_stream_name(offset));
    return 0;
 }
 #endif

@@ -2721,10 +2721,10 @@ static void setting_get_string_representation_streaming_mode(
          strlcpy(s, "YouTube", len);
          break;
       case STREAMING_MODE_LOCAL:
-         strlcpy(s, "Local", len);
+         strlcpy(s, "本地", len);
          break;
       case STREAMING_MODE_CUSTOM:
-         strlcpy(s, "Custom", len);
+         strlcpy(s, "自定义", len);
          break;
    }
 }
@@ -2740,16 +2740,16 @@ static void setting_get_string_representation_video_stream_quality(
    switch (*setting->value.target.unsigned_integer)
    {
       case RECORD_CONFIG_TYPE_STREAMING_CUSTOM:
-         strlcpy(s, "Custom", len);
+         strlcpy(s, "自定义", len);
          break;
       case RECORD_CONFIG_TYPE_STREAMING_LOW_QUALITY:
-         strlcpy(s, "Low", len);
+         strlcpy(s, "低", len);
          break;
       case RECORD_CONFIG_TYPE_STREAMING_MED_QUALITY:
-         strlcpy(s, "Medium", len);
+         strlcpy(s, "中", len);
          break;
       case RECORD_CONFIG_TYPE_STREAMING_HIGH_QUALITY:
-         strlcpy(s, "High", len);
+         strlcpy(s, "高", len);
          break;
    }
 }
@@ -2764,25 +2764,25 @@ static void setting_get_string_representation_video_record_quality(rarch_setting
    switch (*setting->value.target.unsigned_integer)
    {
       case RECORD_CONFIG_TYPE_RECORDING_CUSTOM:
-         strlcpy(s, "Custom", len);
+         strlcpy(s, "自定义", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_LOW_QUALITY:
-         strlcpy(s, "Low", len);
+         strlcpy(s, "低", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_MED_QUALITY:
-         strlcpy(s, "Medium", len);
+         strlcpy(s, "中", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_HIGH_QUALITY:
-         strlcpy(s, "High", len);
+         strlcpy(s, "高", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_LOSSLESS_QUALITY:
-         strlcpy(s, "Lossless", len);
+         strlcpy(s, "无损", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_WEBM_FAST:
-         strlcpy(s, "WebM Fast", len);
+         strlcpy(s, "WebM快速", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_WEBM_HIGH_QUALITY:
-         strlcpy(s, "WebM High Quality", len);
+         strlcpy(s, "WebM高质量", len);
          break;
       case RECORD_CONFIG_TYPE_RECORDING_GIF:
          strlcpy(s, "GIF", len);
@@ -2810,7 +2810,7 @@ static void setting_get_string_representation_state_slot(rarch_setting_t *settin
 
    snprintf(s, len, "%d", *setting->value.target.integer);
    if (*setting->value.target.integer == -1)
-      strlcat(s, " (Auto)", len);
+      strlcat(s, " (自动)", len);
 }
 
 static void setting_get_string_representation_float_video_msg_color(rarch_setting_t *setting,
@@ -3774,10 +3774,10 @@ static void setting_get_string_representation_uint_menu_xmb_animation_move_up_do
    switch (*setting->value.target.unsigned_integer)
    {
       case 0:
-         strlcpy(s, "Easing Out Quad", len);
+         strlcpy(s, "方形淡出", len);
          break;
       case 1:
-         strlcpy(s, "Easing Out Expo", len);
+         strlcpy(s, "展示淡出", len);
          break;
    }
 }
@@ -3792,16 +3792,16 @@ static void setting_get_string_representation_uint_menu_xmb_animation_opening_ma
    switch (*setting->value.target.unsigned_integer)
    {
       case 0:
-         strlcpy(s, "Easing Out Quad", len);
+         strlcpy(s, "方形淡出", len);
          break;
       case 1:
-         strlcpy(s, "Easing Out Circ", len);
+         strlcpy(s, "圆形淡出", len);
          break;
       case 2:
-         strlcpy(s, "Easing Out Expo", len);
+         strlcpy(s, "展示淡出", len);
          break;
       case 3:
-         strlcpy(s, "Easing Out Bounce", len);
+         strlcpy(s, "弹跳淡出", len);
          break;
    }
 }
@@ -3816,13 +3816,13 @@ static void setting_get_string_representation_uint_menu_xmb_animation_horizontal
    switch (*setting->value.target.unsigned_integer)
    {
       case 0:
-         strlcpy(s, "Easing Out Quad", len);
+         strlcpy(s, "方形淡出", len);
          break;
       case 1:
-         strlcpy(s, "Easing In Sine", len);
+         strlcpy(s, "正弦淡出", len);
          break;
       case 2:
-         strlcpy(s, "Easing Out Bounce", len);
+         strlcpy(s, "弹跳淡出", len);
          break;
    }
 }
@@ -3924,13 +3924,13 @@ static void setting_get_string_representation_uint_xmb_layout(
    switch (*setting->value.target.unsigned_integer)
    {
       case 0:
-         strlcpy(s, "Auto", len);
+         strlcpy(s, "自动", len);
          break;
       case 1:
-         strlcpy(s, "Console", len);
+         strlcpy(s, "家用机", len);
          break;
       case 2:
-         strlcpy(s, "Handheld", len);
+         strlcpy(s, "手掌机", len);
          break;
    }
 }
@@ -4338,7 +4338,7 @@ static void setting_get_string_representation_uint_ozone_menu_color_theme(
       return;
 
    if (menu_preferred_system_color_theme_set)
-         strlcpy(s, "System default", len);
+         strlcpy(s, "系统缺省", len);
 
    switch (*setting->value.target.unsigned_integer)
    {
@@ -4426,7 +4426,7 @@ static void setting_get_string_representation_uint_video_monitor_index(rarch_set
       snprintf(s, len, "%u",
             *setting->value.target.unsigned_integer);
    else
-      strlcpy(s, "0 (Auto)", len);
+      strlcpy(s, "0 (自动)", len);
 }
 
 static void setting_get_string_representation_uint_custom_viewport_width(rarch_setting_t *setting,
@@ -4490,9 +4490,9 @@ static void setting_get_string_representation_int_audio_wasapi_sh_buffer_length(
       snprintf(s, len, "%d",
             *setting->value.target.integer);
    else if (*setting->value.target.integer == 0)
-      strlcpy(s, "0 (Off)", len);
+      strlcpy(s, "0 (关闭)", len);
    else
-      strlcpy(s, "Auto", len);
+      strlcpy(s, "自动", len);
 }
 #endif
 
@@ -4504,9 +4504,9 @@ static void setting_get_string_representation_crt_switch_resolution_super(
       return;
 
    if (*setting->value.target.unsigned_integer == 0)
-      strlcpy(s, "NATIVE", len);
+      strlcpy(s, "原生", len);
    else if (*setting->value.target.unsigned_integer == 1)
-      strlcpy(s, "DYNAMIC", len);
+      strlcpy(s, "动态", len);
    else
       snprintf(s, len, "%d", *setting->value.target.unsigned_integer);
 }
@@ -5472,7 +5472,7 @@ static void setting_get_string_representation_uint_cheat_browse_address(rarch_se
 
    cheat_manager_match_action(CHEAT_MATCH_ACTION_TYPE_BROWSE, cheat_manager_state.match_idx, &address, &address_mask, &prev_val, &curr_val);
 
-   snprintf(s, len, "Prev: %u Curr: %u", prev_val, curr_val);
+   snprintf(s, len, "上一个: %u 当前: %u", prev_val, curr_val);
 
 }
 
@@ -5483,10 +5483,10 @@ static void setting_get_string_representation_uint_video_rotation(rarch_setting_
    {
       char rotation_lut[4][32] =
       {
-         "Normal",
-         "90 deg",
-         "180 deg",
-         "270 deg"
+         "正常",
+         "90度",
+         "180度",
+         "270度"
       };
 
       strlcpy(s, rotation_lut[*setting->value.target.unsigned_integer],
@@ -5501,10 +5501,10 @@ static void setting_get_string_representation_uint_screen_orientation(rarch_sett
    {
       char rotation_lut[4][32] =
       {
-         "Normal",
-         "90 deg",
-         "180 deg",
-         "270 deg"
+         "正常",
+         "90度",
+         "180度",
+         "270度"
       };
 
       strlcpy(s, rotation_lut[*setting->value.target.unsigned_integer],
@@ -5680,16 +5680,16 @@ static void setting_get_string_representation_toggle_gamepad_combo(
          strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NONE), len);
          break;
       case INPUT_TOGGLE_DOWN_Y_L_R:
-         strlcpy(s, "Down + L1 + R1 + Y", len);
+         strlcpy(s, "下 + L1 + R1 + Y", len);
          break;
       case INPUT_TOGGLE_L3_R3:
          strlcpy(s, "L3 + R3", len);
          break;
       case INPUT_TOGGLE_L1_R1_START_SELECT:
-         strlcpy(s, "L1 + R1 + Start + Select", len);
+         strlcpy(s, "L1 + R1 + 开始 + 选择", len);
          break;
       case INPUT_TOGGLE_START_SELECT:
-         strlcpy(s, "Start + Select", len);
+         strlcpy(s, "开始 + 选择", len);
          break;
       case INPUT_TOGGLE_L3_R:
          strlcpy(s, "L3 + R", len);
@@ -5716,10 +5716,10 @@ static void setting_get_string_representation_turbo_mode(
    switch (*setting->value.target.unsigned_integer)
    {
       case INPUT_TURBO_MODE_CLASSIC:
-         strlcpy(s, "Classic", len);
+         strlcpy(s, "经典", len);
          break;
       case INPUT_TURBO_MODE_SINGLEBUTTON:
-         strlcpy(s, "Single Button", len);
+         strlcpy(s, "单键", len);
          break;
    }
 }
@@ -5734,7 +5734,7 @@ static void setting_get_string_representation_turbo_default_button(
    switch (*setting->value.target.unsigned_integer)
    {
       case INPUT_TURBO_DEFAULT_BUTTON_B:
-         strlcpy(s, "B / Fire", len);
+         strlcpy(s, "B / 开火键", len);
          break;
       case INPUT_TURBO_DEFAULT_BUTTON_Y:
          strlcpy(s, "Y", len);
@@ -5890,10 +5890,10 @@ static void setting_get_string_representation_uint_libretro_log_level(
    if (setting)
    {
       static const char *modes[] = {
-         "0 (Debug)",
-         "1 (Info)",
-         "2 (Warning)",
-         "3 (Error)"
+         "0 (调试)",
+         "1 (信息)",
+         "2 (警告)",
+         "3 (错误)"
       };
       strlcpy(s, modes[*setting->value.target.unsigned_integer],
             len);
@@ -6436,7 +6436,7 @@ setting_get_string_representation_st_float_video_refresh_rate_auto(
    if (video_monitor_fps_statistics(&video_refresh_rate,
             &deviation, &sample_points))
    {
-      snprintf(s, len, "%.3f Hz (%.1f%% dev, %u samples)",
+      snprintf(s, len, "%.3f Hz (%.1f%% 误差, %u 取样)",
             video_refresh_rate, 100.0 * deviation, sample_points);
       gfx_animation_ctl(MENU_ANIMATION_CTL_SET_ACTIVE, NULL);
    }
@@ -7621,7 +7621,7 @@ static bool setting_append_list(
       case SETTINGS_LIST_MAIN_MENU:
          START_GROUP(list, list_info, &group_info, msg_hash_to_str(MENU_ENUM_LABEL_MAIN_MENU), parent_group);
          MENU_SETTINGS_LIST_CURRENT_ADD_ENUM_IDX_PTR(list, list_info, MENU_ENUM_LABEL_MAIN_MENU);
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_INT(
                list, list_info,
@@ -8432,7 +8432,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info,
                   &subgroup_info, parent_group);
 
             string_options_entries[0].target         = settings->arrays.input_driver;
@@ -8550,7 +8550,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info,
                   parent_group);
 
             bool_entries[listing].target         = &settings->bools.video_shared_context;
@@ -8626,7 +8626,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_CONFIGURATION_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info,
                   parent_group);
 
             bool_entries[0].target         = &settings->bools.config_save_on_exit;
@@ -8716,7 +8716,7 @@ static bool setting_append_list(
 
             SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_ADVANCED);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info,
                   parent_group);
 
             CONFIG_BOOL(
@@ -8838,7 +8838,7 @@ static bool setting_append_list(
             START_GROUP(list, list_info, &group_info, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SAVING_SETTINGS), parent_group);
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SAVING_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info,
                   parent_group);
 
             bool_entries[0].target         = &settings->bools.sort_savefiles_enable;
@@ -9033,7 +9033,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_FRAME_TIME_COUNTER_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -9088,7 +9088,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_REWIND_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -9162,7 +9162,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_CHEAT_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
             CONFIG_BOOL(
                   list, list_info,
@@ -9208,7 +9208,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_CHEAT_DETAILS_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
             config_uint_cbs(cheat_manager_state.working_cheat.idx, CHEAT_IDX,
                   NULL,NULL,
@@ -9384,7 +9384,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_CHEAT_SEARCH_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          config_uint_cbs(cheat_manager_state.search_bit_size, CHEAT_START_OR_RESTART,
                setting_uint_action_left_with_refresh,setting_uint_action_right_with_refresh,
@@ -9596,7 +9596,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
 #if !defined(RARCH_CONSOLE) && !defined(RARCH_MOBILE)
             CONFIG_BOOL(
@@ -10646,7 +10646,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
 			CONFIG_UINT(
                list, list_info,
@@ -10725,7 +10725,7 @@ static bool setting_append_list(
                parent_group);
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_AUDIO_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -10817,7 +10817,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -11166,7 +11166,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
             CONFIG_UINT(
                   list, list_info,
@@ -11699,7 +11699,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_RECORDING_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
             CONFIG_UINT(
                list, list_info,
@@ -11904,7 +11904,7 @@ static bool setting_append_list(
 
             parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-            START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info,
+            START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info,
                   parent_group);
 
             for (i = 0; i < RARCH_BIND_LIST_END; i ++)
@@ -11940,7 +11940,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_FRAME_THROTTLE_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_FLOAT(
                list, list_info,
@@ -12396,7 +12396,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_OVERLAY_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -12581,7 +12581,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_ONSCREEN_VIDEO_LAYOUT_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -12639,7 +12639,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_MENU_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          if (string_is_not_equal(settings->arrays.menu_driver, "rgui") &&
              string_is_not_equal(settings->arrays.menu_driver, "ozone"))
@@ -14438,7 +14438,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_MENU_FILE_BROWSER_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -14465,7 +14465,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -14523,7 +14523,7 @@ static bool setting_append_list(
                parent_group);
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_POWER_MANAGEMENT_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
 #ifdef ANDROID
          CONFIG_BOOL(
@@ -14552,7 +14552,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_ACCESSIBILITY_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -14596,7 +14596,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_AI_SERVICE_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_UINT(
                list, list_info,
@@ -14705,7 +14705,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_USER_INTERFACE_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -15818,7 +15818,7 @@ static bool setting_append_list(
                msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CHEEVOS_SETTINGS),
                parent_group);
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS);
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_BOOL(
                list, list_info,
@@ -15962,7 +15962,7 @@ static bool setting_append_list(
                msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_UPDATER_SETTINGS),
                parent_group);
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_UPDATER_SETTINGS);
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 #ifdef HAVE_NETWORKING
          CONFIG_STRING(
                list, list_info,
@@ -16554,7 +16554,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_USER_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_ACTION(
                list, list_info,
@@ -16630,7 +16630,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
 #ifdef HAVE_CHEEVOS
          CONFIG_ACTION(
@@ -16670,7 +16670,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_STRING(
                list, list_info,
@@ -16697,7 +16697,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_STRING(
                list, list_info,
@@ -16724,7 +16724,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
 #ifdef HAVE_CHEEVOS
          CONFIG_STRING(
@@ -16771,7 +16771,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_DIRECTORY_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State", &group_info, &subgroup_info, parent_group);
+         START_SUB_GROUP(list, list_info, "状态", &group_info, &subgroup_info, parent_group);
 
          CONFIG_DIR(
                list, list_info,
@@ -17214,7 +17214,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_PRIVACY_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State",
+         START_SUB_GROUP(list, list_info, "状态",
                &group_info, &subgroup_info, parent_group);
 
          if (string_is_not_equal(settings->arrays.camera_driver, "null"))
@@ -17279,7 +17279,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_MIDI_SETTINGS);
 
-         START_SUB_GROUP(list, list_info, "State",
+         START_SUB_GROUP(list, list_info, "状态",
                &group_info, &subgroup_info, parent_group);
 
          CONFIG_STRING(
@@ -17337,7 +17337,7 @@ static bool setting_append_list(
 
          parent_group = msg_hash_to_str(MENU_ENUM_LABEL_MANUAL_CONTENT_SCAN_LIST);
 
-         START_SUB_GROUP(list, list_info, "State",
+         START_SUB_GROUP(list, list_info, "状态",
                &group_info, &subgroup_info, parent_group);
 
          CONFIG_STRING(
