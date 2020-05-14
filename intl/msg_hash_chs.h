@@ -61,7 +61,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_LIST,
-   "选择使用的内核"
+   "选择要使用的内核"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
@@ -69,7 +69,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_CONTENT_LIST,
-   "选择启动的游戏"
+   "选择要启动的游戏"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_DISC,
@@ -169,7 +169,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESTART_RETROARCH,
-   "重启RetroArch"
+   "重启"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RESTART_RETROARCH,
@@ -177,7 +177,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH,
-   "退出RetroArch"
+   "退出"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
@@ -1139,11 +1139,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_DRIVER,
-   "音频重取样器"
+   "音频重采样器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_DRIVER,
-   "选择音频重取样器驱动。"
+   "选择音频重采样器驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CAMERA_DRIVER,
@@ -1210,7 +1210,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_OUTPUT_SETTINGS,
-   "更改视频输入设置。"
+   "更改视频输出设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_MODE_SETTINGS,
@@ -1258,7 +1258,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_THREADED,
-   "牺牲视频延迟和流畅度以换取性能。只有当无法获得全速时再打开此项。"
+   "提高性能，但是会增加视频延迟和视频抖动。只有当无法获得全速时再打开此项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION,
@@ -1266,7 +1266,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_BLACK_FRAME_INSERTION,
-   "在每帧画面之间插入一幅黑帧。在120Hz刷新率下玩60Hz游戏时这个功能可以有效消除鬼影。"
+   "在每帧画面之间插入一幅黑帧。\n"
+   "在120Hz刷新率下玩60Hz游戏时这个功能可以有效消除鬼影。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_GPU_SCREENSHOT,
@@ -1282,7 +1283,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SMOOTH,
-   "略微平滑像素边缘。此项对性能影响很小。"
+   "略微平滑像素边缘。对性能影响很小。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_DELAY,
@@ -1299,7 +1300,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FILTER,
    "使用由CPU处理的视频滤镜。\n"
-   "注意：可能会带来较高的性能损失。某些视频滤镜可能只有在内核使用32位或16位色彩模式时生效。"
+   "注意：可能会产生较高的性能损失。某些视频滤镜可能只有在内核使用32位或16位色彩模式时生效。"
    )
 
 /* Settings > Video > CRT SwitchRes */
@@ -1445,7 +1446,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_SCALE,
-   "设置一个相对于内核输出视口尺寸的窗口尺寸缩放比例，此外也可以在下面设置一个固定的窗口尺寸。"
+   "设置一个相对于内核输出画面尺寸的缩放比例，\n"
+   "此外也可以在下面设置一个固定的窗口尺寸。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_OPACITY,
@@ -1489,7 +1491,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SCALE_INTEGER,
    "只以整数步进缩放视频。\n"
-   "基本大小依赖于系统报告的尺寸和宽高比，如果“强制保持宽高比”没有启用，X/Y轴方向将分别以整数步进缩放。"
+   "基本大小依赖于系统报告的尺寸和宽高比，\n"
+   "如果“强制保持宽高比”没有启用，X/Y轴方向将分别以整数步进缩放。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_INDEX,
@@ -1541,7 +1544,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_CROP_OVERSCAN,
-   "切掉图像边缘的一些像素，有时开发者会留下一些空白边缘并且有时会包含一些垃圾像素。"
+   "剪切掉图像边缘的一些像素。\n"
+   "有时开发者会留下一些空白边缘，可能会包含一些垃圾像素。"
    )
 
 /* Settings > Video > Synchronization */
@@ -1577,7 +1581,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FRAME_DELAY,
-   "以更高的视频卡顿的风险换取降低输入延迟。在垂直同步信号之后添加帧延迟（毫秒）。"
+   "在垂直同步信号之后添加帧延迟（毫秒），\n"
+   "可以降低输入延迟，但是可能造成视频卡顿。。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HARD_SYNC,
@@ -1616,11 +1621,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_SETTINGS,
-   "重取样器"
+   "重采样器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_SETTINGS,
-   "更改音频重取样器设置。"
+   "更改音频重采样器设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_SYNCHRONIZATION_SETTINGS,
@@ -1747,18 +1752,20 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_LATENCY,
-   "期望的音频延迟，以毫秒为单位。如果音频驱动无法提供指定的延迟，此设置可能无法生效。"
+   "设置音频延迟，以毫秒为单位。\n"
+   "如果音频驱动无法提供指定的延迟，此设置可能无法生效。"
    )
 
 /* Settings > Audio > Resampler */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_QUALITY,
-   "重取样质量"
+   "重采样质量"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_QUALITY,
-   "降低该值有助于提高性能，降低延迟，但是牺牲音频质量；增加该值提高音频质量，但是牺牲性能和延迟。"
+   "降低此值有助于提高性能和降低延迟，但是会降低音频质量；\n"
+   "提高此值会提高音频质量，但是会牺牲性能和延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_OUTPUT_RATE,
@@ -1911,7 +1918,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_MAX_USERS,
-   "RetroArch支持的最大玩家数量。"
+   "设置程序支持的最大玩家数量。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_POLL_TYPE_BEHAVIOR,
@@ -1919,15 +1926,16 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_POLL_TYPE_BEHAVIOR,
-   "影响RetroArch内部如何轮询输入。设为“提前”或者“延后”可能会降低延迟，这依赖于您的配置。"
+   "影响程序内部如何轮询输入。\n"
+   "设为“提前”或者“滞后”可能会降低延迟，这依赖于您的配置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAP_BINDS_ENABLE,
-   "对当前内核重映射按键绑定"
+   "使用当前内核键位设置"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_REMAP_BINDS_ENABLE,
-   "如果启用，将覆盖当前内核的输入按键绑定。"
+   "如果启用，使用当前内核的键位设置覆盖键位绑定。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTODETECT_ENABLE,
@@ -2469,11 +2477,12 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHARED_CONTEXT,
-   "硬件共享"
+   "硬件共享上下文"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SHARED_CONTEXT,
-   "为硬件渲染的内核提供自己的私有环境，避免必须假设每帧之间硬件状态可能会发生变化。 "
+   "给硬件渲染的内核私有的上下文，\n"
+   "避免它们不得不假设每帧之间硬件状态可能会发生变化。 "
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DRIVER_SWITCH_ENABLE,
@@ -2489,7 +2498,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DUMMY_ON_CORE_SHUTDOWN,
-   "有些内核可能有关机功能，启用此项以载入空内核代替关闭内核，以防止内核关闭RetroArch"
+   "有些内核可能有关机功能，\n"
+   "启用此项以载入空内核代替关闭内核，以防止内核关闭程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_SET_SUPPORTS_NO_CONTENT_ENABLE,
@@ -2532,7 +2542,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_OVERRIDES_ENABLE,
-   "自动载入覆盖配置文件"
+   "自动载入覆盖文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTO_OVERRIDES_ENABLE,
@@ -2540,7 +2550,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_REMAPS_ENABLE,
-   "自动载入键位重映射文件"
+   "自动载入键位映射文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTO_REMAPS_ENABLE,
@@ -3338,7 +3348,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DESKTOP_MENU_ENABLE,
-   "启用桌面菜单（需重启）"
+   "启用桌面菜单（须重启）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UI_COMPANION_TOGGLE,
@@ -3417,7 +3427,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SHOW_LEGACY_THUMBNAIL_UPDATER,
-   "显示/隐藏“预览图更新”选项。"
+   "显示/隐藏下载传统方式下载预览图包的选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_INFORMATION,
@@ -3445,19 +3455,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_QUIT_RETROARCH,
-   "显示退出RetroArch"
+   "显示退出"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SHOW_QUIT_RETROARCH,
-   "显示/隐藏“退出RetroArch”选项。"
+   "显示/隐藏“退出”选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_RESTART_RETROARCH,
-   "显示重启RetroArch"
+   "显示重启"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SHOW_RESTART_RETROARCH,
-   "显示/隐藏“重启RetroArch”选项。"
+   "显示/隐藏“重启”选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_SETTINGS,
@@ -4332,7 +4342,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETWORK_ON_DEMAND_THUMBNAILS,
-   "浏览游戏列表时自动下载缺少的预览图，会带来很严重的性能影响。"
+   "浏览游戏列表时自动下载缺少的预览图，会对性能产生严重的影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UPDATER_SETTINGS,
@@ -4843,11 +4853,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAPPING_DIRECTORY,
-   "输入重映射文件目录"
+   "输入键位设置文件目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_REMAPPING_DIRECTORY,
-   "保存键位重映射文件的目录。"
+   "保存键位映射文件的目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_DIRECTORY,
@@ -5366,15 +5376,15 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_LOAD,
-   "载入重映射文件"
+   "载入键位设置文件"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_SAVE_CORE,
-   "保存内核重映射文件"
+   "保存内核键位设置文件"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_REMOVE_CORE,
-   "删除内核重映射文件"
+   "删除内核键位设置文件"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_SAVE_CONTENT_DIR,
@@ -5386,18 +5396,18 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_SAVE_GAME,
-   "保存游戏重映射文件"
+   "保存游戏键位设置文件"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE_REMOVE_GAME,
-   "删除游戏重映射文件"
+   "删除游戏键位设置文件"
    )
 
 /* Quick Menu > Controls > Load Remap File */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_FILE,
-   "重映射文件"
+   "键位设置文件"
    )
 
 /* Quick Menu > Cheats */
@@ -6128,7 +6138,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PARENT_DIRECTORY,
-   "父目录"
+   "上一级目录"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DIRECTORY_NOT_FOUND,
@@ -9280,7 +9290,7 @@ MSG_HASH( /* FIXME Should be MSG_ */
    )
 MSG_HASH( /* FIXME Should be MSG_ */
    MENU_ENUM_LABEL_VALUE_VIDEO_DRIVER_FALLBACK,
-   "您的显卡驱动和RetroArch的当前视频驱动不兼容，回退到 %s 驱动。请重启RetroArch以生效。"
+   "您的显卡驱动和RetroArch的当前视频驱动不兼容，回退到 %s 驱动。请重启程序以生效。"
    )
 MSG_HASH( /* FIXME Should be MSG_ */
    MENU_ENUM_LABEL_VALUE_SIDELOAD_CORE_SUCCESS,
@@ -9776,11 +9786,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_ERROR_SAVING_REMAP_FILE,
-   "保存重映射文件错误。"
+   "保存键位设置文件错误。"
    )
 MSG_HASH(
    MSG_ERROR_REMOVING_REMAP_FILE,
-   "删除重映射文件错误。"
+   "删除键位设置文件错误。"
    )
 MSG_HASH(
    MSG_ERROR_SAVING_SHADER_PRESET,
@@ -10176,11 +10186,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_REMAP_FILE_SAVED_SUCCESSFULLY,
-   "重映射文件成功保存。"
+   "键位设置文件成功保存。"
    )
 MSG_HASH(
    MSG_REMAP_FILE_REMOVED_SUCCESSFULLY,
-   "重映射文件成功删除。"
+   "键位设置文件成功删除。"
    )
 MSG_HASH(
    MSG_REMOVED_DISK_FROM_TRAY,
@@ -10472,15 +10482,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_GAME_REMAP_FILE_LOADED,
-   "游戏重映射文件已载入。"
+   "游戏键位设置文件已载入。"
    )
 MSG_HASH(
    MSG_DIRECTORY_REMAP_FILE_LOADED,
-   "游戏目录重映射文件已载入。"
+   "游戏目录键位设置文件已载入。"
    )
 MSG_HASH(
    MSG_CORE_REMAP_FILE_LOADED,
-   "内核重映射文件已载入。"
+   "内核键位设置文件已载入。"
    )
 MSG_HASH(
    MSG_RUNAHEAD_CORE_DOES_NOT_SUPPORT_SAVESTATES,
@@ -10801,7 +10811,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_RESTART_KEY,
-   "重启RetroArch"
+   "重启"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_BLOCK_FRAMES,
@@ -11026,7 +11036,7 @@ MSG_HASH(
    "<ul><li>已下载一个兼容内核</li>\n"
    "<li>have “内核信息文件”已通过在线更新器更新</li>\n"
    "<li>have “Databases”已通过在线更新器更新</li>\n"
-   "<li>以上都完成后重启RetroArch</li></ul>\n"
+   "<li>以上都完成后重启程序</li></ul>\n"
    "最后，游戏必须和<a href=\"https://docs.libretro.com/guides/roms-playlists-thumbnails/#sources\">这里</a>的数据库记录匹配。\n"
    "如果仍然不工作，考虑到此<a href=\"https://www.github.com/libretro/RetroArch/issues\">提交bug报告</a>。"
    )
