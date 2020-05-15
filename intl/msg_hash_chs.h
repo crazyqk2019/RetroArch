@@ -1258,7 +1258,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_THREADED,
-   "提高性能，但是会增加视频延迟和视频抖动。只有当无法获得全速时再打开此项。"
+   "提高性能，但是会增加视频延迟和视频抖动。\n"
+   "只有当无法获得全速时再打开此项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION,
@@ -1267,7 +1268,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_BLACK_FRAME_INSERTION,
    "在每帧画面之间插入一幅黑帧。\n"
-   "在120Hz刷新率下玩60Hz游戏时这个功能可以有效消除鬼影。"
+   "在120Hz刷新率下玩60Hz游戏时此功能可以有效消除鬼影。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_GPU_SCREENSHOT,
@@ -1300,7 +1301,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FILTER,
    "使用由CPU处理的视频滤镜。\n"
-   "注意：可能会产生较高的性能损失。某些视频滤镜可能只有在内核使用32位或16位色彩模式时生效。"
+   "注意：可能会产生较高的性能损失。某些视频滤镜可能只有在32位或16位色彩模式时生效。"
    )
 
 /* Settings > Video > CRT SwitchRes */
@@ -1400,7 +1401,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FORCE_SRGB_DISABLE,
    "强制禁用sRGB FBO支持。\n"
-   "某些Windows系统下的Intel OpenGL驱动在启用sRGB FBO支持时会产生一些视频问题，打开此选项以避免这些问题。"
+   "某些Windows系统下的Intel OpenGL驱动在启用sRGB FBO支持时会产生一些问题，\n"
+   "打开此选项以避免这些问题。"
    )
 
 /* Settings > Video > Fullscreen Mode */
@@ -1685,7 +1687,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_VOLUME,
-   "音频音量增益（分贝）。0分贝表示正常音量，不使用增益。"
+   "音频音量增益（分贝）\n"
+   "0分贝表示正常音量，不使用增益。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_MIXER_VOLUME,
@@ -1693,7 +1696,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MIXER_VOLUME,
-   "全局混音器音量增益（分贝）。0分贝表示正常音量，不使用增益。"
+   "全局混音器音量增益（分贝）\n"
+   "0分贝表示正常音量，不使用增益。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_DSP_PLUGIN,
@@ -1709,7 +1713,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_WASAPI_EXCLUSIVE_MODE,
-   "允许WASPAI驱动独占音频设置。如果禁用此项，将使用共享音频设备模式。"
+   "允许WASPAI驱动独占音频设备。如果禁用此项，将使用共享音频设备模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_WASAPI_FLOAT_FORMAT,
@@ -1725,7 +1729,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_WASAPI_SH_BUFFER_LENGTH,
-   "在共享模式下时，设置WASAPI驱动的内部缓存长度（帧数）。"
+   "在共享模式下时，设置WASAPI驱动的内部缓存长度（帧数）"
    )
 
 /* Settings > Audio > Output */
@@ -1793,7 +1797,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MAX_TIMING_SKEW,
    "音频输入频率最大变化值。\n"
-   "增加此项值可以实现非常大的时序变化范围，代价是音频音调不准确（例如在NTSC显示器上运行PAL内核）。"
+   "增加此项值可以实现非常大的时序变化范围，\n"
+   "代价是音频音调不准确（例如在NTSC显示器上运行PAL内核）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RATE_CONTROL_DELTA,
@@ -1802,7 +1807,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RATE_CONTROL_DELTA,
    "有助于消除音视频同步时序问题。\n"
-   "请注意，如果禁用，几乎无法获得正确的音视频同步。"
+   "注意：如果禁用，几乎无法获得正确的音视频同步。"
    )
 
 /* Settings > Audio > MIDI */
@@ -1927,7 +1932,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_POLL_TYPE_BEHAVIOR,
    "影响程序内部如何轮询输入。\n"
-   "设为“提前”或者“滞后”可能会降低延迟，这依赖于您的配置。"
+   "设为“提前”或者“延后”可能会降低延迟，这依赖于您的配置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAP_BINDS_ENABLE,
@@ -2088,7 +2093,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_PRESS_TWICE,
-   "连按退出键两次退出RetroArch。"
+   "连按两次退出键退出程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO,
@@ -2454,7 +2459,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RUN_AHEAD_FRAMES,
-   "设置超前运行的帧数。如果数值超过了游戏内部实际落后的帧数，会导致游戏画面抖动之类的问题。"
+   "设置超前运行的帧数。\n"
+   "如果数值超过了游戏内部实际落后的帧数，会导致游戏画面抖动之类的问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RUN_AHEAD_SECONDARY_INSTANCE,
@@ -2462,7 +2468,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RUN_AHEAD_SECONDARY_INSTANCE,
-   "使用第二个RetrArch内核实例超前运行，防止载入存档时的音频问题。"
+   "使用第二个内核实例超前运行，防止载入存档时的音频问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RUN_AHEAD_HIDE_WARNINGS,
@@ -2602,7 +2608,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTOSAVE_INTERVAL,
-   "以一个规则的间隔时间自动保存游戏内存档存储器，此项缺省为禁用。间隔时间单位为秒，0秒表示禁用自动保存。"
+   "以一个规则的间隔时间自动保存游戏内存档存储器。\n"
+   "此项缺省为禁用。间隔时间单位为秒，0秒表示禁用自动保存。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_INDEX,
@@ -2618,7 +2625,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_SAVE,
-   "RetroArch结束运行时自动保存及时存档。如果启用“自动载入及时存档”，RetroArch启动时会自动载入此存档。"
+   "程序结束运行时自动保存及时存档。\n"
+   "如果启用“自动载入及时存档”，启动时会自动载入此存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_LOAD,
@@ -2726,7 +2734,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOG_TO_FILE_TIMESTAMP,
-   "记录到文件时，每次打开一个带当前时间命名的新文件。如果禁用此项，每次启动日志文件会被覆盖。"
+   "记录到文件时，每次打开一个带当前时间命名的新文件。\n"
+   "如果禁用此项，每次启动日志文件会被覆盖。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PERFCNT_ENABLE,
@@ -2734,7 +2743,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PERFCNT_ENABLE,
-   "RetroArch和内核的性能计数器。\n"
+   "程序和内核的性能计数器。\n"
    "性能数据可用于确定系统瓶颈以更好地优化系统和程序性能。"
    )
 
@@ -2789,7 +2798,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FASTFORWARD_RATIO,
-   "快进时的最高运行速度（例如，对于60FPS的游戏，5.0x表示300FPS帧率上限）。如提交bug报告果设为0.0x，则表示不设上限（无帧率限制）。"
+   "快进时的最高运行速度（例如，对于60FPS的游戏，5.0x表示300FPS帧率上限）\n"
+   "如提交bug报告果设为0.0x，则表示不设上限（无帧率限制）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SLOWMOTION_RATIO,
@@ -3276,7 +3286,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SAVESTATE_RESUME,
-   "从快捷菜单选择“及时存档”或者“及时读档”后自动关闭菜单，继续游戏运行。禁用此项可以提高在非常慢的设备上的及时存档性能。"
+   "从快捷菜单选择“及时存档”或者“及时读档”后自动关闭菜单，继续游戏运行。\n"
+   "禁用此项可以提高低端设备上的及时存档性能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_INSERT_DISK_RESUME,
@@ -3316,7 +3327,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PAUSE_NONACTIVE,
-   "当RetroArch窗口未激活时，暂停游戏。"
+   "当程序窗口未激活时，暂停游戏。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DISABLE_COMPOSITION,
@@ -4004,7 +4015,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_THUMBNAIL_UPSCALE_THRESHOLD,
-   "如果预览图宽度/高度小于指定的值，自动放大预览图。 提高图像质量，中等的性能影响。"
+   "如果预览图宽度/高度小于指定的值，自动放大预览图。\n"
+   "提高图像质量，对性能有一定影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_TICKER_TYPE,
@@ -4071,7 +4083,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AI_SERVICE_SOURCE_LANG,
-   "语言服务要翻译的语言。如果设为“任意”, 将自动检测语言。设为指定的语言可以提高翻译准确度。"
+   "语言服务要翻译的语言。如果设为“任意”, 将自动检测语言。\n"
+   "指定确定的语言可以提高翻译准确度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_TARGET_LANG,
@@ -4262,7 +4275,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_STATELESS_MODE,
-   "是否以不需要及时存档的模式开始联机游戏。如果设为启用，需要很快的网络速度，但是由于无回退功能，因此没有网络抖动。"
+   "是否以不需要及时存档的模式开始联机游戏。\n"
+   "如果设为启用，需要很快的网速，但是由于无回退功能，因此没有网络抖动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_CHECK_FRAMES,
@@ -4278,7 +4292,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_INPUT_LATENCY_FRAMES_MIN,
-   "用于隐藏网络延迟而对输入进行延迟的帧数。减少网络抖动并且降低联机游戏CPU占用，但是会带来可察觉的输入延迟。"
+   "用于隐藏网络延迟而对输入进行延迟的帧数。\n"
+   "减少网络抖动并且降低联机游戏CPU占用，但是会带来可察觉的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_INPUT_LATENCY_FRAMES_RANGE,
@@ -4286,7 +4301,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_INPUT_LATENCY_FRAMES_RANGE,
-   "用于隐藏网络延迟而对输入进行延迟的帧数范围。减少网络抖动并且降低联机游戏CPU占用，但是会带来无法预估的输入延迟。"
+   "用于隐藏网络延迟而对输入进行延迟的帧数范围。\n"
+   "减少网络抖动并且降低联机游戏CPU占用，但是会带来无法预估的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_NAT_TRAVERSAL,
@@ -4441,7 +4457,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_COMPRESSION,
-   "保存到磁盘时压缩列表数据。减少文件大小和载入时间，由此导致的CPU负载增加几乎可以忽略不计。 可以同时用于旧格式和新格式列表。"
+   "保存到磁盘时压缩列表数据，以减少文件大小和载入时间，\n"
+   "而由此导致的CPU负载增加几乎可以忽略不计。 可以同时用于旧格式和新格式列表。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_INLINE_CORE_NAME,
@@ -4449,7 +4466,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_INLINE_CORE_NAME,
-   "指定是否标注出列表中与记录项相关联的内核（如果有的话）。注意：如果列表子标签启用，此项将被忽略。"
+   "指定是否标注出列表中与记录项相关联的内核（如果有的话）\n"
+   "注意：如果列表子标签启用，此项将被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_SUBLABELS,
@@ -4457,7 +4475,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_SUBLABELS,
-   "显示每条列表记录的附加信息，例如当前关联的内核和游戏时间（如果有的话）。会产生不确定的性能影响。"
+   "显示每条列表记录的附加信息，例如当前关联的内核和游戏时间（如果有的话）\n"
+   "会产生不确定的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_CORE,
@@ -4486,7 +4505,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SUBLABEL_LAST_PLAYED_STYLE,
-   "选择显示“上次游戏”时间的日期/时间格式。注意：“(AM/PM)” 格式在某些平台上会有小的性能影响。"
+   "选择显示“上次游戏”时间的日期/时间格式。\n"
+   "注意：“(AM/PM)” 格式在某些平台上会有较小的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_FUZZY_ARCHIVE_MATCH,
@@ -4504,7 +4524,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SCAN_WITHOUT_CORE_MATCH,
    "禁用时，只有被已安装的内核支持的扩展名文件被添加到游戏列表。\n"
-   "启用时, 所有扫描结果都会被添加到游戏列表。这样你可以在扫描之后按需安装内核。"
+   "启用时, 所有扫描结果都会被添加到游戏列表。这样就可以在扫描之后按需安装内核。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_MANAGER_LIST,
@@ -4881,7 +4901,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVEFILE_DIRECTORY,
-   "保存所有游戏存档文件到此目录。如果未设置，存档将保存到游戏文件所在目录。"
+   "保存所有游戏存档文件到此目录。\n"
+   "如果未设置，存档将保存到游戏文件所在目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_DIRECTORY,
@@ -4889,7 +4910,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_DIRECTORY,
-   "保存所有游戏及时存档文件到此目录。如果未设置，存档将保存到游戏文件所在目录。"
+   "保存所有游戏及时存档文件到此目录。\n"
+   "如果未设置，存档将保存到游戏文件所在目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CACHE_DIRECTORY,
@@ -5808,7 +5830,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DISK_TRAY_EJECT,
    "打开虚拟光驱托盘，移除已载入的光盘。\n"
-   "注意：如果RetroArch设置为菜单激活时暂停，某些内核要在游戏恢复运行几秒后，才能检测到光盘改变动作。"
+   "注意：如果设置了菜单激活时暂停游戏，\n"
+   "某些内核要在游戏恢复运行几秒后，才能检测到光盘改变动作。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DISK_TRAY_INSERT,
@@ -5817,7 +5840,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DISK_TRAY_INSERT,
    "插入和“当前光盘索引”对应的光盘，关闭虚拟光驱托盘。\n"
-   "注意：如果RetroArch设置为菜单激活时暂停，某些内核要在游戏恢复运行几秒后，才能检测到光盘改变动作。"
+   "注意：如果设置了菜单激活时暂停游戏，\n"
+   "某些内核要在游戏恢复运行几秒后，才能检测到光盘改变动作。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DISK_IMAGE_APPEND,
@@ -5826,7 +5850,8 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DISK_IMAGE_APPEND,
    "弹出当前光盘，从文件系统选择一个新光盘插入，关闭虚拟光驱。\n"
-   "注意：这是旧式的功能，建议使用M3U列表载入多光盘游戏，可以允许使用“弹出/插入光盘”和“当前光盘索引”更换光盘。"
+   "注意：这是旧式的功能，建议使用M3U列表载入多光盘游戏，\n"
+   "可以允许使用“弹出/插入光盘”和“当前光盘索引”更换光盘。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DISK_INDEX,
@@ -5897,7 +5922,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SHADER_NUM_PASSES,
-   "增加或者减小渲染管线过程数量。你可以绑定独立的渲染器到每个管线上，配置它们的缩放和过滤。"
+   "增加或者减小渲染管线过程数量。\n"
+   "你可以绑定独立的渲染器到每个管线上，配置它们的缩放和过滤。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHADER,
@@ -6941,7 +6967,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_POLL_TYPE_BEHAVIOR_LATE,
-   "滞后"
+   "延后"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIMEDATE_STYLE_YMD_HMS,
@@ -7646,12 +7672,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_XMB_SHADOWS_ENABLE,
-   "为所有图标绘制阴影。\n"
-   "会有一些微小的性能影响。"
+   "为所有图标绘制阴影，会有一些微小的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_RIBBON_ENABLE,
-   "菜单渲染器管线"
+   "菜单背景特效"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_XMB_RIBBON_ENABLE,
@@ -7727,11 +7752,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_ICON_THEME_MONOCHROME,
-   "Monochrome"
+   "单色"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_ICON_THEME_MONOCHROME_INVERTED,
-   "Monochrome反转颜色"
+   "反转单色"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_ICON_THEME_SYSTEMATIC,
@@ -7759,11 +7784,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_ICON_THEME_AUTOMATIC,
-   "Automatic"
+   "自动化"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_ICON_THEME_AUTOMATIC_INVERTED,
-   "Automatic反转颜色"
+   "反转自动化"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_MENU_COLOR_THEME_APPLE_GREEN,
@@ -7903,7 +7928,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_OZONE_SCROLL_CONTENT_METADATA,
-   "如果启用，游戏列表右边栏的每一条元数据（关联的内核，游戏时间）都占用单独一行，长文本将通过滚动的方式显示。\n"
+   "如果启用，游戏列表右边栏的每一条元数据（关联的内核，游戏时间）\n"
+   "都占用单独一行，长文本将通过滚动的方式显示。\n"
    "如果禁用，每一条元数据都被静态显示，按需要可能显示为多行。"
    )
 
@@ -8579,11 +8605,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_UPDATE_RETROARCH_NIGHTLY,
-   "更新RetroArch (nightly)"
+   "更新主程序（每夜编译版）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_UPDATE_RETROARCH_FINISHED,
-   "RetroArch更新成功。请重新启动程序以生效。"
+   "主程序更新成功。请重新启动程序以生效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_UPDATE_RETROARCH_FAILED,
@@ -9025,7 +9051,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_HELP_SEND_DEBUG_INFO,
-   "发送诊断信息和RetroArch配置到我们的服务器，以帮助分析问题。"
+   "发送诊断信息和程序设置到我们的服务器，以帮助分析问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MANAGEMENT,
@@ -9290,7 +9316,7 @@ MSG_HASH( /* FIXME Should be MSG_ */
    )
 MSG_HASH( /* FIXME Should be MSG_ */
    MENU_ENUM_LABEL_VALUE_VIDEO_DRIVER_FALLBACK,
-   "您的显卡驱动和RetroArch的当前视频驱动不兼容，回退到 %s 驱动。请重启程序以生效。"
+   "您的显卡驱动和程序的当前视频驱动不兼容，回退到 %s 驱动。请重启程序以生效。"
    )
 MSG_HASH( /* FIXME Should be MSG_ */
    MENU_ENUM_LABEL_VALUE_SIDELOAD_CORE_SUCCESS,
@@ -10054,15 +10080,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_IN_BYTES,
-   "字节"
+   "Bytes"
    )
 MSG_HASH(
    MSG_IN_MEGABYTES,
-   "兆字节"
+   "MB"
    )
 MSG_HASH(
    MSG_IN_GIGABYTES,
-   "千兆字节"
+   "GB"
    )
 MSG_HASH(
    MSG_LIBRETRO_ABI_BREAK,
@@ -10843,7 +10869,8 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BLOCK_TIMEOUT,
-   "完成一个完整的输入取样要等待的毫秒数。在安卓系统下如果你在同时按下多个按键时遇到问题，可尝试此项。"
+   "完成一个完整的输入取样要等待的毫秒数。\n"
+   "在安卓系统下如果你在同时按下多个按键时遇到问题，可尝试此项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_REBOOT,
