@@ -6831,11 +6831,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ON,
-   "打开"
+   "启用"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_OFF,
-   "关闭"
+   "禁用"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_YES,
