@@ -46,6 +46,23 @@
 #include "../../../core_info.h"
 #include "../../../verbosity.h"
 
+static const char *OZONE_TEXTURES_FILES[OZONE_TEXTURE_LAST] = {
+   "retroarch",
+   "cursor_border"
+};
+
+static const char *OZONE_TAB_TEXTURES_FILES[OZONE_TAB_TEXTURE_LAST] = {
+   "retroarch",
+   "settings",
+   "history",
+   "favorites",
+   "music",
+   "video",
+   "image",
+   "netplay",
+   "add"
+};
+
 ozone_node_t *ozone_alloc_node(void)
 {
    ozone_node_t *node   = (ozone_node_t*)malloc(sizeof(*node));
@@ -559,11 +576,12 @@ static void ozone_cache_footer_labels(ozone_handle_t *ozone)
 /* Determines the size of all menu elements */
 static void ozone_set_layout(ozone_handle_t *ozone, bool is_threaded)
 {
-   float scale_factor;
-   bool font_inited;
    char font_path[PATH_MAX_LENGTH];
+   float scale_factor  = 0.0f;
+   bool font_inited    = false;
+   char *s1            = NULL;
 
-   font_path[0] = '\0';
+   font_path[0]        = '\0';
 
    if (!ozone)
       return;
@@ -619,13 +637,63 @@ static void ozone_set_layout(ozone_handle_t *ozone, bool is_threaded)
    ozone->pointer_active_delta = CURSOR_ACTIVE_DELTA * scale_factor;
 
    /* Initialise fonts */
-   fill_pathname_join(font_path, ozone->assets_path, "bold.ttf", sizeof(font_path));
+   s1    = (char*)malloc(PATH_MAX_LENGTH * sizeof(char));
+   s1[0] = '\0';
+   switch (*msg_hash_get_uint(MSG_HASH_USER_LANGUAGE))
+   {
+      case RETRO_LANGUAGE_ARABIC:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "fallback-font.ttf", sizeof(font_path));
+         break;
+      case RETRO_LANGUAGE_CHINESE_SIMPLIFIED:
+      case RETRO_LANGUAGE_CHINESE_TRADITIONAL:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "chinese-fallback-font.ttf", sizeof(font_path));
+         break;
+      case RETRO_LANGUAGE_KOREAN:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "korean-fallback-font.ttf", sizeof(font_path));
+         break;
+      default:
+         fill_pathname_join(font_path, ozone->assets_path, "bold.ttf", sizeof(font_path));
+   }
 
    font_inited = ozone_init_font(&ozone->fonts.title,
          is_threaded, font_path, FONT_SIZE_TITLE * scale_factor);
    ozone->has_all_assets = ozone->has_all_assets && font_inited;
 
-   fill_pathname_join(font_path, ozone->assets_path, "regular.ttf", sizeof(font_path));
+   switch (*msg_hash_get_uint(MSG_HASH_USER_LANGUAGE))
+   {
+      case RETRO_LANGUAGE_ARABIC:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "fallback-font.ttf", sizeof(font_path));
+         break;
+      case RETRO_LANGUAGE_CHINESE_SIMPLIFIED:
+      case RETRO_LANGUAGE_CHINESE_TRADITIONAL:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "chinese-fallback-font.ttf", sizeof(font_path));
+         break;
+      case RETRO_LANGUAGE_KOREAN:
+         fill_pathname_application_special(s1,
+               PATH_MAX_LENGTH * sizeof(char),
+               APPLICATION_SPECIAL_DIRECTORY_ASSETS_PKG);
+         fill_pathname_join(font_path, s1, "korean-fallback-font.ttf", sizeof(font_path));
+         break;
+      default:
+         fill_pathname_join(font_path, ozone->assets_path, "regular.ttf", sizeof(font_path));
+   }
+
+   free(s1);
 
    font_inited = ozone_init_font(&ozone->fonts.footer,
          is_threaded, font_path, FONT_SIZE_FOOTER * scale_factor);
@@ -1525,7 +1593,7 @@ static void ozone_draw_header(ozone_handle_t *ozone,
    unsigned logo_icon_size   = 60 * scale_factor;
    unsigned status_icon_size = 92 * scale_factor;
    unsigned seperator_margin = 30 * scale_factor;
-   enum gfx_animation_ticker_type 
+   enum gfx_animation_ticker_type
       menu_ticker_type       = (enum gfx_animation_ticker_type)settings->uints.menu_ticker_type;
 
    /* Initial ticker configuration */

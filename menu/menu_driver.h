@@ -427,7 +427,7 @@ const char *menu_driver_ident(void);
 
 bool menu_driver_ctl(enum rarch_menu_ctl_state state, void *data);
 
-void menu_driver_frame(video_frame_info_t *video_info);
+void menu_driver_frame(bool menu_is_alive, video_frame_info_t *video_info);
 
 bool menu_driver_get_load_content_animation_data(
       uintptr_t *icon, char **playlist_name);
@@ -462,6 +462,8 @@ bool menu_driver_list_get_selection(menu_ctx_list_t *list);
 bool menu_driver_list_get_entry(menu_ctx_list_t *list);
 
 bool menu_driver_list_get_size(menu_ctx_list_t *list);
+
+retro_time_t menu_driver_get_current_time(void);
 
 size_t menu_navigation_get_selection(void);
 
