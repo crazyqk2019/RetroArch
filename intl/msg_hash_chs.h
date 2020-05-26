@@ -3577,6 +3577,14 @@ MSG_HASH(
    "更改主菜单时期时间显示风格。"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TIMEDATE_DATE_SEPARATOR,
+   "日期分隔符"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_TIMEDATE_DATE_SEPARATOR,
+   "指定日期显示的年/月/日分隔符。"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BATTERY_LEVEL_ENABLE,
    "显示电池电量"
    )
@@ -7396,6 +7404,14 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_OZONE_TRUNCATE_PLAYLIST_NAME,
    "如果启用，将移除游戏列表中的系统名称。\n"
    "例如，'Sony - PlayStation'显示为'PlayStation'。需要重新启动以生效。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_OZONE_SORT_AFTER_TRUNCATE_PLAYLIST_NAME,
+   "在名称截断后进行排序"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_OZONE_SORT_AFTER_TRUNCATE_PLAYLIST_NAME,
+   "如果启用，游戏列表会在移除系统名称后重新按照字母顺序排序。须要重新启动以生效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_OZONE_MENU_COLOR_THEME,
