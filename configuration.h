@@ -394,6 +394,7 @@ typedef struct settings
       bool enable_device_vibration;
       bool ozone_collapse_sidebar;
       bool ozone_truncate_playlist_name;
+      bool ozone_sort_after_truncate_playlist_name;
       bool ozone_scroll_content_metadata;
 
       bool log_to_file;
@@ -545,6 +546,7 @@ typedef struct settings
       unsigned accessibility_narrator_speech_speed;
 
       unsigned menu_timedate_style;
+      unsigned menu_timedate_date_separator;
       unsigned gfx_thumbnails;
       unsigned menu_left_thumbnails;
       unsigned gfx_thumbnail_upscale_threshold;

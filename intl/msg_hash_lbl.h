@@ -1539,6 +1539,10 @@ MSG_HASH(
    "ozone_truncate_playlist_name"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_OZONE_SORT_AFTER_TRUNCATE_PLAYLIST_NAME,
+   "ozone_sort_after_truncate_playlist_name"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_OZONE_SCROLL_CONTENT_METADATA,
    "ozone_scroll_content_metadata"
    )
@@ -2665,6 +2669,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_TIMEDATE_STYLE,
    "menu_timedate_style"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_TIMEDATE_DATE_SEPARATOR,
+   "menu_timedate_date_separator"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_MENU_TICKER_TYPE,
