@@ -133,6 +133,104 @@ enum
 #endif
 
 #ifdef HAVE_NETWORKING
+
+#ifndef INET6_ADDRSTRLEN
+#define INET6_ADDRSTRLEN 46
+#endif
+
+#endif
+
+#define action_ok_dl_lbl(a, b) \
+   info.directory_ptr = idx; \
+   info.type          = type; \
+   info_path          = path; \
+   info_label         = msg_hash_to_str(a); \
+   info.enum_idx      = a; \
+   dl_type            = b;
+
+
+#define default_action_ok_set(funcname, _id, _flush) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return generic_action_ok(path, label, type, idx, entry_idx, _id, _flush); \
+}
+
+
+#define default_action_dialog_start(funcname, _label, _idx, _cb) \
+static int (funcname)(const char *path, const char *label_setting, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   menu_input_ctx_line_t line; \
+   line.label         = _label; \
+   line.label_setting = label_setting; \
+   line.type          = type; \
+   line.idx           = (_idx); \
+   line.cb            = _cb; \
+   if (!menu_input_dialog_start(&line)) \
+      return -1; \
+   return 0; \
+}
+
+
+#define default_action_ok_start_builtin_core(funcname, _id) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   content_ctx_info_t content_info; \
+   content_info.argc                   = 0; \
+   content_info.argv                   = NULL; \
+   content_info.args                   = NULL; \
+   content_info.environ_get            = NULL; \
+   if (!task_push_start_builtin_core(&content_info, _id, NULL, NULL)) \
+      return -1; \
+   return 0; \
+}
+
+
+#define default_action_ok_list(funcname, _id) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return generic_action_ok_network(path, label, type, idx, entry_idx, _id); \
+}
+
+
+#define default_action_ok_download(funcname, _id) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return action_ok_download_generic(path, label, NULL, type, idx, entry_idx,_id); \
+}
+
+
+#define default_action_ok_cmd_func(func_name, cmd) \
+int (func_name)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return generic_action_ok_command(cmd); \
+}
+
+
+#define default_action_ok_func(func_name, lbl) \
+int (func_name)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return generic_action_ok_displaylist_push(path, NULL, label, type, idx, entry_idx, lbl); \
+}
+
+
+#define default_action_ok_dl_push(funcname, _fbid, _id, _path) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   settings_t            *settings   = config_get_ptr(); \
+   (void)settings; \
+   filebrowser_set_type(_fbid); \
+   return generic_action_ok_displaylist_push(path, _path, label, type, idx, entry_idx, _id); \
+}
+
+
+#define default_action_ok_help(funcname, _id, _id2) \
+static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
+{ \
+   return generic_action_ok_help(path, label, type, idx, entry_idx, _id, _id2); \
+}
+
+
+#ifdef HAVE_NETWORKING
 #ifdef HAVE_LAKKA
 static char *lakka_get_project(void)
 {
@@ -151,14 +249,6 @@ static char *lakka_get_project(void)
 }
 #endif
 #endif
-
-#define action_ok_dl_lbl(a, b) \
-   info.directory_ptr = idx; \
-   info.type          = type; \
-   info_path          = path; \
-   info_label         = msg_hash_to_str(a); \
-   info.enum_idx      = a; \
-   dl_type            = b;
 
 static enum msg_hash_enums action_ok_dl_to_enum(unsigned lbl)
 {
@@ -210,6 +300,8 @@ static enum msg_hash_enums action_ok_dl_to_enum(unsigned lbl)
          return MENU_ENUM_LABEL_DEFERRED_DRIVER_SETTINGS_LIST;
       case ACTION_OK_DL_CORE_SETTINGS_LIST:
          return MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST;
+      case ACTION_OK_DL_CORE_INFORMATION_LIST:
+         return MENU_ENUM_LABEL_DEFERRED_CORE_INFORMATION_LIST;
       case ACTION_OK_DL_VIDEO_SETTINGS_LIST:
          return MENU_ENUM_LABEL_DEFERRED_VIDEO_SETTINGS_LIST;
       case ACTION_OK_DL_VIDEO_SYNCHRONIZATION_SETTINGS_LIST:
@@ -1106,6 +1198,7 @@ int generic_action_ok_displaylist_push(const char *path,
       case ACTION_OK_DL_LATENCY_SETTINGS_LIST:
       case ACTION_OK_DL_DRIVER_SETTINGS_LIST:
       case ACTION_OK_DL_CORE_SETTINGS_LIST:
+      case ACTION_OK_DL_CORE_INFORMATION_LIST:
       case ACTION_OK_DL_VIDEO_SETTINGS_LIST:
       case ACTION_OK_DL_VIDEO_SYNCHRONIZATION_SETTINGS_LIST:
       case ACTION_OK_DL_VIDEO_FULLSCREEN_MODE_SETTINGS_LIST:
@@ -1905,12 +1998,6 @@ static int default_action_ok_load_content_from_playlist_from_menu(const char *_p
             NULL, NULL))
       return -1;
    return 0;
-}
-
-#define default_action_ok_set(funcname, _id, _flush) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return generic_action_ok(path, label, type, idx, entry_idx, _id, _flush); \
 }
 
 default_action_ok_set(action_ok_set_path_audiofilter, ACTION_OK_SET_PATH_VIDEO_FILTER, MSG_UNKNOWN)
@@ -2891,20 +2978,6 @@ static void menu_input_st_string_cb_cheat_file_save_as(
    menu_input_dialog_end();
 }
 
-#define default_action_dialog_start(funcname, _label, _idx, _cb) \
-static int (funcname)(const char *path, const char *label_setting, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   menu_input_ctx_line_t line; \
-   line.label         = _label; \
-   line.label_setting = label_setting; \
-   line.type          = type; \
-   line.idx           = (_idx); \
-   line.cb            = _cb; \
-   if (!menu_input_dialog_start(&line)) \
-      return -1; \
-   return 0; \
-}
-
 #if defined(HAVE_CG) || defined(HAVE_GLSL) || defined(HAVE_SLANG) || defined(HAVE_HLSL)
 default_action_dialog_start(action_ok_shader_preset_save_as,
    msg_hash_to_str(MSG_INPUT_PRESET_FILENAME),
@@ -3503,19 +3576,6 @@ static int action_ok_load_core_deferred(const char *path,
    content_add_to_playlist(path);
 
    return 0;
-}
-
-#define default_action_ok_start_builtin_core(funcname, _id) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   content_ctx_info_t content_info; \
-   content_info.argc                   = 0; \
-   content_info.argv                   = NULL; \
-   content_info.args                   = NULL; \
-   content_info.environ_get            = NULL; \
-   if (!task_push_start_builtin_core(&content_info, _id, NULL, NULL)) \
-      return -1; \
-   return 0; \
 }
 
 default_action_ok_start_builtin_core(action_ok_start_net_retropad_core, CORE_TYPE_NETRETROPAD)
@@ -4166,12 +4226,6 @@ static int generic_action_ok_network(const char *path,
          label, type, idx, entry_idx, type_id2);
 }
 
-#define default_action_ok_list(funcname, _id) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return generic_action_ok_network(path, label, type, idx, entry_idx, _id); \
-}
-
 default_action_ok_list(action_ok_core_content_list, MENU_ENUM_LABEL_CB_CORE_CONTENT_LIST)
 default_action_ok_list(action_ok_core_content_dirs_list, MENU_ENUM_LABEL_CB_CORE_CONTENT_DIRS_LIST)
 default_action_ok_list(action_ok_thumbnails_updater_list, MENU_ENUM_LABEL_CB_THUMBNAILS_UPDATER_LIST)
@@ -4618,12 +4672,6 @@ end:
    return ret;
 }
 
-#define default_action_ok_download(funcname, _id) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return action_ok_download_generic(path, label, NULL, type, idx, entry_idx,_id); \
-}
-
 default_action_ok_download(action_ok_core_content_thumbnails, MENU_ENUM_LABEL_CB_CORE_THUMBNAILS_DOWNLOAD)
 default_action_ok_download(action_ok_thumbnails_updater_download, MENU_ENUM_LABEL_CB_THUMBNAILS_UPDATER_DOWNLOAD)
 default_action_ok_download(action_ok_download_url, MENU_ENUM_LABEL_CB_DOWNLOAD_URL)
@@ -4653,12 +4701,6 @@ int action_ok_close_content(const char *path, const char *label, unsigned type, 
    /* This line resets the navigation pointer so the active entry will be "Run" */
    menu_navigation_set_selection(0);
    return generic_action_ok_command(CMD_EVENT_UNLOAD_CORE);
-}
-
-#define default_action_ok_cmd_func(func_name, cmd) \
-int (func_name)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return generic_action_ok_command(cmd); \
 }
 
 default_action_ok_cmd_func(action_ok_cheat_apply_changes,      CMD_EVENT_CHEATS_APPLY)
@@ -5051,12 +5093,6 @@ end:
    return ret;
 }
 
-#define default_action_ok_func(func_name, lbl) \
-int (func_name)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return generic_action_ok_displaylist_push(path, NULL, label, type, idx, entry_idx, lbl); \
-}
-
 default_action_ok_func(action_ok_browse_url_start, ACTION_OK_DL_BROWSE_URL_START)
 default_action_ok_func(action_ok_goto_favorites, ACTION_OK_DL_FAVORITES_LIST)
 default_action_ok_func(action_ok_goto_images, ACTION_OK_DL_IMAGES_LIST)
@@ -5144,6 +5180,7 @@ default_action_ok_func(action_ok_push_video_scaling_settings_list, ACTION_OK_DL_
 default_action_ok_func(action_ok_push_video_output_settings_list, ACTION_OK_DL_VIDEO_OUTPUT_SETTINGS_LIST)
 default_action_ok_func(action_ok_push_configuration_settings_list, ACTION_OK_DL_CONFIGURATION_SETTINGS_LIST)
 default_action_ok_func(action_ok_push_core_settings_list, ACTION_OK_DL_CORE_SETTINGS_LIST)
+default_action_ok_func(action_ok_push_core_information_list, ACTION_OK_DL_CORE_INFORMATION_LIST)
 default_action_ok_func(action_ok_push_audio_settings_list, ACTION_OK_DL_AUDIO_SETTINGS_LIST)
 default_action_ok_func(action_ok_push_audio_output_settings_list, ACTION_OK_DL_AUDIO_OUTPUT_SETTINGS_LIST)
 default_action_ok_func(action_ok_push_audio_resampler_settings_list, ACTION_OK_DL_AUDIO_RESAMPLER_SETTINGS_LIST)
@@ -5298,25 +5335,11 @@ static int action_ok_netplay_lan_scan(const char *path,
    return -1;
 }
 
-#define default_action_ok_dl_push(funcname, _fbid, _id, _path) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   settings_t            *settings   = config_get_ptr(); \
-   (void)settings; \
-   filebrowser_set_type(_fbid); \
-   return generic_action_ok_displaylist_push(path, _path, label, type, idx, entry_idx, _id); \
-}
-
 default_action_ok_dl_push(action_ok_content_collection_list, FILEBROWSER_SELECT_COLLECTION, ACTION_OK_DL_CONTENT_COLLECTION_LIST, NULL)
 default_action_ok_dl_push(action_ok_push_content_list, FILEBROWSER_SELECT_FILE, ACTION_OK_DL_CONTENT_LIST, settings->paths.directory_menu_content)
 default_action_ok_dl_push(action_ok_push_scan_file, FILEBROWSER_SCAN_FILE, ACTION_OK_DL_CONTENT_LIST, settings->paths.directory_menu_content)
 
 #ifdef HAVE_NETWORKING
-
-#ifndef INET6_ADDRSTRLEN
-#define INET6_ADDRSTRLEN 46
-#endif
-
 static void netplay_refresh_rooms_cb(retro_task_t *task,
       void *task_data, void *user_data, const char *err)
 {
@@ -6151,12 +6174,6 @@ static int action_ok_load_archive_detect_core(const char *path,
    return ret;
 }
 
-#define default_action_ok_help(funcname, _id, _id2) \
-static int (funcname)(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx) \
-{ \
-   return generic_action_ok_help(path, label, type, idx, entry_idx, _id, _id2); \
-}
-
 static int action_ok_help_send_debug_info(const char *path, const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
    command_event(CMD_EVENT_SEND_DEBUG_INFO, NULL);
@@ -6463,21 +6480,38 @@ static int action_ok_netplay_disconnect(const char *path,
 static int action_ok_core_delete(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
-   const char *path_core = path_get(RARCH_PATH_CORE);
-   char *core_path       = !string_is_empty(path_core)
-      ? strdup(path_core) : NULL;
+   const char *core_path         = label;
+   const char *core              = NULL;
+   const char *running_core_path = NULL;
+   const char *running_core      = NULL;
 
-   if (!core_path)
-      return 0;
+   if (string_is_empty(core_path))
+      return -1;
 
-   generic_action_ok_command(CMD_EVENT_UNLOAD_CORE);
-   menu_entries_flush_stack(0, 0);
+   /* Get core file name */
+   core = path_basename(core_path);
+   if (string_is_empty(core))
+      return -1;
 
-   if (filestream_delete(core_path) != 0) { }
+   /* Get running core file name */
+   running_core_path = path_get(RARCH_PATH_CORE);
+   if (!string_is_empty(running_core_path))
+      running_core = path_basename(running_core_path);
 
-   free(core_path);
+   /* Check if core to be deleted is currently
+    * running - if so, unload it */
+   if (!string_is_empty(running_core) &&
+       string_is_equal(core, running_core))
+      generic_action_ok_command(CMD_EVENT_UNLOAD_CORE);
 
-   return 0;
+   /* Delete core file */
+   filestream_delete(core_path);
+
+   /* Reload core info files */
+   command_event(CMD_EVENT_CORE_INFO_INIT, NULL);
+
+   /* Return to higher level menu */
+   return action_cancel_pop_default(NULL, NULL, 0, 0);
 }
 
 static int action_ok_delete_playlist(const char *path,
@@ -6841,6 +6875,7 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          {MENU_ENUM_LABEL_AUDIO_RESAMPLER_SETTINGS,            action_ok_push_audio_resampler_settings_list},
          {MENU_ENUM_LABEL_LATENCY_SETTINGS,                    action_ok_push_latency_settings_list},
          {MENU_ENUM_LABEL_CORE_SETTINGS,                       action_ok_push_core_settings_list},
+         {MENU_ENUM_LABEL_CORE_INFORMATION,                    action_ok_push_core_information_list},
          {MENU_ENUM_LABEL_CONFIGURATION_SETTINGS,              action_ok_push_configuration_settings_list},
          {MENU_ENUM_LABEL_PLAYLIST_SETTINGS,                   action_ok_push_playlist_settings_list},
          {MENU_ENUM_LABEL_PLAYLIST_MANAGER_LIST,               action_ok_push_playlist_manager_list},
@@ -6858,7 +6893,6 @@ static int menu_cbs_init_bind_ok_compare_label(menu_file_list_cbs_t *cbs,
          {MENU_ENUM_LABEL_CORE_OPTIONS,                        action_ok_push_default},
          {MENU_ENUM_LABEL_CORE_CHEAT_OPTIONS,                  action_ok_push_default},
          {MENU_ENUM_LABEL_CORE_INPUT_REMAPPING_OPTIONS,        action_ok_push_default},
-         {MENU_ENUM_LABEL_CORE_INFORMATION,                    action_ok_push_default},
          {MENU_ENUM_LABEL_DISC_INFORMATION,                    action_ok_push_default},
          {MENU_ENUM_LABEL_SYSTEM_INFORMATION,                  action_ok_push_default},
          {MENU_ENUM_LABEL_NETWORK_INFORMATION,                 action_ok_push_default},

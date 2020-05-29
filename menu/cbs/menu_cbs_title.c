@@ -30,6 +30,12 @@
 #define BIND_ACTION_GET_TITLE(cbs, name) (cbs)->action_get_title = (name)
 #endif
 
+#define default_title_generic_macro(func_name, lbl) \
+   static int (func_name)(const char *path, const char *label, unsigned menu_type, char *s, size_t len) \
+  { \
+   return action_get_title_generic(s, len, path, msg_hash_to_str(lbl)); \
+} \
+
 #define sanitize_to_string(s, label, len) \
    { \
       char *pos = NULL; \
@@ -37,16 +43,6 @@
       while((pos = strchr(s, '_'))) \
          *pos = ' '; \
    }
-
-static int action_get_title_action_generic(const char *path, const char *label,
-      unsigned menu_type, char *s, size_t len)
-{
-   if (s && !string_is_empty(label))
-   {
-      sanitize_to_string(s, label, len);
-   }
-   return 1;
-}
 
 #define default_title_macro(func_name, lbl) \
   static int (func_name)(const char *path, const char *label, unsigned menu_type, char *s, size_t len) \
@@ -77,11 +73,26 @@ static int action_get_title_action_generic(const char *path, const char *label,
    return 1; \
 }
 
+
+static int action_get_title_action_generic(const char *path, const char *label,
+      unsigned menu_type, char *s, size_t len)
+{
+   if (s && !string_is_empty(label))
+   {
+      sanitize_to_string(s, label, len);
+   }
+   return 1;
+}
+
 static int action_get_title_remap_port(const char *path, const char *label,
       unsigned menu_type, char *s, size_t len)
 {
    char lbl[128];
-   snprintf(lbl, sizeof(lbl), "端口 %d 控制", atoi(path) + 1);
+   snprintf(lbl, sizeof(lbl), "%s %d %s",
+         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_PORT),
+         atoi(path) + 1,
+         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS)
+         );
    sanitize_to_string(s, lbl, len);
    return 1;
 }
@@ -271,7 +282,7 @@ static int action_get_title_mixer_stream_actions(const char *path, const char *l
 {
    unsigned         offset      = (menu_type - MENU_SETTINGS_AUDIO_MIXER_STREAM_ACTIONS_BEGIN);
 
-   snprintf(s, len, "混音流 #%d: %s", offset + 1, audio_driver_mixer_get_stream_name(offset));
+   snprintf(s, len, "Mixer Stream #%d: %s", offset + 1, audio_driver_mixer_get_stream_name(offset));
    return 0;
 }
 #endif
@@ -324,7 +335,6 @@ default_title_macro(action_get_user_accounts_youtube_list,      MENU_ENUM_LABEL_
 default_title_macro(action_get_user_accounts_twitch_list,       MENU_ENUM_LABEL_VALUE_ACCOUNTS_TWITCH)
 default_title_macro(action_get_download_core_content_list,      MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT)
 default_title_macro(action_get_user_accounts_list,              MENU_ENUM_LABEL_VALUE_ACCOUNTS_LIST)
-default_title_macro(action_get_core_information_list,           MENU_ENUM_LABEL_VALUE_CORE_INFORMATION)
 default_title_macro(action_get_core_list,                       MENU_ENUM_LABEL_VALUE_CORE_LIST)
 default_title_macro(action_get_online_updater_list,             MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER)
 default_title_macro(action_get_netplay_list,                    MENU_ENUM_LABEL_VALUE_NETPLAY)
@@ -347,6 +357,7 @@ default_title_macro(action_get_playlist_manager_list,           MENU_ENUM_LABEL_
 default_title_macro(action_get_input_hotkey_binds_settings_list,MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS)
 default_title_macro(action_get_driver_settings_list,            MENU_ENUM_LABEL_VALUE_DRIVER_SETTINGS)
 default_title_macro(action_get_core_settings_list,              MENU_ENUM_LABEL_VALUE_CORE_SETTINGS)
+default_title_macro(action_get_core_information_list,           MENU_ENUM_LABEL_VALUE_CORE_INFORMATION)
 default_title_macro(action_get_video_settings_list,             MENU_ENUM_LABEL_VALUE_VIDEO_SETTINGS)
 default_title_macro(action_get_video_fullscreen_mode_settings_list,     MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_MODE_SETTINGS)
 default_title_macro(action_get_video_windowed_mode_settings_list,     MENU_ENUM_LABEL_VALUE_VIDEO_WINDOWED_MODE_SETTINGS)
@@ -528,12 +539,6 @@ static int action_get_title_generic(char *s, size_t len, const char *path,
    return 0;
 }
 
-#define default_title_generic_macro(func_name, lbl) \
-   static int (func_name)(const char *path, const char *label, unsigned menu_type, char *s, size_t len) \
-  { \
-   return action_get_title_generic(s, len, path, msg_hash_to_str(lbl)); \
-} \
-
 default_title_generic_macro(action_get_title_deferred_database_manager_list,MENU_ENUM_LABEL_VALUE_DATABASE_SELECTION)
 default_title_generic_macro(action_get_title_deferred_cursor_manager_list,MENU_ENUM_LABEL_VALUE_DATABASE_CURSOR_LIST)
 default_title_generic_macro(action_get_title_list_rdb_entry_developer,MENU_ENUM_LABEL_VALUE_DATABASE_CURSOR_LIST_ENTRY_DEVELOPER)
@@ -657,6 +662,7 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
    title_info_list_t info_list[] = {
       {MENU_ENUM_LABEL_DEFERRED_REMAPPINGS_PORT_LIST,                 action_get_title_remap_port},
       {MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST,                   action_get_core_settings_list},
+      {MENU_ENUM_LABEL_DEFERRED_CORE_INFORMATION_LIST,                action_get_core_information_list},
       {MENU_ENUM_LABEL_DEFERRED_DUMP_DISC_LIST,                       action_get_dump_disc_list},
       {MENU_ENUM_LABEL_DEFERRED_LOAD_DISC_LIST,                       action_get_load_disc_list},
       {MENU_ENUM_LABEL_DEFERRED_CONFIGURATION_SETTINGS_LIST,          action_get_configuration_settings_list },
@@ -823,8 +829,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          action_get_database_manager_list},
       {MENU_ENUM_LABEL_CURSOR_MANAGER_LIST,
          action_get_cursor_manager_list},
-      {MENU_ENUM_LABEL_CORE_INFORMATION,
-         action_get_core_information_list},
       {MENU_ENUM_LABEL_CORE_LIST,
          action_get_core_list},
       {MENU_ENUM_LABEL_LOAD_CONTENT_SPECIAL,
@@ -1112,9 +1116,6 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
          case MENU_ENUM_LABEL_CURSOR_MANAGER_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_cursor_manager_list);
             break;
-         case MENU_ENUM_LABEL_CORE_INFORMATION:
-            BIND_ACTION_GET_TITLE(cbs, action_get_core_information_list);
-            break;
          case MENU_ENUM_LABEL_CORE_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_list);
             break;
@@ -1212,6 +1213,9 @@ static int menu_cbs_init_bind_title_compare_label(menu_file_list_cbs_t *cbs,
 #endif
          case MENU_ENUM_LABEL_DEFERRED_CORE_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_core_settings_list);
+            break;
+         case MENU_ENUM_LABEL_DEFERRED_CORE_INFORMATION_LIST:
+            BIND_ACTION_GET_TITLE(cbs, action_get_core_information_list);
             break;
          case MENU_ENUM_LABEL_DEFERRED_INPUT_SETTINGS_LIST:
             BIND_ACTION_GET_TITLE(cbs, action_get_input_settings_list);

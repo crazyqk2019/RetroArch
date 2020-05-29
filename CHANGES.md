@@ -1,4 +1,12 @@
 # Future
+- CORE DOWNLOADER: Rename 'Core Updater' to 'Core Downloader'
+- CORE DOWNLOADER: Add 'Show Experimental Cores' setting under Settings > Network > Updater
+- CORE DOWNLOADER: Core licenses are now shown for all entries in the Core Updater menu
+- CORE DOWNLOADER: Pressing RetroPad select on a Core Updater entry will now display any text in the description field of its info file
+- CORE DOWNLOADER: Installed cores are now highlighted via a [#] symbol
+- CORE DOWNLOADER: Pressing RetroPad start on a selected, installed entry opens the Core Information menu (when using Material UI, swiping left or right triggers the same action). This means we can now view bios info etc. - and more importantly delete cores - without jumping through all the hoops of loading a core first and navigating all over the place 
+- LINUX: Set default saves/save states/system paths 
+- MENU: Proper line wrapping for message dialog boxes
 
 # 1.8.8
 - AUDIO/JACK: Fix regression introduced after 1.8.4 - would hang at startup
@@ -39,6 +47,7 @@
 - UWP: Enable playlist and savefile compression by default (because of slow file I/O)
 - WIIU: Gamepad hotplugging support
 - WIIU: Theoretical multi-gamepad support
+- VIDEO/WIDGETS: Fix overlapping text when simultaneous pop-up notifications and core/shader messages are being displayed
 - X11: Fix crash in x11_display_server_get_screen_orientation
 - X11/XSHM: Allow X11/XHSM video driver to operate without SHM extension
 - X11/XSHM: Fix compatibility with X11 input driver

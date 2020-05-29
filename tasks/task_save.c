@@ -105,16 +105,6 @@ typedef struct
    bool compress_files;
 } save_task_state_t;
 
-typedef save_task_state_t load_task_data_t;
-
-/* Holds the previous saved state
- * Can be restored to disk with undo_save_state(). */
-static struct save_state_buf undo_save_buf;
-
-/* Holds the data from before a load_state() operation
- * Can be restored with undo_load_state(). */
-static struct save_state_buf undo_load_buf;
-
 #ifdef HAVE_THREADS
 typedef struct autosave autosave_t;
 
@@ -139,7 +129,21 @@ struct autosave
    scond_t *cond;
    sthread_t *thread;
 };
+#endif
 
+typedef save_task_state_t load_task_data_t;
+
+/* Holds the previous saved state
+ * Can be restored to disk with undo_save_state(). */
+/* TODO/FIXME - global state - perhaps move outside this file */
+static struct save_state_buf undo_save_buf;
+
+/* Holds the data from before a load_state() operation
+ * Can be restored with undo_load_state(). */
+static struct save_state_buf undo_load_buf;
+
+#ifdef HAVE_THREADS
+/* TODO/FIXME - global state - perhaps move outside this file */
 static struct autosave_st autosave_state;
 
 /**

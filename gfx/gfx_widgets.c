@@ -47,30 +47,6 @@
 #include "../cheevos/badges.h"
 #endif
 
-static bool widgets_inited             = false;
-static bool widgets_active             = false;
-static bool widgets_persisting         = false;
-
-static float msg_queue_background[16]  = COLOR_HEX_TO_FLOAT(0x3A3A3A, 1.0f);
-static float msg_queue_info[16]        = COLOR_HEX_TO_FLOAT(0x12ACF8, 1.0f);
-
-static float msg_queue_task_progress_1[16] = COLOR_HEX_TO_FLOAT(0x397869, 1.0f); /* Color of first progress bar in a task message */
-static float msg_queue_task_progress_2[16] = COLOR_HEX_TO_FLOAT(0x317198, 1.0f); /* Color of second progress bar in a task message (for multiple tasks with same message) */
-
-#if 0
-static float color_task_progress_bar[16] = COLOR_HEX_TO_FLOAT(0x22B14C, 1.0f);
-#endif
-
-static uint64_t gfx_widgets_frame_count   = 0;
-
-static float gfx_widgets_pure_white[16] = {
-      1.00, 1.00, 1.00, 1.00,
-      1.00, 1.00, 1.00, 1.00,
-      1.00, 1.00, 1.00, 1.00,
-      1.00, 1.00, 1.00, 1.00,
-};
-
-
 /* Font data */
 typedef struct
 {
@@ -79,20 +55,103 @@ typedef struct
    gfx_widget_font_data_t msg_queue;
 } gfx_widget_fonts_t;
 
-static gfx_widget_fonts_t gfx_widget_fonts;
-
-/* FPS */
-static char gfx_widgets_fps_text[255]  = {0};
-
 #ifdef HAVE_CHEEVOS
-/* Achievement notification */
 typedef struct cheevo_popup
 {
    char* title;
    uintptr_t badge;
 } cheevo_popup;
+#endif
 
+typedef struct menu_widget_msg
+{
+   char *msg;
+   char *msg_new;
+   float msg_transition_animation;
+   unsigned msg_len;
+   unsigned duration;
+
+   unsigned text_height;
+
+   float offset_y;
+   float alpha;
+
+   /* Is it currently doing the fade out animation ? */
+   bool dying;
+   /* Has the timer expired ? if so, should be set to dying */
+   bool expired;
+   unsigned width;
+
+   gfx_timer_t expiration_timer;
+   bool expiration_timer_started;
+
+   retro_task_t *task_ptr;
+   /* Used to detect title change */
+   char *task_title_ptr;
+   /* How many tasks have used this notification? */
+   uint8_t task_count;
+
+   int8_t task_progress;
+   bool task_finished;
+   bool task_error;
+   bool task_cancelled;
+   uint32_t task_ident;
+
+   /* Unfold animation */
+   bool unfolded;
+   bool unfolding;
+   float unfold;
+
+   float hourglass_rotation;
+   gfx_timer_t hourglass_timer;
+} menu_widget_msg_t;
+
+enum gfx_widgets_icon
+{
+   MENU_WIDGETS_ICON_PAUSED = 0,
+   MENU_WIDGETS_ICON_FAST_FORWARD,
+   MENU_WIDGETS_ICON_REWIND,
+   MENU_WIDGETS_ICON_SLOW_MOTION,
+
+   MENU_WIDGETS_ICON_HOURGLASS,
+   MENU_WIDGETS_ICON_CHECK,
+
+   MENU_WIDGETS_ICON_INFO,
+
+   MENU_WIDGETS_ICON_ACHIEVEMENT,
+
+   MENU_WIDGETS_ICON_LAST
+};
+
+
+/* TODO/FIXME - global state - perhaps move outside this file */
+static bool widgets_inited                = false;
+static bool widgets_active                = false;
+static bool widgets_persisting            = false;
+static float msg_queue_background[16]     = COLOR_HEX_TO_FLOAT(0x3A3A3A, 1.0f);
+static float msg_queue_info[16]           = COLOR_HEX_TO_FLOAT(0x12ACF8, 1.0f);
+static float msg_queue_task_progress_1[16]= COLOR_HEX_TO_FLOAT(0x397869, 1.0f); /* Color of first progress bar in a task message */
+static float msg_queue_task_progress_2[16]= COLOR_HEX_TO_FLOAT(0x317198, 1.0f); /* Color of second progress bar in a task message (for multiple tasks with same message) */
+#if 0
+static float color_task_progress_bar[16]  = COLOR_HEX_TO_FLOAT(0x22B14C, 1.0f);
+#endif
+static uint64_t gfx_widgets_frame_count   = 0;
+static float gfx_widgets_pure_white[16]   = {
+      1.00, 1.00, 1.00, 1.00,
+      1.00, 1.00, 1.00, 1.00,
+      1.00, 1.00, 1.00, 1.00,
+      1.00, 1.00, 1.00, 1.00,
+};
+
+/* FPS */
+static char gfx_widgets_fps_text[255]     = {0};
+
+static gfx_widget_fonts_t gfx_widget_fonts;
+
+#ifdef HAVE_CHEEVOS
+/* Achievement notification */
 #define CHEEVO_QUEUE_SIZE 8
+
 static cheevo_popup cheevo_popup_queue[CHEEVO_QUEUE_SIZE];
 static int cheevo_popup_queue_read_index = -1;
 static int cheevo_popup_queue_write_index = 0;
@@ -149,49 +208,6 @@ static float gfx_widgets_backdrop[16] = {
       0.00, 0.00, 0.00, 0.75,
 };
 
-typedef struct menu_widget_msg
-{
-   char *msg;
-   char *msg_new;
-   float msg_transition_animation;
-   unsigned msg_len;
-   unsigned duration;
-
-   unsigned text_height;
-
-   float offset_y;
-   float alpha;
-
-   /* Is it currently doing the fade out animation ? */
-   bool dying;
-   /* Has the timer expired ? if so, should be set to dying */
-   bool expired;
-   unsigned width;
-
-   gfx_timer_t expiration_timer;
-   bool expiration_timer_started;
-
-   retro_task_t *task_ptr;
-   /* Used to detect title change */
-   char *task_title_ptr;
-   /* How many tasks have used this notification? */
-   uint8_t task_count;
-
-   int8_t task_progress;
-   bool task_finished;
-   bool task_error;
-   bool task_cancelled;
-   uint32_t task_ident;
-
-   /* Unfold animation */
-   bool unfolded;
-   bool unfolding;
-   float unfold;
-
-   float hourglass_rotation;
-   gfx_timer_t hourglass_timer;
-} menu_widget_msg_t;
-
 static fifo_buffer_t *msg_queue                  = NULL;
 static file_list_t *current_msgs                 = NULL;
 static unsigned msg_queue_kill                   = 0;
@@ -211,23 +227,6 @@ static gfx_animation_ctx_tag gfx_widgets_generic_tag = (uintptr_t)&widgets_activ
 static bool widgets_moving                       = false;
 
 /* Icons */
-enum gfx_widgets_icon
-{
-   MENU_WIDGETS_ICON_PAUSED = 0,
-   MENU_WIDGETS_ICON_FAST_FORWARD,
-   MENU_WIDGETS_ICON_REWIND,
-   MENU_WIDGETS_ICON_SLOW_MOTION,
-
-   MENU_WIDGETS_ICON_HOURGLASS,
-   MENU_WIDGETS_ICON_CHECK,
-
-   MENU_WIDGETS_ICON_INFO,
-
-   MENU_WIDGETS_ICON_ACHIEVEMENT,
-
-   MENU_WIDGETS_ICON_LAST
-};
-
 static const char *gfx_widgets_icons_names[MENU_WIDGETS_ICON_LAST] = {
    "menu_pause.png",
    "menu_frameskip.png",
@@ -339,7 +338,6 @@ unsigned gfx_widgets_get_height(void)
    return simple_widget_height;
 }
 
-
 unsigned gfx_widgets_get_generic_message_height(void)
 {
    return generic_message_height;
@@ -353,6 +351,11 @@ unsigned gfx_widgets_get_last_video_width(void)
 unsigned gfx_widgets_get_last_video_height(void)
 {
    return last_video_height;
+}
+
+size_t gfx_widgets_get_msg_queue_size(void)
+{
+   return current_msgs ? current_msgs->size : 0;
 }
 
 /* Widgets list */
@@ -1500,6 +1503,7 @@ void gfx_widgets_frame(void *data)
    video_frame_info_t *video_info;
    bool framecount_show;
    bool memory_show;
+   bool core_status_msg_show;
    void *userdata;
    unsigned video_width;
    unsigned video_height;
@@ -1521,6 +1525,7 @@ void gfx_widgets_frame(void *data)
    video_info                = (video_frame_info_t*)data;
    framecount_show           = video_info->framecount_show;
    memory_show               = video_info->memory_show;
+   core_status_msg_show      = video_info->core_status_msg_show;
    userdata                  = video_info->userdata;
    video_width               = video_info->width;
    video_height              = video_info->height;
@@ -1705,26 +1710,11 @@ void gfx_widgets_frame(void *data)
    }
 #endif
 
-   /* Draw all messages */
-   for (i = 0; i < current_msgs->size; i++)
-   {
-      menu_widget_msg_t *msg = (menu_widget_msg_t*)current_msgs->list[i].userdata;
-
-      if (!msg)
-         continue;
-
-      if (msg->task_ptr)
-         gfx_widgets_draw_task_msg(msg, userdata,
-               video_width, video_height);
-      else
-         gfx_widgets_draw_regular_msg(msg, userdata,
-               video_width, video_height);
-   }
-
    /* FPS Counter */
    if (     fps_show 
          || framecount_show
          || memory_show
+         || core_status_msg_show
          )
    {
       const char *text      = *gfx_widgets_fps_text == '\0' ? "N/A" : gfx_widgets_fps_text;
@@ -1796,6 +1786,22 @@ void gfx_widgets_frame(void *data)
 
       if (widget->frame)
          widget->frame(data);
+   }
+
+   /* Draw all messages */
+   for (i = 0; i < current_msgs->size; i++)
+   {
+      menu_widget_msg_t *msg = (menu_widget_msg_t*)current_msgs->list[i].userdata;
+
+      if (!msg)
+         continue;
+
+      if (msg->task_ptr)
+         gfx_widgets_draw_task_msg(msg, userdata,
+               video_width, video_height);
+      else
+         gfx_widgets_draw_regular_msg(msg, userdata,
+               video_width, video_height);
    }
 
 #ifdef HAVE_MENU
@@ -2261,7 +2267,8 @@ bool gfx_widgets_ai_service_overlay_set_state(int state)
 }
 
 bool gfx_widgets_ai_service_overlay_load(
-        char* buffer, unsigned buffer_len, enum image_type_enum image_type)
+        char* buffer, unsigned buffer_len,
+        enum image_type_enum image_type)
 {
    if (ai_service_overlay_state == 0)
    {

@@ -1425,6 +1425,7 @@ typedef struct materialui_handle
    bool is_playlist;
    bool is_file_list;
    bool is_dropdown_list;
+   bool is_core_updater_list;
    bool last_show_nav_bar;
    bool last_auto_rotate_nav_bar;
    bool menu_stack_flushed;
@@ -2149,16 +2150,31 @@ static void materialui_render_messagebox(materialui_handle_t *mui,
    unsigned i;
    int x                    = 0;
    int y                    = 0;
+   int usable_width         = 0;
    int longest_width        = 0;
-   size_t longest_len       = 0;
    struct string_list *list = NULL;
+   char wrapped_message[MENU_SUBLABEL_MAX_LENGTH];
+
+   wrapped_message[0] = '\0';
 
    /* Sanity check */
-   if (!mui || !mui->font_data.list.font)
+   if (string_is_empty(message) ||
+       !mui ||
+       !mui->font_data.list.font)
+      goto end;
+
+   usable_width = (int)video_width - (mui->margin * 4.0);
+
+   if (usable_width < 1)
       goto end;
 
    /* Split message into lines */
-   list = string_split(message, "\n");
+   word_wrap(
+         wrapped_message, message,
+         usable_width / (int)mui->font_data.list.glyph_width,
+         true, 0);
+
+   list = string_split(wrapped_message, "\n");
 
    if (!list || list->elems == 0)
       goto end;
@@ -2177,14 +2193,11 @@ static void materialui_render_messagebox(materialui_handle_t *mui,
 
       if (!string_is_empty(line))
       {
-         size_t len = utf8len(line);
+         int width = font_driver_get_message_width(
+               mui->font_data.list.font, line, (unsigned)strlen(line), 1);
 
-         if (len > longest_len)
-         {
-            longest_len   = len;
-            longest_width = font_driver_get_message_width(
-                  mui->font_data.list.font, line, (unsigned)strlen(line), 1);
-         }
+         longest_width = (width > longest_width) ?
+               width : longest_width;
       }
    }
 
@@ -2321,7 +2334,7 @@ static unsigned materialui_count_sublabel_lines(
    word_wrap(
          wrapped_sublabel_str, sublabel_str,
          sublabel_width_max / (int)mui->font_data.hint.glyph_width,
-         false, 0);
+         true, 0);
 
    /* Return number of lines in wrapped string */
    return materialui_count_lines(wrapped_sublabel_str);
@@ -3418,7 +3431,6 @@ static void materialui_render_menu_entry_default(
       materialui_node_t *node,
       menu_entry_t *entry,
       bool entry_selected,
-      bool entry_is_last,
       bool touch_feedback_active,
       unsigned header_height,
       int x_offset)
@@ -3743,7 +3755,6 @@ static void materialui_render_menu_entry_playlist_list(
       materialui_node_t *node,
       menu_entry_t *entry,
       bool entry_selected,
-      bool entry_is_last,
       bool touch_feedback_active,
       unsigned header_height,
       int x_offset)
@@ -3752,10 +3763,12 @@ static void materialui_render_menu_entry_playlist_list(
    const char *entry_sublabel = NULL;
    int entry_x                = x_offset + node->x;
    int entry_y                = header_height - mui->scroll_y + node->y;
+   int divider_y              = entry_y + (int)node->entry_height;
    int entry_margin           = (int)mui->margin;
    int usable_width           = (int)node->entry_width - (int)(mui->margin * 2);
    int label_y                = 0;
    bool draw_text_outside     = (x_offset != 0);
+   bool draw_divider;
 
    /* Initial ticker configuration
     * > Note: ticker is only used for labels,
@@ -3932,16 +3945,23 @@ static void materialui_render_menu_entry_playlist_list(
     * We can partially mitigate the visual 'emptiness' of this
     * by drawing a divider between entries. This is particularly
     * beneficial when dual thumbnails are enabled, since it
-    * 'ties' the left/right thumbnails together */
-   if (!entry_is_last &&
-       (mui->list_view_type != MUI_LIST_VIEW_PLAYLIST) &&
-       (usable_width > 0))
+    * 'ties' the left/right thumbnails together
+    * > To prevent any ugly alignment issues, we
+    *   only draw a divider if its bottom edge is
+    *   more than two times the divider thickness from
+    *   the bottom edge of the list region */
+   draw_divider = (mui->list_view_type != MUI_LIST_VIEW_PLAYLIST) &&
+         (usable_width > 0) &&
+               ((divider_y + (mui->entry_divider_width * 2)) <
+                     (video_height - mui->nav_bar_layout_height - mui->status_bar.height));
+
+   if (draw_divider)
       gfx_display_draw_quad(
             userdata,
             video_width,
             video_height,
             (float)(entry_x + entry_margin),
-            entry_y + (float)node->entry_height,
+            (float)divider_y,
             (unsigned)usable_width,
             mui->entry_divider_width,
             video_width,
@@ -3959,7 +3979,6 @@ static void materialui_render_menu_entry_playlist_dual_icon(
       materialui_node_t *node,
       menu_entry_t *entry,
       bool entry_selected,
-      bool entry_is_last,
       bool touch_feedback_active,
       unsigned header_height,
       int x_offset)
@@ -3968,7 +3987,17 @@ static void materialui_render_menu_entry_playlist_dual_icon(
    float entry_x           = (float)x_offset + node->x;
    float entry_y           = (float)header_height - mui->scroll_y + node->y;
    int usable_width        = (int)node->entry_width - (int)(mui->margin * 2);
-   float thumbnail_y;
+   float thumbnail_y       = entry_y + ((float)mui->dip_base_unit_size / 10.0f);
+   float divider_y         = thumbnail_y + (float)mui->thumbnail_height_max +
+         ((float)mui->dip_base_unit_size / 10.0f) +
+               (float)mui->font_data.list.line_height;
+   /* To prevent any ugly alignment issues, we
+    * only draw a divider if its bottom edge is
+    * more than two times the divider thickness from
+    * the bottom edge of the list region */
+   bool draw_divider       = (usable_width > 0) &&
+               ((divider_y + (mui->entry_divider_width * 2)) <
+                     (video_height - mui->nav_bar_layout_height - mui->status_bar.height));
 
    /* Initial ticker configuration
     * > Note: ticker is only used for labels */
@@ -3986,7 +4015,6 @@ static void materialui_render_menu_entry_playlist_dual_icon(
    /* Draw thumbnails
     * > These go at the top of the entry, with a
     *   small vertical margin */
-   thumbnail_y = entry_y + ((float)mui->dip_base_unit_size / 10.0f);
 
    /* > Primary thumbnail */
    materialui_draw_thumbnail(
@@ -4073,15 +4101,13 @@ static void materialui_render_menu_entry_playlist_dual_icon(
    }
 
    /* Draw divider */
-   if (!entry_is_last && (usable_width > 0))
+   if (draw_divider)
       gfx_display_draw_quad(
             userdata,
             video_width,
             video_height,
             entry_x + (float)mui->margin,
-            thumbnail_y + (float)mui->thumbnail_height_max +
-                  ((float)mui->dip_base_unit_size / 10.0f) +
-                  (float)mui->font_data.list.line_height,
+            divider_y,
             (unsigned)usable_width,
             mui->entry_divider_width,
             video_width,
@@ -4099,7 +4125,6 @@ static void materialui_render_menu_entry_playlist_desktop(
       materialui_node_t *node,
       menu_entry_t *entry,
       bool entry_selected,
-      bool entry_is_last,
       bool touch_feedback_active,
       unsigned header_height,
       int x_offset)
@@ -4107,7 +4132,7 @@ static void materialui_render_menu_entry_playlist_desktop(
    const char *entry_label = NULL;
    int entry_x             = x_offset + node->x;
    int entry_y             = header_height - mui->scroll_y + node->y;
-   int divider_y           = entry_y + (float)node->entry_height;
+   int divider_y           = entry_y + (int)node->entry_height;
    int entry_margin        = (int)mui->margin;
    int usable_width        = node->entry_width - (int)(mui->margin * 2);
    /* Entry label is drawn at the vertical centre
@@ -4115,7 +4140,13 @@ static void materialui_render_menu_entry_playlist_desktop(
    int label_y             = entry_y + (node->entry_height / 2.0f) +
          mui->font_data.list.line_centre_offset;
    bool draw_text_outside  = (x_offset != 0);
-   bool draw_divider       = !entry_is_last;
+   /* To prevent any ugly alignment issues, we
+    * only draw a divider if its bottom edge is
+    * more than two times the divider thickness from
+    * the bottom edge of the list region */
+   bool draw_divider = (usable_width > 0) &&
+               ((divider_y + (mui->entry_divider_width * 2)) <
+                     (video_height - mui->nav_bar_layout_height - mui->status_bar.height));
 
    /* Read entry parameters */
    menu_entry_get_rich_label(entry, &entry_label);
@@ -4162,17 +4193,7 @@ static void materialui_render_menu_entry_playlist_desktop(
       }
    }
 
-   /* Draw divider
-    * > To prevent any ugly alignment issues, we
-    *   only draw a divider if its bottom edge is
-    *   more than two times the divider thickness from
-    *   the top edge of the status bar... */
-   draw_divider = draw_divider && (usable_width > 0) &&
-         (mui->status_bar.enabled ?
-               ((divider_y + (mui->entry_divider_width * 2)) <
-                     (video_height - mui->nav_bar_layout_height - mui->status_bar.height)) :
-               true);
-
+   /* Draw divider */
    if (draw_divider)
       gfx_display_draw_quad(
             userdata,
@@ -4195,7 +4216,6 @@ static void (*materialui_render_menu_entry)(
       materialui_node_t *node,
       menu_entry_t *entry,
       bool entry_selected,
-      bool entry_is_last,
       bool touch_feedback_active,
       unsigned header_height,
       int x_offset) = materialui_render_menu_entry_default;
@@ -4505,7 +4525,6 @@ static void materialui_render_menu_list(
    for (i = first_entry; i <= last_entry; i++)
    {
       bool entry_selected        = (selection == i);
-      bool entry_is_last         = (i == last_entry);
       bool touch_feedback_active = touch_feedback_enabled && (mui->touch_feedback_selection == i);
       materialui_node_t *node    = (materialui_node_t*)file_list_get_userdata_at_offset(list, i);
       menu_entry_t entry;
@@ -4530,7 +4549,6 @@ static void materialui_render_menu_list(
             node,
             &entry,
             entry_selected,
-            entry_is_last,
             touch_feedback_active,
             header_height,
             x_offset);
@@ -7116,6 +7134,7 @@ static void *materialui_init(void **userdata, bool video_is_threaded)
    mui->is_playlist          = false;
    mui->is_file_list         = false;
    mui->is_dropdown_list     = false;
+   mui->is_core_updater_list = false;
    mui->menu_stack_flushed   = false;
 
    mui->first_onscreen_entry = 0;
@@ -7570,6 +7589,11 @@ static void materialui_populate_entries(
     * scrolling via an alphabet search) */
    mui->is_playlist_tab = string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_PLAYLISTS_TAB));
 
+   /* Check whether this is the core updater menu
+    * (this requires special handling when long
+    * pressing an entry) */
+   mui->is_core_updater_list = string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_CORE_UPDATER_LIST));
+
    /* Check whether we are currently viewing a playlist,
     * file-browser-type list or dropdown list
     * (each of these is regarded as a 'plain' list,
@@ -7589,8 +7613,7 @@ static void materialui_populate_entries(
        *   Note: MENU_ENUM_LABEL_FAVORITES is always set
        *   as the 'label' when navigating directories after
        *   selecting load content */
-      mui->is_file_list = string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_CORE_UPDATER_LIST)) ||
-                          string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_SCAN_DIRECTORY)) ||
+      mui->is_file_list = string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_SCAN_DIRECTORY)) ||
                           string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_SCAN_FILE)) ||
                           string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_IMAGES_LIST)) ||
                           string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_MUSIC_LIST)) ||
@@ -8937,9 +8960,17 @@ static int materialui_pointer_up(void *userdata,
          }
          break;
       case MENU_INPUT_GESTURE_LONG_PRESS:
-         /* 'Reset to default' action */
          if ((ptr < entries_end) && (ptr == selection))
-            return materialui_menu_entry_action(mui, entry, selection, MENU_ACTION_START);
+         {
+            /* If this is the core updater list, show info
+             * message box for current entry.
+             * In all other cases, perform 'reset to default'
+             * action */
+            if (mui->is_core_updater_list)
+               return materialui_menu_entry_action(mui, entry, selection, MENU_ACTION_INFO);
+            else
+               return materialui_menu_entry_action(mui, entry, selection, MENU_ACTION_START);
+         }
          break;
       case MENU_INPUT_GESTURE_SWIPE_LEFT:
          {
@@ -8958,6 +8989,10 @@ static int materialui_pointer_up(void *userdata,
                return materialui_pointer_up_swipe_horz_plain_list(
                      mui, entry, height, header_height, y,
                      selection, true);
+            /* If this is the core updater list, swipes are used
+             * to open the core information menu */
+            else if (mui->is_core_updater_list)
+               return materialui_menu_entry_action(mui, entry, selection, MENU_ACTION_START);
             /* In all other cases, just perform a normal 'left'
              * navigation event */
             else
@@ -8982,6 +9017,10 @@ static int materialui_pointer_up(void *userdata,
                return materialui_pointer_up_swipe_horz_plain_list(
                      mui, entry, height, header_height, y,
                      selection, false);
+            /* If this is the core updater list, swipes are used
+             * to open the core information menu */
+            else if (mui->is_core_updater_list)
+               return materialui_menu_entry_action(mui, entry, selection, MENU_ACTION_START);
             /* In all other cases, just perform a normal 'right'
              * navigation event */
             else
@@ -9117,6 +9156,10 @@ static void materialui_list_insert(
             node->icon_texture_index = MUI_TEXTURE_SETTINGS;
             node->has_icon           = true;
             break;
+         case MENU_SETTING_ACTION_CORE_DELETE:
+            node->icon_texture_index = MUI_TEXTURE_REMOVE;
+            node->has_icon           = true;
+            break;
          default:
             if (
                   string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_INFORMATION_LIST))              ||
@@ -9208,7 +9251,8 @@ static void materialui_list_insert(
                node->icon_texture_index = MUI_TEXTURE_SHADERS;
                node->has_icon           = true;
             }
-            else if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_CORE_LIST)))
+            else if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_CORE_LIST)) ||
+                     string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_CORE_INFORMATION)))
             {
                node->icon_texture_index = MUI_TEXTURE_CORES;
                node->has_icon           = true;

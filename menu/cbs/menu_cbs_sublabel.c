@@ -40,6 +40,9 @@
 #include "../../content.h"
 #include "../../dynamic.h"
 #include "../../configuration.h"
+#ifdef HAVE_NETWORKING
+#include "../../core_updater_list.h"
+#endif
 #include "../../managers/cheat_manager.h"
 #include "../../tasks/tasks_internal.h"
 
@@ -50,7 +53,6 @@
 #define BIND_ACTION_SUBLABEL(cbs, name) (cbs)->action_sublabel = (name)
 #endif
 
-
 #define default_sublabel_macro(func_name, lbl) \
   static int (func_name)(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len) \
 { \
@@ -60,35 +62,31 @@
 
 static int menu_action_sublabel_file_browser_core(file_list_t *list, unsigned type, unsigned i, const char *label, const char *path, char *s, size_t len)
 {
-   core_info_list_t *core_list = NULL;
+   core_info_ctx_find_t core_info;
 
-   core_info_get_list(&core_list);
+   /* Set sublabel prefix */
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_INFO_LICENSES), len);
+   strlcat(s, ": ", len);
 
-   strlcpy(s, "License: ", len);
+   /* Search for specified core */
+   core_info.inf  = NULL;
+   core_info.path = path;
 
-   if (core_list)
+   if (core_info_find(&core_info, path) &&
+       core_info.inf->licenses_list)
    {
-      unsigned j;
-      for (j = 0; j < core_list->count; j++)
-      {
-         if (string_is_equal(path_basename(core_list->list[j].path),
-                  path))
-         {
-            if (core_list->list[j].licenses_list)
-            {
-               char tmp[PATH_MAX_LENGTH];
-               tmp[0]  = '\0';
+      char tmp[MENU_SUBLABEL_MAX_LENGTH];
+      tmp[0]  = '\0';
 
-               string_list_join_concat(tmp, sizeof(tmp),
-                     core_list->list[j].licenses_list, ", ");
-               strlcat(s, tmp, len);
-               return 1;
-            }
-         }
-      }
+      /* Add license text */
+      string_list_join_concat(tmp, sizeof(tmp),
+            core_info.inf->licenses_list, ", ");
+      strlcat(s, tmp, len);
+      return 1;
    }
 
-   strlcat(s, "N/A", len);
+   /* No license found - set to N/A */
+   strlcat(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NOT_AVAILABLE), len);
    return 1;
 }
 
@@ -473,6 +471,7 @@ default_sublabel_macro(action_bind_sublabel_input_overlay_show_physical_inputs, 
 default_sublabel_macro(action_bind_sublabel_input_overlay_show_physical_inputs_port,    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_SHOW_PHYSICAL_INPUTS_PORT)
 default_sublabel_macro(action_bind_sublabel_core_updater_buildbot_assets_url,      MENU_ENUM_SUBLABEL_BUILDBOT_ASSETS_URL)
 default_sublabel_macro(action_bind_sublabel_core_updater_auto_extract_archive,     MENU_ENUM_SUBLABEL_CORE_UPDATER_AUTO_EXTRACT_ARCHIVE)
+default_sublabel_macro(action_bind_sublabel_core_updater_show_experimental_cores,  MENU_ENUM_SUBLABEL_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES)
 default_sublabel_macro(action_bind_sublabel_netplay_refresh_rooms,                 MENU_ENUM_SUBLABEL_NETPLAY_REFRESH_ROOMS)
 default_sublabel_macro(action_bind_sublabel_rename_entry,                          MENU_ENUM_SUBLABEL_RENAME_ENTRY)
 default_sublabel_macro(action_bind_sublabel_delete_entry,                          MENU_ENUM_SUBLABEL_DELETE_ENTRY)
@@ -796,7 +795,8 @@ static int action_bind_sublabel_systeminfo_controller_entry(
    {
       if (input_is_autoconfigured(controller))
       {
-            snprintf(tmp, sizeof(tmp), "端口 #%d 设备名：%s (#%d)",
+            snprintf(tmp, sizeof(tmp), "%s #%d device name: %s (#%d)",
+               msg_hash_to_str(MENU_ENUM_LABEL_VALUE_PORT),
                controller,
                input_config_get_device_name(controller),
                input_autoconfigure_get_device_name_index(controller));
@@ -805,9 +805,9 @@ static int action_bind_sublabel_systeminfo_controller_entry(
                break;
       }
    }
-   snprintf(tmp, sizeof(tmp), "设备显示名：%s\n设备配置名：%s\n设备标识符：%d/%d",
-      input_config_get_device_display_name(controller) ? input_config_get_device_display_name(controller) : "N/A",
-      input_config_get_device_display_name(controller) ? input_config_get_device_config_name(controller) : "N/A",
+   snprintf(tmp, sizeof(tmp), "Device display name: %s\nDevice config name: %s\nDevice identifiers: %d/%d",
+      input_config_get_device_display_name(controller) ? input_config_get_device_display_name(controller) : msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NOT_AVAILABLE),
+      input_config_get_device_display_name(controller) ? input_config_get_device_config_name(controller) : msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NOT_AVAILABLE),
       input_config_get_vid(controller), input_config_get_pid(controller));
    strlcpy(s, tmp, len);
 
@@ -858,7 +858,7 @@ static int action_bind_sublabel_subsystem_add(
    if (subsystem && subsystem_current_count > 0)
    {
       if (content_get_subsystem_rom_id() < subsystem->num_roms)
-         snprintf(s, len, " 当前游戏：%s",
+         snprintf(s, len, " Current Content: %s",
             content_get_subsystem() == type - MENU_SETTINGS_SUBSYSTEM_ADD
             ? subsystem->roms[content_get_subsystem_rom_id()].desc
             : subsystem->roms[0].desc);
@@ -933,20 +933,20 @@ static int action_bind_sublabel_audio_mixer_stream(
                sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_STOPPED:
-         strlcpy(msg, "停止", sizeof(msg));
+         strlcpy(msg, "Stopped", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING:
-         strlcpy(msg, "播放", sizeof(msg));
+         strlcpy(msg, "Playing", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING_LOOPED:
-         strlcpy(msg, "播放（循环）", sizeof(msg));
+         strlcpy(msg, "Playing (Looped)", sizeof(msg));
          break;
       case AUDIO_STREAM_STATE_PLAYING_SEQUENTIAL:
-         strlcpy(msg, "播放（顺序）", sizeof(msg));
+         strlcpy(msg, "Playing (Sequential)", sizeof(msg));
          break;
    }
 
-   snprintf(s, len, "状态：%s | %s: %.2f dB", msg,
+   snprintf(s, len, "State : %s | %s: %.2f dB", msg,
          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_MIXER_ACTION_VOLUME),
          stream->volume);
    return 0;
@@ -984,9 +984,9 @@ static int action_bind_sublabel_cheat_desc(
    if (cheat_manager_state.cheats)
    {
       if (cheat_manager_state.cheats[offset].handler == CHEAT_HANDLER_TYPE_EMU)
-         strlcpy(s, "模拟器处理", len);
+         strlcpy(s, "Emulator-Handled", len);
       else
-         strlcpy(s, "RetroArch处理", len);
+         strlcpy(s, "RetroArch-Handled", len);
    }
 
    return 0;
@@ -1024,9 +1024,11 @@ static int action_bind_sublabel_netplay_room(
    if (string_is_empty(subsystem) || string_is_equal(subsystem, "N/A"))
    {
       snprintf(s, len,
-         "RetroArch：%s (%s)\n内核：%s (%s)\n游戏：%s (%08x)",
+         "%s: %s (%s)\n%s: %s (%s)\nGame: %s (%08x)",
+         msg_hash_to_str(MSG_PROGRAM),
          string_is_empty(ra_version)    ? na : ra_version,
          string_is_empty(frontend)      ? na : frontend,
+         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CONTENT_INFO_CORE_NAME),
          corename, core_ver,
          !string_is_equal(gamename, na) ? gamename : na,
          gamecrc);
@@ -1049,9 +1051,11 @@ static int action_bind_sublabel_netplay_room(
                strlcat(buf, "\n", sizeof(buf));
          }
          snprintf(s, len,
-            "RetroArch：%s (%s)\n内核：%s (%s)\n子系统：%s\n游戏：\n%s",
+            "%s: %s (%s)\n%s: %s (%s)\nSubsystem: %s\nGames:\n%s",
+            msg_hash_to_str(MSG_PROGRAM),
             string_is_empty(ra_version)    ? na : ra_version,
             string_is_empty(frontend)      ? na : frontend,
+            msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CONTENT_INFO_CORE_NAME),
             corename, core_ver, subsystem,
             !string_is_equal(gamename, na) ? buf : na
             );
@@ -1060,9 +1064,11 @@ static int action_bind_sublabel_netplay_room(
       else
       {
          snprintf(s, len,
-            "RetroArch：%s (%s)\n内核：%s (%s)\n子系统：%s\n游戏：%s (%08x)",
+            "%s: %s (%s)\n%s: %s (%s)\nSubsystem: %s\nGame: %s (%08x)",
+            msg_hash_to_str(MSG_PROGRAM),
             string_is_empty(ra_version)    ? na : ra_version,
             string_is_empty(frontend)      ? na : frontend,
+            msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CONTENT_INFO_CORE_NAME),
             corename, core_ver, subsystem,
             !string_is_equal(gamename, na) ? gamename : na,
             gamecrc);
@@ -1080,7 +1086,9 @@ static int action_bind_sublabel_playlist_entry(
 {
    playlist_t *playlist                      = NULL;
    const struct playlist_entry *entry        = NULL;
+#ifdef HAVE_OZONE
    const char *menu_ident                    = menu_driver_ident();
+#endif
    settings_t *settings                      = config_get_ptr();
    bool playlist_show_sublabels              = settings->bools.playlist_show_sublabels;
    unsigned playlist_sublabel_runtime_type   = settings->uints.playlist_sublabel_runtime_type;
@@ -1206,6 +1214,41 @@ static int action_bind_sublabel_core_option(
    return 0;
 }
 
+#ifdef HAVE_NETWORKING
+static int action_bind_sublabel_core_updater_entry(
+      file_list_t *list,
+      unsigned type, unsigned i,
+      const char *label, const char *path,
+      char *s, size_t len)
+{
+   core_updater_list_t *core_list         = core_updater_list_get_cached();
+   const core_updater_list_entry_t *entry = NULL;
+
+   /* Set sublabel prefix */
+   strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_INFO_LICENSES), len);
+   strlcat(s, ": ", len);
+
+   /* Search for specified core */
+   if (core_list &&
+       core_updater_list_get_filename(core_list, path, &entry) &&
+       entry->licenses_list)
+   {
+      char tmp[MENU_SUBLABEL_MAX_LENGTH];
+      tmp[0] = '\0';
+
+      /* Add license text */
+      string_list_join_concat(tmp, sizeof(tmp),
+            entry->licenses_list, ", ");
+      strlcat(s, tmp, len);
+      return 1;
+   }
+
+   /* No license found - set to N/A */
+   strlcat(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_NOT_AVAILABLE), len);
+   return 1;
+}
+#endif
+
 static int action_bind_sublabel_generic(
       file_list_t *list,
       unsigned type, unsigned i,
@@ -1304,6 +1347,14 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
       BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_option);
       return 0;
    }
+
+#ifdef HAVE_NETWORKING
+   if (type == FILE_TYPE_DOWNLOAD_CORE)
+   {
+      BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_updater_entry);
+      return 0;
+   }
+#endif
 
    if (cbs->enum_idx != MSG_UNKNOWN)
    {
@@ -2099,6 +2150,9 @@ int menu_cbs_init_bind_sublabel(menu_file_list_cbs_t *cbs,
             break;
          case MENU_ENUM_LABEL_CORE_UPDATER_AUTO_EXTRACT_ARCHIVE:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_updater_auto_extract_archive);
+            break;
+         case MENU_ENUM_LABEL_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES:
+            BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_updater_show_experimental_cores);
             break;
          case MENU_ENUM_LABEL_CORE_UPDATER_BUILDBOT_URL:
             BIND_ACTION_SUBLABEL(cbs, action_bind_sublabel_core_updater_buildbot_url);
