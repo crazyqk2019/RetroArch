@@ -4407,6 +4407,15 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_AUTO_EXTRACT_ARCHIVE,
    "下载后自动解压压缩文件。"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES,
+   "显示试验性内核"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES,
+   "在内核下载列表中显示试验性内核。\n"
+   "这些内核通常是为开发/测试目的，不建议通常情况下使用。"
+   )
 
 /* Settings > Playlists */
 
