@@ -77,7 +77,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_DISC,
-   "载入实体光盘。必选先选择用来运行此光盘的内核。"
+   "载入实体光盘，必选先选择用来运行此光盘的内核。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DUMP_DISC,
@@ -105,11 +105,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHOW_WIMP,
-   "显示桌面菜单"
+   "显示桌面版菜单"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SHOW_WIMP,
-   "如果桌面菜单被关闭了，在此打开桌面菜单。"
+   "如果桌面菜单版被关闭了，在此打开桌面菜单。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_DISABLE_KIOSK_MODE,
@@ -117,7 +117,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_DISABLE_KIOSK_MODE,
-   "禁用傻瓜模式。需要重新启动。"
+   "禁用傻瓜模式。须要重新启动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER,
@@ -208,7 +208,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,
-   "启动远程RetroPad"
+   "启动远程手柄"
    )
 
 /* Main Menu > Load Content */
@@ -1940,7 +1940,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_REMAP_BINDS_ENABLE,
-   "如果启用，使用当前内核的键位设置覆盖键位绑定。"
+   "如果启用，使用当前内核的键位设置覆盖全局键位设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTODETECT_ENABLE,
@@ -2040,11 +2040,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_USER_BINDS,
-   "端口 %u 绑定"
+   "控制器 %u 键位"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_USER_BINDS,
-   "配置该端口控制选项。"
+   "配置控制器键位绑定。"
    )
 
 /* Settings > Input > Haptic Feedback/Vibration */
@@ -2213,7 +2213,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_ENABLE_HOTKEY,
-   "热键"
+   "启用/禁用热键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_VOLUME_UP,
@@ -2560,7 +2560,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTO_REMAPS_ENABLE,
-   "启动时自动载入自定义按键控制。"
+   "启动时自动载入自定义按键设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_SHADERS_ENABLE,
@@ -6592,11 +6592,11 @@ MSG_HASH( /* FIXME Unused? */
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RETROPAD,
-   "Retro手柄"
+   "游戏手柄"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RETROPAD_WITH_ANALOG,
-   "Retro手柄（带模拟摇杆）"
+   "游戏手柄（带模拟摇杆）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NONE,
