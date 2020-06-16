@@ -2137,11 +2137,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_PLUS,
-   "存档槽+"
+   "存档号+"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_MINUS,
-   "存档槽-"
+   "存档号-"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_REWIND,
@@ -5277,11 +5277,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STATE_SLOT,
-   "及时存档槽"
+   "及时存档号"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_STATE_SLOT,
-   "更改当前选择的及时存档槽。"
+   "更改当前选择的及时存档号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_STATE,
@@ -5289,7 +5289,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVE_STATE,
-   "保存当前状态到选择的槽。"
+   "保存当前状态到选择的存档号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_STATE,
@@ -5297,7 +5297,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_STATE,
-   "从当前存档槽载入及时存档。"
+   "从当前存档号载入及时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UNDO_LOAD_STATE,
@@ -9540,7 +9540,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_FOUND_LAST_STATE_SLOT,
-   "找到最后一个存档槽"
+   "找到最后一个存档号"
    )
 MSG_HASH(
    MSG_FOUND_SHADER,
@@ -9632,11 +9632,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_LOADED_STATE_FROM_SLOT,
-   "从 #%d. 存档槽载入"
+   "从 #%d. 号存档载入"
    )
 MSG_HASH(
    MSG_LOADED_STATE_FROM_SLOT_AUTO,
-   "从 #-1 存档槽载入（自动）。"
+   "从 #-1 号存档载入（自动）。"
    )
 MSG_HASH(
    MSG_LOADING,
@@ -9808,11 +9808,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_SAVED_STATE_TO_SLOT,
-   "保存及时存档到槽位 #%d。"
+   "保存及时存档到 #%d 号。"
    )
 MSG_HASH(
    MSG_SAVED_STATE_TO_SLOT_AUTO,
-   "保存及时存档到槽位 #-1（自动）。"
+   "保存及时存档到 #-1 号（自动）。"
    )
 MSG_HASH(
    MSG_SAVED_SUCCESSFULLY_TO,
@@ -9884,7 +9884,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_STATE_SLOT,
-   "及时存档槽"
+   "及时存档号"
    )
 MSG_HASH(
    MSG_TAKING_SCREENSHOT,
