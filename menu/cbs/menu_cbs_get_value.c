@@ -462,14 +462,94 @@ static void menu_action_setting_disp_set_label_core_updater_entry(
       core_info.inf  = NULL;
       core_info.path = entry->local_core_path;
 
-      if (core_info_find(&core_info, entry->local_core_path))
+      if (core_info_find(&core_info))
       {
-         strlcpy(s, "[#]", len);
-         *w = (unsigned)STRLEN_CONST("[#]");
+         /* Highlight locked cores */
+         if (core_info.inf->is_locked)
+         {
+            strlcpy(s, "[#!]", len);
+            *w = (unsigned)STRLEN_CONST("[#!]");
+         }
+         else
+         {
+            strlcpy(s, "[#]", len);
+            *w = (unsigned)STRLEN_CONST("[#]");
+         }
       }
    }
 }
 #endif
+
+static void menu_action_setting_disp_set_label_core_manager_entry(
+      file_list_t* list,
+      unsigned *w, unsigned type, unsigned i,
+      const char *label,
+      char *s, size_t len,
+      const char *path,
+      char *s2, size_t len2)
+{
+   const char *alt = NULL;
+   core_info_ctx_find_t core_info;
+
+   *s = '\0';
+   *w = 0;
+
+   menu_entries_get_at_offset(list, i, NULL,
+         NULL, NULL, NULL, &alt);
+
+   if (alt)
+      strlcpy(s2, alt, len2);
+
+   /* Check whether core is locked
+    * > Note: We search core_info here instead of
+    *   calling core_info_get_core_lock() since we
+    *   don't want to perform disk access every frame */
+   core_info.inf  = NULL;
+   core_info.path = path;
+
+   if (core_info_find(&core_info) &&
+       core_info.inf->is_locked)
+   {
+      strlcpy(s, "[!]", len);
+      *w = (unsigned)STRLEN_CONST("[!]");
+   }
+}
+
+static void menu_action_setting_disp_set_label_core_lock(
+      file_list_t* list,
+      unsigned *w, unsigned type, unsigned i,
+      const char *label,
+      char *s, size_t len,
+      const char *path,
+      char *s2, size_t len2)
+{
+   const char *alt = NULL;
+   core_info_ctx_find_t core_info;
+
+   *s = '\0';
+   *w = 0;
+
+   menu_entries_get_at_offset(list, i, NULL,
+         NULL, NULL, NULL, &alt);
+
+   if (alt)
+      strlcpy(s2, alt, len2);
+
+   /* Check whether core is locked
+    * > Note: We search core_info here instead of
+    *   calling core_info_get_core_lock() since we
+    *   don't want to perform disk access every frame */
+   core_info.inf  = NULL;
+   core_info.path = path;
+
+   if (core_info_find(&core_info) &&
+       core_info.inf->is_locked)
+      strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_ON), len);
+   else
+      strlcpy(s, msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OFF), len);
+
+   *w  = (unsigned)strlen(s);
+}
 
 static void menu_action_setting_disp_set_label_input_desc(
       file_list_t* list,
@@ -1586,8 +1666,18 @@ static int menu_cbs_init_bind_get_string_representation_compare_label(
             BIND_ACTION_GET_VALUE(cbs,
                   menu_action_setting_disp_set_label_manual_content_scan_core_name);
             break;
+#ifdef HAVE_NETWORKING
+         case MENU_ENUM_LABEL_CORE_UPDATER_ENTRY:
+            BIND_ACTION_GET_VALUE(cbs,
+                  menu_action_setting_disp_set_label_core_updater_entry);
+            break;
+#endif
+         case MENU_ENUM_LABEL_CORE_MANAGER_ENTRY:
+            BIND_ACTION_GET_VALUE(cbs,
+                  menu_action_setting_disp_set_label_core_manager_entry);
+            break;
          default:
-            return - 1;
+            return -1;
       }
    }
    else
@@ -1673,12 +1763,6 @@ static int menu_cbs_init_bind_get_string_representation_compare_type(
          BIND_ACTION_GET_VALUE(cbs,
                menu_action_setting_disp_set_label_menu_file_core);
          break;
-#ifdef HAVE_NETWORKING
-      case FILE_TYPE_DOWNLOAD_CORE:
-         BIND_ACTION_GET_VALUE(cbs,
-               menu_action_setting_disp_set_label_core_updater_entry);
-         break;
-#endif
       case FILE_TYPE_PLAIN:
          BIND_ACTION_GET_VALUE(cbs,
                menu_action_setting_disp_set_label_menu_file_plain);
@@ -1791,6 +1875,10 @@ static int menu_cbs_init_bind_get_string_representation_compare_type(
       case MENU_SETTING_DROPDOWN_ITEM:
       case MENU_SETTING_NO_ITEM:
          BIND_ACTION_GET_VALUE(cbs, menu_action_setting_disp_set_label_no_items);
+         break;
+      case MENU_SETTING_ACTION_CORE_LOCK:
+         BIND_ACTION_GET_VALUE(cbs,
+               menu_action_setting_disp_set_label_core_lock);
          break;
       case 32: /* Recent history entry */
       case 65535: /* System info entry */
