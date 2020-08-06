@@ -2191,7 +2191,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_LOAD_STATE_KEY,
-   "从当前选择的存档号载入及时存档。"
+   "从当前选择的存档号载入即时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SAVE_STATE_KEY,
@@ -2199,7 +2199,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SAVE_STATE_KEY,
-   "保存及时存档到当前选择的存档号。"
+   "保存即时存档到当前选择的存档号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FULLSCREEN_TOGGLE_KEY,
@@ -2811,19 +2811,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SAVESTATES_ENABLE,
-   "分目录保存及时存档"
+   "分目录保存即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SAVESTATES_ENABLE,
-   "将及时存档保存在以内核名称命名的子目录下"
+   "将即时存档保存在以内核名称命名的子目录下"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BLOCK_SRAM_OVERWRITE,
-   "载入及时存档时不覆盖游戏自带存档内存。"
+   "载入即时存档时不覆盖游戏自带存档内存。"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_BLOCK_SRAM_OVERWRITE,
-   "载入及时存档时阻止游戏自带存档内存被改写，可能会导致游戏出错。"
+   "载入即时存档时阻止游戏自带存档内存被改写，可能会导致游戏出错。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTOSAVE_INTERVAL,
@@ -2835,36 +2835,36 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_INDEX,
-   "自动增加及时存档编号"
+   "自动增加即时存档编号"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_INDEX,
-   "保存及时存档时自动增加存档编号。载入游戏时，存档编号设为当前最大值。"
+   "保存即时存档时自动增加存档编号。载入游戏时，存档编号设为当前最大值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_SAVE,
-   "自动保存及时存档"
+   "自动保存即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_SAVE,
-   "游戏结束运行时自动保存及时存档。\n"
-   "如果启用“自动载入及时存档”，启动时会自动载入此存档。"
+   "游戏结束运行时自动保存即时存档。\n"
+   "如果启用“自动载入即时存档”，启动时会自动载入此存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_LOAD,
-   "自动载入及时存档"
+   "自动载入即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_LOAD,
-   "启动时自动载入自动保存的及时存档。"
+   "启动时自动载入自动保存的即时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_THUMBNAIL_ENABLE,
-   "及时存档预览图"
+   "即时存档预览图"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_THUMBNAIL_ENABLE,
-   "在菜单里显示及时存档预览图。"
+   "在菜单里显示即时存档预览图。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_FILE_COMPRESSION,
@@ -2877,11 +2877,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_FILE_COMPRESSION,
-   "压缩游戏及时存档"
+   "压缩游戏即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_FILE_COMPRESSION,
-   "把游戏及时存档文件保存为压缩文件。减少存档文件大小，但是会增加存档/读档时间。"
+   "把游戏即时存档文件保存为压缩文件。减少存档文件大小，但是会增加存档/读档时间。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVEFILES_IN_CONTENT_DIR_ENABLE,
@@ -2889,7 +2889,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATES_IN_CONTENT_DIR_ENABLE,
-   "保存游戏及时存档到游戏目录"
+   "保存游戏即时存档到游戏目录"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEMFILES_IN_CONTENT_DIR_ENABLE,
@@ -3087,19 +3087,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_TIME_COUNTER_RESET_AFTER_LOAD_STATE,
-   "载入及时存档后复位"
+   "载入即时存档后复位"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_TIME_COUNTER_RESET_AFTER_LOAD_STATE,
-   "载入及时存档后复位帧时间计数器。"
+   "载入即时存档后复位帧时间计数器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_TIME_COUNTER_RESET_AFTER_SAVE_STATE,
-   "保存及时存档后复位"
+   "保存即时存档后复位"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_TIME_COUNTER_RESET_AFTER_SAVE_STATE,
-   "保存及时存档后复位帧时间计数器。"
+   "保存即时存档后复位帧时间计数器。"
    )
 
 /* Settings > Recording */
@@ -3521,12 +3521,12 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SAVESTATE_RESUME,
-   "及时存档后恢复运行"
+   "即时存档后恢复运行"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SAVESTATE_RESUME,
-   "载入或保存及时存档后自动关闭菜单，继续游戏运行。\n"
-   "禁用此项可以提高低端设备上的及时存档性能。"
+   "载入或保存即时存档后自动关闭菜单，继续游戏运行。\n"
+   "禁用此项可以提高低端设备上的即时存档性能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_INSERT_DISK_RESUME,
@@ -3892,19 +3892,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_SAVE_LOAD_STATE,
-   "显示及时存档/读档"
+   "显示即时存档/读档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_SAVE_LOAD_STATE,
-   "显示/隐藏“及时存档/及时读档”选项。"
+   "显示/隐藏“即时存档/即时读档”选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_UNDO_SAVE_LOAD_STATE,
-   "显示取消及时存档/读档"
+   "显示取消即时存档/读档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_UNDO_SAVE_LOAD_STATE,
-   "显示/隐藏“取消及时存档/读档”选项。"
+   "显示/隐藏“取消即时存档/读档”选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_ADD_TO_FAVORITES,
@@ -4381,7 +4381,7 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CHEEVOS_HARDCORE_MODE_ENABLE,
    "双倍点数获取。\n"
-   "禁用及时存档、作弊码、回退、暂停和慢动作。\n"
+   "禁用即时存档、作弊码、回退、暂停和慢动作。\n"
    "在游戏运行时切换此选项将重启你的游戏。"
    )
 MSG_HASH(
@@ -4530,7 +4530,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_STATELESS_MODE,
-   "以无及时存档功能模式开始联机游戏。\n"
+   "以无即时存档功能模式开始联机游戏。\n"
    "需要非常快的网速，但是由于无需回退，因此没有网络抖动。"
    )
 MSG_HASH(
@@ -5187,11 +5187,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_DIRECTORY,
-   "及时存档目录"
+   "即时存档目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_DIRECTORY,
-   "保存所有游戏及时存档文件到此目录。\n"
+   "保存所有游戏即时存档文件到此目录。\n"
    "如果未设置，存档将保存到游戏文件所在目录。"
    )
 MSG_HASH(
@@ -5541,15 +5541,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STATE_SLOT,
-   "及时存档号"
+   "即时存档号"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_STATE_SLOT,
-   "更改当前选择的及时存档号。"
+   "更改当前选择的即时存档号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_STATE,
-   "及时存档"
+   "即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVE_STATE,
@@ -5557,11 +5557,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_STATE,
-   "及时读档"
+   "即时读档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_STATE,
-   "从当前存档号载入及时存档。"
+   "从当前存档号载入即时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UNDO_LOAD_STATE,
@@ -6359,7 +6359,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ACHIEVEMENT_PAUSE,
-   "暂停当前会话的成就（此动作将启用及时存档、作弊码、回退、暂停和慢动作）。"
+   "暂停当前会话的成就（此动作将启用即时存档、作弊码、回退、暂停和慢动作）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_RESUME,
@@ -6367,7 +6367,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ACHIEVEMENT_RESUME,
-   "恢复当前会话的成就（此动作将禁用及时存档、作弊码、回退、暂停和慢动作然后复位当前游戏）。"
+   "恢复当前会话的成就（此动作将禁用即时存档、作弊码、回退、暂停和慢动作然后复位当前游戏）。"
    )
 
 /* Quick Menu > Information */
@@ -9331,7 +9331,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_AUTOLOADING_SAVESTATE_FROM,
-   "自动载入及时存档"
+   "自动载入即时存档"
    )
 MSG_HASH(
    MSG_CAPABILITIES,
@@ -9495,7 +9495,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_CHEEVOS_HARDCORE_MODE_ENABLE,
-   "成就硬核模式已启用，及时存档和回退被禁用。"
+   "成就硬核模式已启用，即时存档和回退被禁用。"
    )
 MSG_HASH(
    MSG_COMPARING_WITH_KNOWN_MAGIC_NUMBERS,
@@ -9523,7 +9523,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_CORE_DOES_NOT_SUPPORT_SAVESTATES,
-   "内核不支持及时存档。"
+   "内核不支持即时存档。"
    )
 MSG_HASH(
    MSG_CORE_OPTIONS_FILE_CREATED_SUCCESSFULLY,
@@ -10027,7 +10027,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_REDIRECTING_SAVESTATE_TO,
-   "重定位及时存档文件到"
+   "重定位即时存档文件到"
    )
 MSG_HASH(
    MSG_REMAP_FILE_SAVED_SUCCESSFULLY,
@@ -10055,7 +10055,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_RESTORED_OLD_SAVE_STATE,
-   "已回复旧及时存档。"
+   "已回复旧即时存档。"
    )
 MSG_HASH(
    MSG_RESTORING_DEFAULT_SHADER_PRESET_TO,
@@ -10067,7 +10067,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_REVERTING_SAVESTATE_DIRECTORY_TO,
-   "恢复及时存档文件目录为"
+   "恢复即时存档文件目录为"
    )
 MSG_HASH(
    MSG_REWINDING,
@@ -10095,11 +10095,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_SAVED_STATE_TO_SLOT,
-   "保存及时存档到 #%d 号。"
+   "保存即时存档到 #%d 号。"
    )
 MSG_HASH(
    MSG_SAVED_STATE_TO_SLOT_AUTO,
-   "保存及时存档到 #-1 号（自动）。"
+   "保存即时存档到 #-1 号（自动）。"
    )
 MSG_HASH(
    MSG_SAVED_SUCCESSFULLY_TO,
@@ -10111,7 +10111,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_SAVING_STATE,
-   "正在保存及时存档"
+   "正在保存即时存档"
    )
 MSG_HASH(
    MSG_SCANNING,
@@ -10167,11 +10167,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_STATE_SIZE,
-   "及时存档大小"
+   "即时存档大小"
    )
 MSG_HASH(
    MSG_STATE_SLOT,
-   "及时存档号"
+   "即时存档号"
    )
 MSG_HASH(
    MSG_TAKING_SCREENSHOT,
@@ -10203,11 +10203,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_UNDID_LOAD_STATE,
-   "已取消载入及时存档。"
+   "已取消载入即时存档。"
    )
 MSG_HASH(
    MSG_UNDOING_SAVE_STATE,
-   "正在取消保存及时存档"
+   "正在取消保存即时存档"
    )
 MSG_HASH(
    MSG_UNKNOWN,
@@ -10339,15 +10339,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_RUNAHEAD_CORE_DOES_NOT_SUPPORT_SAVESTATES,
-   "超前运行已禁用，因为当前内核不支持及时存档。"
+   "超前运行已禁用，因为当前内核不支持即时存档。"
    )
 MSG_HASH(
    MSG_RUNAHEAD_FAILED_TO_SAVE_STATE,
-   "保存及时存档失败，超前运行已禁用。"
+   "保存即时存档失败，超前运行已禁用。"
    )
 MSG_HASH(
    MSG_RUNAHEAD_FAILED_TO_LOAD_STATE,
-   "载入及时存档失败，超前运行已禁用。"
+   "载入即时存档失败，超前运行已禁用。"
    )
 MSG_HASH(
    MSG_RUNAHEAD_FAILED_TO_CREATE_SECONDARY_INSTANCE,
@@ -10443,7 +10443,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_CHEEVOS_HARDCORE_MODE_DISABLED,
-   "及时存档已载入，禁用当前会话的成就硬核模式。"
+   "即时存档已载入，禁用当前会话的成就硬核模式。"
    )
 MSG_HASH(
    MSG_CHEEVOS_HARDCORE_MODE_DISABLED_CHEAT,
