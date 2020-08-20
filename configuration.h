@@ -158,6 +158,14 @@ typedef struct settings
       /* Menu */
       bool filter_by_current_core;
       bool menu_enable_widgets;
+      bool menu_show_load_content_animation;
+      bool notification_show_autoconfig;
+      bool notification_show_cheats_applied;
+      bool notification_show_remap_load;
+      bool notification_show_config_override_load;
+      bool notification_show_set_initial_disk;
+      bool notification_show_fast_forward;
+      bool notification_show_screenshot;
       bool menu_widget_scale_auto;
       bool menu_show_start_screen;
       bool menu_pause_libretro;
@@ -199,6 +207,7 @@ typedef struct settings
       bool menu_show_video_layout;
 #endif
       bool menu_materialui_icons_enable;
+      bool menu_materialui_playlist_icons_enable;
       bool menu_materialui_show_nav_bar;
       bool menu_materialui_auto_rotate_nav_bar;
       bool menu_materialui_dual_thumbnail_list_view_enable;
@@ -211,6 +220,7 @@ typedef struct settings
       bool menu_rgui_inline_thumbnails;
       bool menu_rgui_swap_thumbnails;
       bool menu_rgui_extended_ascii;
+      bool menu_rgui_switch_icons;
       bool menu_xmb_shadows_enable;
       bool menu_xmb_vertical_thumbnails;
       bool menu_content_show_settings;
@@ -222,6 +232,7 @@ typedef struct settings
       bool menu_content_show_history;
       bool menu_content_show_add;
       bool menu_content_show_playlists;
+      bool menu_content_show_explore;
       bool menu_use_preferred_system_color_theme;
       bool menu_preferred_system_color_theme_set;
       bool menu_unified_controls;
@@ -306,9 +317,13 @@ typedef struct settings
       bool cheevos_verbose_enable;
       bool cheevos_auto_screenshot;
       bool cheevos_start_active;
+      bool cheevos_unlock_sound_enable;
 
       /* Camera */
       bool camera_allow;
+
+      /* Bluetooth */
+      bool bluetooth_allow;
 
       /* WiFi */
       bool wifi_allow;
@@ -356,6 +371,9 @@ typedef struct settings
       bool network_remote_enable_user[MAX_USERS];
       bool load_dummy_on_core_shutdown;
       bool check_firmware_before_loading;
+#ifndef HAVE_DYNAMIC
+      bool always_reload_core_on_run_content;
+#endif
 
       bool game_specific_options;
       bool auto_overrides_enable;
@@ -389,6 +407,7 @@ typedef struct settings
       bool playlist_sort_alphabetical;
       bool playlist_show_sublabels;
       bool playlist_fuzzy_archive_match;
+      bool playlist_portable_paths;
 
       bool quit_press_twice;
       bool vibrate_on_keypress;
@@ -456,6 +475,7 @@ typedef struct settings
       int state_slot;
       int audio_wasapi_sh_buffer_length;
       int crt_switch_center_adjust;
+      int crt_switch_porch_adjust;
 #ifdef HAVE_VULKAN
       int vulkan_gpu_index;
 #endif
@@ -479,6 +499,7 @@ typedef struct settings
       unsigned audio_latency;
 
       unsigned fps_update_interval;
+      unsigned memory_update_interval;
 
       unsigned input_block_timeout;
 
@@ -545,6 +566,8 @@ typedef struct settings
       unsigned video_overscan_correction_bottom;
 #endif
       unsigned video_shader_delay;
+      unsigned notification_show_screenshot_duration;
+      unsigned notification_show_screenshot_flash;
 
       /* Accessibility */
       unsigned accessibility_narrator_speech_speed;
@@ -580,6 +603,7 @@ typedef struct settings
       unsigned menu_rgui_aspect_ratio_lock;
       unsigned menu_rgui_particle_effect;
       unsigned menu_ticker_type;
+      unsigned menu_content_show_add_entry;
 
       unsigned playlist_entry_remove_enable;
       unsigned playlist_show_inline_core_name;
@@ -639,6 +663,7 @@ typedef struct settings
       char video_driver[32];
       char record_driver[32];
       char camera_driver[32];
+      char bluetooth_driver[32];
       char wifi_driver[32];
       char led_driver[32];
       char location_driver[32];
@@ -760,6 +785,15 @@ typedef struct settings
 const char *config_get_default_camera(void);
 
 /**
+ * config_get_default_bluetooth:
+ *
+ * Gets default bluetooth driver.
+ *
+ * Returns: Default bluetooth driver.
+ **/
+const char *config_get_default_bluetooth(void);
+
+/**
  * config_get_default_wifi:
  *
  * Gets default wifi driver.
@@ -872,11 +906,11 @@ bool config_load_remap(const char *directory_input_remapping,
 
 /**
  * config_save_autoconf_profile:
- * @path            : Path that shall be written to.
+ * @device_name       : Input device name
  * @user              : Controller number to save
  * Writes a controller autoconf file to disk.
  **/
-bool config_save_autoconf_profile(const char *path, unsigned user);
+bool config_save_autoconf_profile(const char *device_name, unsigned user);
 
 /**
  * config_save_file:

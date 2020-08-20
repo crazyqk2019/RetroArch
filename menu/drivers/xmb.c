@@ -131,6 +131,7 @@ enum
    XMB_TEXTURE_LOADSTATE,
    XMB_TEXTURE_UNDO,
    XMB_TEXTURE_CORE_INFO,
+   XMB_TEXTURE_BLUETOOTH,
    XMB_TEXTURE_WIFI,
    XMB_TEXTURE_CORE_OPTIONS,
    XMB_TEXTURE_INPUT_REMAPPING_OPTIONS,
@@ -248,6 +249,9 @@ enum
    XMB_SYSTEM_TAB_NETPLAY,
 #endif
    XMB_SYSTEM_TAB_ADD,
+#if defined(HAVE_LIBRETRODB)
+   XMB_SYSTEM_TAB_EXPLORE,
+#endif
 
    /* End of this enum - use the last one to determine num of possible tabs */
    XMB_SYSTEM_TAB_MAX_LENGTH
@@ -338,7 +342,11 @@ typedef struct xmb_handle
    xmb_node_t history_tab_node;
    xmb_node_t favorites_tab_node;
    xmb_node_t add_tab_node;
+#if defined(HAVE_LIBRETRODB)
+   xmb_node_t explore_tab_node;
+#endif
    xmb_node_t netplay_tab_node;
+   menu_input_pointer_t pointer;
 
    font_data_t *font;
    font_data_t *font2;
@@ -979,7 +987,7 @@ static void xmb_render_messagebox_internal(
                x - longest_width/2.0,
                y + (i+0.75) * line_height,
                video_width, video_height, 0x444444ff,
-               TEXT_ALIGN_LEFT, 1.0f, false, 0, false);
+               TEXT_ALIGN_LEFT, 1.0f, false, 0.0f, false);
    }
 
    if (menu_input_dialog_get_display_kb())
@@ -1218,9 +1226,24 @@ static void xmb_set_thumbnail_content(void *data, const char *s)
       /* Playlist content */
       if (string_is_empty(s))
       {
-         size_t selection = menu_navigation_get_selection();
+         size_t selection      = menu_navigation_get_selection();
+         size_t list_size      = menu_entries_get_size();
+         file_list_t *list     = menu_entries_get_selection_buf_ptr(0);
+         bool playlist_valid   = false;
+         size_t playlist_index = selection;
+
+         /* Get playlist index corresponding
+          * to the selected entry */
+         if (list &&
+             (selection < list_size) &&
+             (list->list[selection].type == FILE_TYPE_RPL_ENTRY))
+         {
+            playlist_valid = true;
+            playlist_index = list->list[selection].entry_idx;
+         }
+
          gfx_thumbnail_set_content_playlist(xmb->thumbnail_path_data,
-               playlist_get_cached(), selection);
+               playlist_valid ? playlist_get_cached() : NULL, playlist_index);
          xmb->fullscreen_thumbnails_available = true;
       }
    }
@@ -1253,7 +1276,6 @@ static void xmb_set_thumbnail_content(void *data, const char *s)
       size_t selection           = menu_navigation_get_selection();
       file_list_t *selection_buf = menu_entries_get_selection_buf_ptr(0);
       xmb_node_t *node           = (xmb_node_t*)file_list_get_userdata_at_offset(selection_buf, selection);
-
 
       if (node)
       {
@@ -1823,6 +1845,7 @@ static void xmb_set_title(xmb_handle_t *xmb)
    else
    {
       const char *path = NULL;
+
       menu_entries_get_at_offset(
             xmb->horizontal_list,
             xmb->categories_selection_ptr - (xmb->system_tab_end + 1),
@@ -1833,6 +1856,10 @@ static void xmb_set_title(xmb_handle_t *xmb)
 
       fill_pathname_base_noext(
             xmb->title_name, path, sizeof(xmb->title_name));
+
+      /* Add current search terms */
+      menu_driver_search_append_terms_string(
+            xmb->title_name, sizeof(xmb->title_name));
    }
 }
 
@@ -1862,6 +1889,10 @@ static xmb_node_t* xmb_get_node(xmb_handle_t *xmb, unsigned i)
 #endif
       case XMB_SYSTEM_TAB_ADD:
          return &xmb->add_tab_node;
+#if defined(HAVE_LIBRETRODB)
+      case XMB_SYSTEM_TAB_EXPLORE:
+         return &xmb->explore_tab_node;
+#endif
       default:
          if (i > xmb->system_tab_end)
             return xmb_get_userdata_from_horizontal_list(
@@ -2032,7 +2063,8 @@ static void xmb_context_destroy_horizontal_list(xmb_handle_t *xmb)
       file_list_get_at_offset(xmb->horizontal_list, i,
             &path, NULL, NULL, NULL);
 
-      if (!path || !string_ends_with(path, ".lpl"))
+      if (!path || !string_ends_with_size(path, ".lpl",
+               strlen(path), STRLEN_CONST(".lpl")))
          continue;
 
       video_driver_texture_unload(&node->icon);
@@ -2131,7 +2163,8 @@ static void xmb_context_reset_horizontal_list(
       if (!path)
          continue;
 
-      if (!string_ends_with(path, ".lpl"))
+      if (!string_ends_with_size(path, ".lpl",
+               strlen(path), STRLEN_CONST(".lpl")))
          continue;
 
       {
@@ -2228,12 +2261,16 @@ static void xmb_refresh_horizontal_list(xmb_handle_t *xmb)
       xmb_free_list_nodes(xmb->horizontal_list, false);
       file_list_free(xmb->horizontal_list);
    }
-   xmb->horizontal_list = NULL;
+   xmb->horizontal_list           = NULL;
 
    menu_driver_ctl(RARCH_MENU_CTL_SET_PREVENT_POPULATE, NULL);
 
-   xmb->horizontal_list         = (file_list_t*)
-      calloc(1, sizeof(file_list_t));
+   xmb->horizontal_list           = (file_list_t*)
+      malloc(sizeof(file_list_t));
+
+   xmb->horizontal_list->list     = NULL;
+   xmb->horizontal_list->capacity = 0;
+   xmb->horizontal_list->size     = 0;
 
    if (xmb->horizontal_list)
       xmb_init_horizontal_list(xmb);
@@ -2381,14 +2418,14 @@ static void xmb_populate_entries(void *data,
    xmb->is_quick_menu = string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DEFERRED_RPL_ENTRY_ACTIONS)) ||
                         string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_CONTENT_SETTINGS));
 
+   xmb_set_title(xmb);
+
    if (menu_driver_ctl(RARCH_MENU_CTL_IS_PREVENT_POPULATE, NULL))
    {
       xmb_selection_pointer_changed(xmb, false);
       menu_driver_ctl(RARCH_MENU_CTL_UNSET_PREVENT_POPULATE, NULL);
       return;
    }
-
-   xmb_set_title(xmb);
 
    if (xmb->categories_selection_ptr != xmb->categories_active_idx_old)
       xmb_list_switch(xmb);
@@ -2496,6 +2533,8 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
       case MENU_ENUM_LABEL_FAVORITES: /* "Start Directory" */
       case MENU_ENUM_LABEL_DOWNLOADED_FILE_DETECT_CORE_LIST:
          return xmb->textures.list[XMB_TEXTURE_FOLDER];
+      case MENU_ENUM_LABEL_ADD_CONTENT_LIST:
+         return xmb->textures.list[XMB_TEXTURE_ADD];
       case MENU_ENUM_LABEL_FILE_DETECT_CORE_LIST_PUSH_DIR:
          return xmb->textures.list[XMB_TEXTURE_RDB];
 
@@ -2510,6 +2549,8 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
          return xmb->textures.list[XMB_TEXTURE_MOVIE];
       case MENU_ENUM_LABEL_GOTO_MUSIC:
          return xmb->textures.list[XMB_TEXTURE_MUSIC];
+      case MENU_ENUM_LABEL_GOTO_EXPLORE:
+         return xmb->textures.list[XMB_TEXTURE_MAIN_MENU];
 
       case MENU_ENUM_LABEL_LOAD_DISC:
       case MENU_ENUM_LABEL_DUMP_DISC:
@@ -2594,6 +2635,8 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
          return xmb->textures.list[XMB_TEXTURE_AUDIO];
       case MENU_ENUM_LABEL_AUDIO_MIXER_SETTINGS:
          return xmb->textures.list[XMB_TEXTURE_MIXER];
+      case MENU_ENUM_LABEL_SCREEN_RESOLUTION:
+         return xmb->textures.list[XMB_TEXTURE_SUBSETTING];
       case MENU_ENUM_LABEL_INPUT_SETTINGS:
       case MENU_ENUM_LABEL_UPDATE_AUTOCONFIG_PROFILES:
       case MENU_ENUM_LABEL_INPUT_USER_1_BINDS:
@@ -2690,6 +2733,8 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
       case MENU_ENUM_LABEL_NETWORK_HOSTING_SETTINGS:
          return xmb->textures.list[XMB_TEXTURE_NETWORK];
 #endif
+      case MENU_ENUM_LABEL_BLUETOOTH_SETTINGS:
+         return xmb->textures.list[XMB_TEXTURE_BLUETOOTH];
       case MENU_ENUM_LABEL_SHUTDOWN:
          return xmb->textures.list[XMB_TEXTURE_SHUTDOWN];
       case MENU_ENUM_LABEL_CHEAT_APPLY_CHANGES:
@@ -2709,6 +2754,14 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
          return xmb->textures.list[XMB_TEXTURE_RESUME];
       case MENU_ENUM_LABEL_START_VIDEO_PROCESSOR:
          return xmb->textures.list[XMB_TEXTURE_MOVIE];
+#ifdef HAVE_LIBRETRODB
+      case MENU_ENUM_LABEL_EXPLORE_ITEM:
+      {
+         uintptr_t icon = menu_explore_get_entry_icon(type);
+         if (icon) return icon;
+         break;
+      }
+#endif
       default:
          break;
    }
@@ -2805,6 +2858,8 @@ static uintptr_t xmb_icon_get_id(xmb_handle_t *xmb,
          return xmb->textures.list[XMB_TEXTURE_SETTING];
       case MENU_INFO_MESSAGE:
          return xmb->textures.list[XMB_TEXTURE_CORE_INFO];
+      case MENU_BLUETOOTH:
+         return xmb->textures.list[XMB_TEXTURE_BLUETOOTH];
       case MENU_WIFI:
          return xmb->textures.list[XMB_TEXTURE_WIFI];
 #ifdef HAVE_NETWORKING
@@ -3089,7 +3144,7 @@ static int xmb_draw_item(
 
          if (string_is_equal(entry.value, "..."))
             found = true;
-         else if (string_starts_with(entry.value, "(") &&
+         else if (string_starts_with_size(entry.value, "(", STRLEN_CONST("(")) &&
              string_ends_with  (entry.value, ")")
             )
          {
@@ -3526,7 +3581,6 @@ static void xmb_render(void *data,
 {
    size_t i;
    float scale_factor;
-   menu_input_pointer_t pointer;
    xmb_handle_t *xmb        = (xmb_handle_t*)data;
    settings_t *settings     = config_get_ptr();
    unsigned      end        = (unsigned)menu_entries_get_size();
@@ -3547,22 +3601,24 @@ static void xmb_render(void *data,
             false);
    }
 
-   menu_input_get_pointer_state(&pointer);
+   /* This must be set every frame when using a pointer,
+    * otherwise touchscreen input breaks when changing
+    * orientation */
+   gfx_display_set_width(width);
+   gfx_display_set_height(height);
 
-   if (pointer.type != MENU_POINTER_DISABLED)
+   /* Read pointer state */
+   menu_input_get_pointer_state(&xmb->pointer);
+
+
+   if (xmb->pointer.type != MENU_POINTER_DISABLED)
    {
       size_t selection     = menu_navigation_get_selection();
       int16_t margin_top   = (int16_t)xmb->margins_screen_top;
       int16_t margin_left  = (int16_t)xmb->margins_screen_left;
       int16_t margin_right = (int16_t)((float)width - xmb->margins_screen_left);
-      int16_t pointer_x    = pointer.x;
-      int16_t pointer_y    = pointer.y;
-
-      /* This must be set every frame when using a pointer,
-       * otherwise touchscreen input breaks when changing
-       * orientation */
-      gfx_display_set_width(width);
-      gfx_display_set_height(height);
+      int16_t pointer_x    = xmb->pointer.x;
+      int16_t pointer_y    = xmb->pointer.y;
 
       /* When determining current pointer selection, we
        * only track pointer movements between the left
@@ -3607,7 +3663,7 @@ static void xmb_render(void *data,
          menu_entry_t entry;
          bool get_entry = false;
 
-         switch (pointer.press_direction)
+         switch (xmb->pointer.press_direction)
          {
             case MENU_INPUT_PRESS_DIRECTION_UP:
                if (pointer_x > margin_right)
@@ -3651,7 +3707,7 @@ static void xmb_render(void *data,
             menu_entry_get(&entry, 0, selection, NULL, true);
          }
 
-         switch (pointer.press_direction)
+         switch (xmb->pointer.press_direction)
          {
             case MENU_INPUT_PRESS_DIRECTION_UP:
                /* Note: Direction is inverted, since 'up' should
@@ -4530,7 +4586,7 @@ static void xmb_frame(void *data, video_frame_info_t *video_info)
       for(i = 0; i < 25 && *end; i++)
       {
          end++;
-         while((*end & 0xC0) == 0x80)
+         while ((*end & 0xC0) == 0x80)
             end++;
       }
 
@@ -5023,9 +5079,8 @@ static void xmb_frame(void *data, video_frame_info_t *video_info)
          video_height);
 
    font_driver_flush(video_width, video_height, xmb->font);
-   font_driver_bind_block(xmb->font, NULL);
-
    font_driver_flush(video_width, video_height, xmb->font2);
+   font_driver_bind_block(xmb->font, NULL);
    font_driver_bind_block(xmb->font2, NULL);
 
    /* Draw fullscreen thumbnails, if required */
@@ -5066,11 +5121,8 @@ static void xmb_frame(void *data, video_frame_info_t *video_info)
    /* Cursor image */
    if (xmb->mouse_show)
    {
-      menu_input_pointer_t pointer;
       bool cursor_visible   = video_fullscreen 
          && menu_mouse_enable;
-
-      menu_input_get_pointer_state(&pointer);
 
       gfx_display_set_alpha(coord_white, MIN(xmb->alpha, 1.00f));
       gfx_display_draw_cursor(
@@ -5081,8 +5133,8 @@ static void xmb_frame(void *data, video_frame_info_t *video_info)
             &coord_white[0],
             xmb->cursor_size,
             xmb->textures.list[XMB_TEXTURE_POINTER],
-            pointer.x,
-            pointer.y,
+            xmb->pointer.x,
+            xmb->pointer.y,
             video_width,
             video_height);
    }
@@ -5388,10 +5440,15 @@ static void *xmb_init(void **userdata, bool video_is_threaded)
 
    *userdata = xmb;
 
-   xmb->selection_buf_old     = (file_list_t*)calloc(1, sizeof(file_list_t));
+   xmb->selection_buf_old             = (file_list_t*)
+      malloc(sizeof(file_list_t));
 
    if (!xmb->selection_buf_old)
       goto error;
+
+   xmb->selection_buf_old->list       = NULL;
+   xmb->selection_buf_old->capacity   = 0;
+   xmb->selection_buf_old->size       = 0;
 
    xmb->categories_active_idx         = 0;
    xmb->categories_active_idx_old     = 0;
@@ -5430,6 +5487,11 @@ static void *xmb_init(void **userdata, bool video_is_threaded)
          && !settings->bools.kiosk_mode_enable)
       xmb->tabs[++xmb->system_tab_end] = XMB_SYSTEM_TAB_ADD;
 
+#if defined(HAVE_LIBRETRODB)
+   if (settings->bools.menu_content_show_explore)
+      xmb->tabs[++xmb->system_tab_end] = XMB_SYSTEM_TAB_EXPLORE;
+#endif
+
    menu_driver_ctl(RARCH_MENU_CTL_UNSET_PREVENT_POPULATE, NULL);
 
    /* TODO/FIXME - we don't use framebuffer at all
@@ -5441,7 +5503,11 @@ static void *xmb_init(void **userdata, bool video_is_threaded)
 
    gfx_display_allocate_white_texture();
 
-   xmb->horizontal_list         = (file_list_t*)calloc(1, sizeof(file_list_t));
+   xmb->horizontal_list           = (file_list_t*)malloc(sizeof(file_list_t));
+
+   xmb->horizontal_list->list     = NULL;
+   xmb->horizontal_list->capacity = 0;
+   xmb->horizontal_list->size     = 0;
 
    if (xmb->horizontal_list)
       xmb_init_horizontal_list(xmb);
@@ -5626,6 +5692,8 @@ static const char *xmb_texture_path(unsigned id)
          return "undo.png";
       case XMB_TEXTURE_CORE_INFO:
          return "core-infos.png";
+      case XMB_TEXTURE_BLUETOOTH:
+         return "bluetooth.png";
       case XMB_TEXTURE_WIFI:
          return "wifi.png";
       case XMB_TEXTURE_CORE_OPTIONS:
@@ -5905,6 +5973,12 @@ static void xmb_context_reset_textures(
    xmb->add_tab_node.icon       = xmb->textures.list[XMB_TEXTURE_ADD];
    xmb->add_tab_node.alpha      = xmb->categories_active_alpha;
    xmb->add_tab_node.zoom       = xmb->categories_active_zoom;
+
+#if defined(HAVE_LIBRETRODB)
+   xmb->explore_tab_node.icon   = xmb->textures.list[XMB_TEXTURE_MAIN_MENU];
+   xmb->explore_tab_node.alpha  = xmb->categories_active_alpha;
+   xmb->explore_tab_node.zoom   = xmb->categories_active_zoom;
+#endif
 
 #ifdef HAVE_NETWORKING
    xmb->netplay_tab_node.icon   = xmb->textures.list[XMB_TEXTURE_NETPLAY];
@@ -6332,6 +6406,14 @@ static void xmb_list_cache(void *data, enum menu_list_type type, unsigned action
                menu_stack->list[stack_size - 1].type =
                   MENU_ADD_TAB;
                break;
+#if defined(HAVE_LIBRETRODB)
+            case XMB_SYSTEM_TAB_EXPLORE:
+               menu_stack->list[stack_size - 1].label =
+                  strdup(msg_hash_to_str(MENU_ENUM_LABEL_EXPLORE_TAB));
+               menu_stack->list[stack_size - 1].type =
+                  MENU_EXPLORE_TAB;
+               break;
+#endif
             default:
                menu_stack->list[stack_size - 1].label =
                   strdup(msg_hash_to_str(MENU_ENUM_LABEL_HORIZONTAL_MENU));
@@ -6981,28 +7063,6 @@ static int xmb_menu_entry_action(
    return generic_menu_entry_action(userdata, entry, i, new_action);
 }
 
-#ifdef HAVE_GFX_WIDGETS
-static bool xmb_get_load_content_animation_data(void *userdata, uintptr_t *icon, char **playlist_name)
-{
-   xmb_handle_t *xmb = (xmb_handle_t*) userdata;
-
-   if (xmb->categories_selection_ptr > xmb->system_tab_end)
-   {
-      xmb_node_t *node = (xmb_node_t*) file_list_get_userdata_at_offset(xmb->horizontal_list, xmb->categories_selection_ptr - xmb->system_tab_end-1);
-
-      *icon            = node->icon;
-      *playlist_name   = xmb->title_name;
-   }
-   else
-   {
-      *icon            = xmb->textures.list[XMB_TEXTURE_QUICKMENU];
-      *playlist_name   = "RetroArch";
-   }
-
-   return true;
-}
-#endif
-
 menu_ctx_driver_t menu_ctx_xmb = {
    NULL,
    xmb_messagebox,
@@ -7048,10 +7108,5 @@ menu_ctx_driver_t menu_ctx_xmb = {
    xmb_update_savestate_thumbnail_image,
    NULL, /* pointer_down */
    xmb_pointer_up,
-#ifdef HAVE_GFX_WIDGETS
-   xmb_get_load_content_animation_data,
-#else
-   NULL,
-#endif
    xmb_menu_entry_action
 };

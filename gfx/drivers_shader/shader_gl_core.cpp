@@ -39,22 +39,6 @@
 
 using namespace std;
 
-template <typename P>
-static bool gl_core_shader_set_unique_map(unordered_map<string, P> &m,
-      const string &name, const P &p)
-{
-   auto itr = m.find(name);
-   if (itr != end(m))
-   {
-      RARCH_ERR("[slang]: Alias \"%s\" already exists.\n",
-            name.c_str());
-      return false;
-   }
-
-   m[name] = p;
-   return true;
-}
-
 GLuint gl_core_cross_compile_program(
       const uint32_t *vertex, size_t vertex_size,
       const uint32_t *fragment, size_t fragment_size,
@@ -279,27 +263,6 @@ static const uint32_t opaque_vert[] =
 static const uint32_t opaque_frag[] =
 #include "../drivers/vulkan_shaders/opaque.frag.inc"
 ;
-
-static unsigned num_miplevels(unsigned width, unsigned height)
-{
-   unsigned size = MAX(width, height);
-   unsigned levels = 0;
-   while (size)
-   {
-      levels++;
-      size >>= 1;
-   }
-   return levels;
-}
-
-
-static void build_vec4(float *data, unsigned width, unsigned height)
-{
-   data[0] = float(width);
-   data[1] = float(height);
-   data[2] = 1.0f / float(width);
-   data[3] = 1.0f / float(height);
-}
 
 struct Texture
 {
@@ -609,7 +572,7 @@ void Framebuffer::init()
    if (size.height == 0)
       size.height = 1;
 
-   levels = num_miplevels(size.width, size.height);
+   levels = glslang_num_miplevels(size.width, size.height);
    if (max_levels < levels)
       levels = max_levels;
    if (levels == 0)
@@ -650,7 +613,7 @@ void Framebuffer::init()
                glGenTextures(1, &image);
                glBindTexture(GL_TEXTURE_2D, image);
 
-               levels = num_miplevels(size.width, size.height);
+               levels = glslang_num_miplevels(size.width, size.height);
                if (max_levels < levels)
                   levels = max_levels;
                glTexStorage2D(GL_TEXTURE_2D, levels,
@@ -875,7 +838,7 @@ bool Pass::build()
 
    for (i = 0; i < parameters.size(); i++)
    {
-      if (!gl_core_shader_set_unique_map(semantic_map, parameters[i].id,
+      if (!slang_set_unique_map(semantic_map, parameters[i].id,
                slang_semantic_map{ SLANG_SEMANTIC_FLOAT_PARAMETER, j }))
          return false;
       j++;
@@ -1119,14 +1082,14 @@ void Pass::build_semantic_vec4(uint8_t *data, slang_semantic semantic,
       if (refl->location.ubo_vertex >= 0 || refl->location.ubo_fragment >= 0)
       {
          float v4[4];
-         build_vec4(v4, width, height);
+         glslang_build_vec4(v4, width, height);
          if (refl->location.ubo_vertex >= 0)
             glUniform4fv(refl->location.ubo_vertex, 1, v4);
          if (refl->location.ubo_fragment >= 0)
             glUniform4fv(refl->location.ubo_fragment, 1, v4);
       }
       else
-         build_vec4(
+         glslang_build_vec4(
                reinterpret_cast<float *>(data + refl->ubo_offset),
                width,
                height);
@@ -1138,14 +1101,14 @@ void Pass::build_semantic_vec4(uint8_t *data, slang_semantic semantic,
             refl->location.push_fragment >= 0)
       {
          float v4[4];
-         build_vec4(v4, width, height);
+         glslang_build_vec4(v4, width, height);
          if (refl->location.push_vertex >= 0)
             glUniform4fv(refl->location.push_vertex, 1, v4);
          if (refl->location.push_fragment >= 0)
             glUniform4fv(refl->location.push_fragment, 1, v4);
       }
       else
-         build_vec4(
+         glslang_build_vec4(
                reinterpret_cast<float *>
                (push_constant_buffer.data() + refl->push_constant_offset),
                width,
@@ -1270,14 +1233,14 @@ void Pass::build_semantic_texture_array_vec4(uint8_t *data, slang_texture_semant
       if (refl[index].location.ubo_vertex >= 0 || refl[index].location.ubo_fragment >= 0)
       {
          float v4[4];
-         build_vec4(v4, width, height);
+         glslang_build_vec4(v4, width, height);
          if (refl[index].location.ubo_vertex >= 0)
             glUniform4fv(refl[index].location.ubo_vertex, 1, v4);
          if (refl[index].location.ubo_fragment >= 0)
             glUniform4fv(refl[index].location.ubo_fragment, 1, v4);
       }
       else
-         build_vec4(
+         glslang_build_vec4(
                reinterpret_cast<float *>(data + refl[index].ubo_offset),
                width,
                height);
@@ -1288,14 +1251,14 @@ void Pass::build_semantic_texture_array_vec4(uint8_t *data, slang_texture_semant
       if (refl[index].location.push_vertex >= 0 || refl[index].location.push_fragment >= 0)
       {
          float v4[4];
-         build_vec4(v4, width, height);
+         glslang_build_vec4(v4, width, height);
          if (refl[index].location.push_vertex >= 0)
             glUniform4fv(refl[index].location.push_vertex, 1, v4);
          if (refl[index].location.push_fragment >= 0)
             glUniform4fv(refl[index].location.push_fragment, 1, v4);
       }
       else
-         build_vec4(
+         glslang_build_vec4(
                reinterpret_cast<float *>(push_constant_buffer.data() + refl[index].push_constant_offset),
                width,
                height);
@@ -1919,21 +1882,21 @@ bool gl_core_filter_chain::init_alias()
 
       j = &passes[i] - passes.data();
 
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_map, name,
+      if (!slang_set_unique_map(common.texture_semantic_map, name,
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_PASS_OUTPUT, j }))
          return false;
 
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_uniform_map,
+      if (!slang_set_unique_map(common.texture_semantic_uniform_map,
                name + "Size",
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_PASS_OUTPUT, j }))
          return false;
 
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_map,
+      if (!slang_set_unique_map(common.texture_semantic_map,
                name + "Feedback",
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_PASS_FEEDBACK, j }))
          return false;
 
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_uniform_map,
+      if (!slang_set_unique_map(common.texture_semantic_uniform_map,
                name + "FeedbackSize",
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_PASS_FEEDBACK, j }))
          return false;
@@ -1942,12 +1905,12 @@ bool gl_core_filter_chain::init_alias()
    for (i = 0; i < common.luts.size(); i++)
    {
       j = &common.luts[i] - common.luts.data();
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_map,
+      if (!slang_set_unique_map(common.texture_semantic_map,
                common.luts[i]->get_id(),
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_USER, j }))
          return false;
 
-      if (!gl_core_shader_set_unique_map(common.texture_semantic_uniform_map,
+      if (!slang_set_unique_map(common.texture_semantic_uniform_map,
                common.luts[i]->get_id() + "Size",
                slang_texture_semantic_map{ SLANG_TEXTURE_SEMANTIC_USER, j }))
          return false;
@@ -2111,7 +2074,7 @@ static unique_ptr<gl_core_shader::StaticTexture> gl_core_filter_chain_load_lut(
    if (!image_texture_load(&image, shader->path))
       return {};
 
-   unsigned levels = shader->mipmap ? gl_core_shader::num_miplevels(image.width, image.height) : 1;
+   unsigned levels = shader->mipmap ? glslang_num_miplevels(image.width, image.height) : 1;
 
    glGenTextures(1, &tex);
    glBindTexture(GL_TEXTURE_2D, tex);

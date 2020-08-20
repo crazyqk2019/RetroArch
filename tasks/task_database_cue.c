@@ -191,14 +191,14 @@ static int detect_ps1_game_sub(intfstream_t *fp,
    buffer[256] = '\0';
 
    tmp = buffer;
-   while(*tmp && strncasecmp((const char*)tmp, "boot", 4))
+   while (*tmp && strncasecmp((const char*)tmp, "boot", 4))
       tmp++;
 
    if (!*tmp)
       return 0;
 
    boot_file = tmp;
-   while(*tmp && *tmp != '\n')
+   while (*tmp && *tmp != '\n')
    {
       if ((*tmp == '\\') || (*tmp == ':'))
          boot_file = tmp + 1;
@@ -216,7 +216,7 @@ static int detect_ps1_game_sub(intfstream_t *fp,
    if (!isalnum(*tmp))
       tmp++;
 
-   while(isalnum(*tmp))
+   while (isalnum(*tmp))
    {
       *game_id++ = *tmp++;
       if (*tmp == '.')
@@ -250,11 +250,16 @@ int detect_psp_game(intfstream_t *fd, char *game_id)
          bool found = false;
          game_id[5] = '\0';
 
-         if (string_starts_with(game_id, "UL"))
+         if (string_starts_with_size(game_id, "UL", STRLEN_CONST("UL")))
          {
             if (
                    (string_is_equal(game_id, "ULES-"))
+                || (string_is_equal(game_id, "ULUS-"))
                 || (string_is_equal(game_id, "ULJS-"))
+                || (string_is_equal(game_id, "ULET-"))
+                || (string_is_equal(game_id, "ULUX-"))
+                || (string_is_equal(game_id, "ULJP-"))
+                || (string_is_equal(game_id, "ULED-"))
                 || (string_is_equal(game_id, "ULEM-"))
                 || (string_is_equal(game_id, "ULUM-"))
                 || (string_is_equal(game_id, "ULJM-"))
@@ -263,12 +268,20 @@ int detect_psp_game(intfstream_t *fd, char *game_id)
                )
                found = true;
          }
-         if (!found && string_starts_with(game_id, "UC"))
+         if (!found && string_starts_with_size(game_id, "UC", STRLEN_CONST("UC")))
          {
             if (
                    (string_is_equal(game_id, "UCES-"))
+                || (string_is_equal(game_id, "UCED-"))
+                || (string_is_equal(game_id, "UCET-"))
+                || (string_is_equal(game_id, "UCJB-"))
+                || (string_is_equal(game_id, "UCJM-"))
+                || (string_is_equal(game_id, "UCJP-"))
+                || (string_is_equal(game_id, "UCJX-"))
+                || (string_is_equal(game_id, "UCJP-"))
+                || (string_is_equal(game_id, "UCKM-"))
                 || (string_is_equal(game_id, "UCUS-"))
-                || (string_is_equal(game_id, "UCUS-"))
+                || (string_is_equal(game_id, "UCAM-"))
                 || (string_is_equal(game_id, "UCJS-"))
                 || (string_is_equal(game_id, "UCAS-"))
                 || (string_is_equal(game_id, "UCKS-"))
@@ -276,7 +289,7 @@ int detect_psp_game(intfstream_t *fd, char *game_id)
                found = true;
          }
 
-         if (!found && string_starts_with(game_id, "NP"))
+         if (!found && string_starts_with_size(game_id, "NP", STRLEN_CONST("NP")))
          {
             if (
                      (string_is_equal(game_id, "NPEH-"))
@@ -287,6 +300,12 @@ int detect_psp_game(intfstream_t *fd, char *game_id)
                   || (string_is_equal(game_id, "NPUG-"))
                   || (string_is_equal(game_id, "NPJG-"))
                   || (string_is_equal(game_id, "NPHG-"))
+                  || (string_is_equal(game_id, "NPEX-"))
+                  || (string_is_equal(game_id, "NPHH-"))
+                  || (string_is_equal(game_id, "NPHZ-"))
+                  || (string_is_equal(game_id, "NPJJ-"))
+                  || (string_is_equal(game_id, "NPUF-"))
+                  || (string_is_equal(game_id, "NPUX-"))
 
                   || (string_is_equal(game_id, "NPEZ-"))
                   || (string_is_equal(game_id, "NPUZ-"))

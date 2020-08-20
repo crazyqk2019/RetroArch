@@ -68,6 +68,23 @@ enum gfx_widgets_icon
    MENU_WIDGETS_ICON_LAST
 };
 
+enum notification_show_screenshot_duration
+{
+   NOTIFICATION_SHOW_SCREENSHOT_DURATION_NORMAL = 0,
+   NOTIFICATION_SHOW_SCREENSHOT_DURATION_FAST,
+   NOTIFICATION_SHOW_SCREENSHOT_DURATION_VERY_FAST,
+   NOTIFICATION_SHOW_SCREENSHOT_DURATION_INSTANT,
+   NOTIFICATION_SHOW_SCREENSHOT_DURATION_LAST
+};
+
+enum notification_show_screenshot_flash
+{
+   NOTIFICATION_SHOW_SCREENSHOT_FLASH_NORMAL = 0,
+   NOTIFICATION_SHOW_SCREENSHOT_FLASH_FAST,
+   NOTIFICATION_SHOW_SCREENSHOT_FLASH_OFF,
+   NOTIFICATION_SHOW_SCREENSHOT_FLASH_LAST
+};
+
 /* This structure holds all objects + metadata
  * corresponding to a particular font */
 typedef struct
@@ -96,7 +113,7 @@ typedef struct cheevo_popup
    uintptr_t badge;
 } cheevo_popup;
 
-typedef struct menu_widget_msg
+typedef struct disp_widget_msg
 {
    char *msg;
    char *msg_new;
@@ -137,7 +154,7 @@ typedef struct menu_widget_msg
 
    float hourglass_rotation;
    gfx_timer_t hourglass_timer;
-} menu_widget_msg_t;
+} disp_widget_msg_t;
 
 typedef struct dispgfx_widget
 {
@@ -146,25 +163,11 @@ typedef struct dispgfx_widget
    bool widgets_moving;
    bool widgets_inited;
    bool msg_queue_has_icons;
-#ifdef HAVE_MENU
-   bool load_content_animation_running;
-#endif
 
 #ifdef HAVE_TRANSLATE
    int ai_service_overlay_state;
 #endif
-#ifdef HAVE_MENU
-   float load_content_animation_icon_color[16];
-   float load_content_animation_icon_size;
-   float load_content_animation_icon_alpha;
-   float load_content_animation_fade_alpha;
-   float load_content_animation_final_fade_alpha;
-#endif
    float last_scale_factor;
-#ifdef HAVE_MENU
-   unsigned load_content_animation_icon_size_initial;
-   unsigned load_content_animation_icon_size_target;
-#endif
 #ifdef HAVE_TRANSLATE
    unsigned ai_service_overlay_width;
    unsigned ai_service_overlay_height;
@@ -201,9 +204,6 @@ typedef struct dispgfx_widget
 
    uint64_t gfx_widgets_frame_count;
 
-#ifdef HAVE_MENU
-   uintptr_t load_content_animation_icon;
-#endif
 #ifdef HAVE_TRANSLATE
    uintptr_t ai_service_overlay_texture;
 #endif
@@ -213,18 +213,11 @@ typedef struct dispgfx_widget
    uintptr_t gfx_widgets_icons_textures[
    MENU_WIDGETS_ICON_LAST];
 
-   char gfx_widgets_fps_text[255];
-#ifdef HAVE_MENU
-   char *load_content_animation_content_name;
-   char *load_content_animation_playlist_name;
-#endif
-#ifdef HAVE_MENU
-   gfx_timer_t load_content_animation_end_timer;
-#endif
+   char gfx_widgets_status_text[255];
    uintptr_t gfx_widgets_generic_tag;
    gfx_widget_fonts_t gfx_widget_fonts;
    fifo_buffer_t *msg_queue;
-   menu_widget_msg_t* current_msgs[MSG_QUEUE_ONSCREEN_MAX];
+   disp_widget_msg_t* current_msgs[MSG_QUEUE_ONSCREEN_MAX];
    size_t current_msgs_size;
 #ifdef HAVE_THREADS
    slock_t* current_msgs_lock;
@@ -313,7 +306,6 @@ void gfx_widgets_draw_icon(
       unsigned icon_height,
       uintptr_t texture,
       float x, float y,
-      unsigned width, unsigned height,
       float rotation, float scale_factor,
       float *color);
 
@@ -372,11 +364,6 @@ bool gfx_widgets_ai_service_overlay_load(
 void gfx_widgets_ai_service_overlay_unload(dispgfx_widget_t *p_dispwidget);
 #endif
 
-void gfx_widgets_start_load_content_animation(
-      const char *content_name, bool remove_extension);
-
-void gfx_widgets_cleanup_load_content_animation(void);
-
 #ifdef HAVE_CHEEVOS
 void gfx_widgets_push_achievement(const char *title, const char *badge);
 #endif
@@ -389,6 +376,14 @@ void gfx_widget_set_libretro_message(
       void *data,
       const char *message, unsigned duration);
 
+/* Warning: not thread safe! */
+void gfx_widget_set_progress_message(void *data,
+      const char *message, unsigned duration,
+      unsigned priority, int8_t progress);
+
+/* Warning: not thread safe! */
+bool gfx_widget_start_load_content_animation(void);
+
 /* All the functions below should be called in
  * the video driver - once they are all added, set
  * enable_menu_widgets to true for that driver */
@@ -396,14 +391,16 @@ void gfx_widgets_frame(void *data);
 
 void *dispwidget_get_ptr(void);
 
-bool gfx_widgets_set_fps_text(
+bool gfx_widgets_set_status_text(
       void *data,
-      const char *new_fps_text);
+      const char *new_status_text);
 
 extern const gfx_widget_t gfx_widget_screenshot;
 extern const gfx_widget_t gfx_widget_volume;
 extern const gfx_widget_t gfx_widget_generic_message;
 extern const gfx_widget_t gfx_widget_libretro_message;
+extern const gfx_widget_t gfx_widget_progress_message;
+extern const gfx_widget_t gfx_widget_load_content_animation;
 
 #ifdef HAVE_CHEEVOS
 extern const gfx_widget_t gfx_widget_achievement_popup;
