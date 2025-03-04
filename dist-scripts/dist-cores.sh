@@ -61,6 +61,7 @@ mkdir -p ../pkg/${platform}/build/rom
 # Emscripten
 elif [ $PLATFORM = "emscripten" ] ; then
 platform=emscripten
+# todo: change this to a
 EXT=bc
 
 if [ -z "$EMSCRIPTEN" ] ; then
@@ -126,6 +127,7 @@ EXE_PATH=${CELL_SDK}/host-win32/bin
 GENPS3ISO_PATH=${PS3TOOLS_PATH}/ODE/genps3iso_v2.5
 SCETOOL_PATH=${PS3TOOLS_PATH}/scetool/scetool.exe
 SCETOOL_FLAGS_ODE="--sce-type=SELF --compress-data=TRUE --self-type=APP --key-revision=04 --self-fw-version=0003004100000000 --self-app-version=0001000000000000 --self-auth-id=1010000001000003 --self-vendor-id=01000002 --self-cap-flags=00000000000000000000000000000000000000000000003b0000000100040000  --encrypt"
+
 elif [ $PLATFORM = "dos" ]; then
     platform=dos
     MAKEFILE_GRIFFIN=yes
@@ -198,8 +200,6 @@ for f in `ls -v *_${platform}.${EXT}`; do
 
    echo Buildbot: building ${name} for ${platform}
    name=`echo "$f" | sed "s/\(_libretro_${platform}\|\).${EXT}$//"`
-   async=0
-   pthread=0
    lto=0
    whole_archive=
    big_stack=
@@ -211,10 +211,31 @@ for f in `ls -v *_${platform}.${EXT}`; do
       echo "Applying big stack..."
       lto=0
       big_stack="BIG_STACK=1"
-   elif [ $name = "mupen64plus" ] ; then
-      async=1
-   elif [ $name = "dosbox" ] ; then
+   fi
+   if [ $PLATFORM = "emscripten" ]; then
       async=0
+      pthread=${pthread:-0}
+      gles3=0
+      stack_mem=4194304
+      heap_mem=134217728
+      if [ $name = "mupen64plus_next" ] ; then
+         gles3=1
+         async=1
+         stack_mem=134217728
+         heap_mem=268435456
+      elif [ $name = "parallel_n64" ] ; then
+         gles3=1
+         async=1
+      elif [ $name = "mednafen_psx" ] ; then
+         heap_mem=536870912
+      elif [ $name = "mednafen_psx_hw" ] ; then
+         gles3=1
+         heap_mem=536870912
+      elif [ $name = "dosbox" ] ; then
+         async=1
+      elif [ $name = "scummvm" ] ; then
+         async=1
+      fi
    fi
    echo "-- Building core: $name --"
    if [ $PLATFORM = "unix" ]; then
@@ -223,15 +244,21 @@ for f in `ls -v *_${platform}.${EXT}`; do
       cp -f "$f" ../libretro_${platform}.${EXT}
    fi
    echo NAME: $name
-   echo ASYNC: $async
    echo LTO: $lto
+   if [ $PLATFORM = "emscripten" ]; then
+      echo ASYNC: $async
+      echo PTHREAD: $pthread
+      echo GLES3: $gles3
+      echo STACK_MEMORY: $stack_mem
+      echo HEAP_MEMORY: $heap_mem
+   fi
 
    # Do cleanup if this is a big stack core
    if [ "$big_stack" = "BIG_STACK=1" ] ; then
       if [ $MAKEFILE_GRIFFIN = "yes" ]; then
          make -C ../ -f Makefile.griffin platform=${platform} clean || exit 1
       elif [ $PLATFORM = "emscripten" ]; then
-         make -C ../ -f Makefile.emscripten PTHREAD=$pthread ASYNC=$async LTO=$lto -j7 clean || exit 1
+         make -C ../ -f Makefile.emscripten PTHREAD=$pthread ASYNC=$async LTO=$lto HAVE_OPENGLES3=$gles3 -j7 clean || exit 1
       elif [ $PLATFORM = "unix" ]; then
          make -C ../ -f Makefile LINK=g++ LTO=$lto -j7 clean || exit 1
       else
@@ -243,8 +270,8 @@ for f in `ls -v *_${platform}.${EXT}`; do
    if [ $MAKEFILE_GRIFFIN = "yes" ]; then
       make -C ../ -f Makefile.griffin $OPTS platform=${platform} $whole_archive $big_stack -j3 || exit 1
    elif [ $PLATFORM = "emscripten" ]; then
-       echo "BUILD COMMAND: make -C ../ -f Makefile.emscripten PTHREAD=$pthread ASYNC=$async LTO=$lto -j7 TARGET=${name}_libretro.js"
-       make -C ../ -f Makefile.emscripten $OPTS PTHREAD=$pthread ASYNC=$async LTO=$lto -j7 TARGET=${name}_libretro.js || exit 1
+       echo "BUILD COMMAND: make -C ../ -f Makefile.emscripten PTHREAD=$pthread ASYNC=$async LTO=$lto HAVE_OPENGLES3=$gles3 STACK_SIZE=$stack_mem INITIAL_HEAP=$heap_mem -j7 LIBRETRO=${name} TARGET=${name}_libretro.js"
+       make -C ../ -f Makefile.emscripten $OPTS PTHREAD=$pthread ASYNC=$async LTO=$lto HAVE_OPENGLES3=$gles3 STACK_SIZE=$stack_mem INITIAL_HEAP=$heap_mem -j7 LIBRETRO=${name} TARGET=${name}_libretro.js || exit 1
    elif [ $PLATFORM = "unix" ]; then
       make -C ../ -f Makefile LINK=g++ $whole_archive $big_stack -j3 || exit 1
    elif [ $PLATFORM = "ctr" ]; then
@@ -256,15 +283,6 @@ for f in `ls -v *_${platform}.${EXT}`; do
       make -C ../ -f Makefile.${platform} $OPTS || exit 1
    else
       make -C ../ -f Makefile.${platform} $OPTS $whole_archive $big_stack -j3 || exit 1
-   fi
-
-   # Do manual executable step
-   if [ $PLATFORM = "dex-ps3" ] ; then
-      $MAKE_FSELF_NPDRM -c ../retroarch_${platform}.elf ../CORE.SELF
-   elif [ $PLATFORM = "cex-ps3" ] ; then
-      $SCETOOL_PATH $SCETOOL_FLAGS_CORE ../retroarch_${platform}.elf ../CORE.SELF
-   elif [ $PLATFORM = "ode-ps3" ] ; then
-      $SCETOOL_PATH $SCETOOL_FLAGS_ODE ../retroarch_${platform}.elf ../CORE.SELF
    fi
 
    # Move executable files
@@ -321,8 +339,20 @@ for f in `ls -v *_${platform}.${EXT}`; do
       mv -f ../${name}_libretro.js ../pkg/emscripten/${name}_libretro.js
       mv -f ../${name}_libretro.wasm ../pkg/emscripten/${name}_libretro.wasm
       if [ $pthread != 0 ] ; then
-         mv -f ../pthread-main.js ../pkg/emscripten/pthread-main.js
+         mv -f ../${name}_libretro.worker.js ../pkg/emscripten/${name}_libretro.worker.js
       fi
+      if [ -f ../${name}_libretro.wasm.map ] ; then
+         mv -f ../${name}_libretro.wasm.map ../pkg/emscripten/${name}_libretro.wasm.map
+      fi
+   fi
+
+  # Do manual executable step
+   if [ $PLATFORM = "dex-ps3" ] ; then
+      $MAKE_FSELF_NPDRM -c ../retroarch_${platform}.elf ../CORE.SELF
+   elif [ $PLATFORM = "cex-ps3" ] ; then
+      $SCETOOL_PATH $SCETOOL_FLAGS_CORE ../retroarch_${platform}.elf ../CORE.SELF
+   elif [ $PLATFORM = "ode-ps3" ] ; then
+      $SCETOOL_PATH $SCETOOL_FLAGS_ODE ../retroarch_${platform}.elf ../CORE.SELF
    fi
 
    # Remove executable files

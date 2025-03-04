@@ -17,9 +17,9 @@
 
 #include <libretro.h>
 #include <lists/string_list.h>
-#include <verbosity.h>
 #include <string/stdstring.h>
 
+#include "../../verbosity.h"
 #include "../midi_driver.h"
 
 #define WINMM_MIDI_BUF_CNT 3
@@ -321,7 +321,7 @@ static bool winmm_midi_write_short_event(winmm_midi_buffer_t *buf,
 
    buf->data[i++] = delta_time;
    buf->data[i++] = 0;
-   buf->data[i] = MEVT_F_SHORT << 24;
+   buf->data[i] = MEVT_F_SHORT;
    if (data_size == 0)
       buf->data[i] |= MEVT_NOP;
    else
@@ -343,13 +343,16 @@ static bool winmm_midi_write_long_event(winmm_midi_buffer_t *buf,
 {
    DWORD i = buf->header.dwBytesRecorded / sizeof(DWORD);
 
+   /* data size has to be DWORD aligned */
+   data_size = (data_size + (sizeof(DWORD) - 1)) & ~(sizeof(DWORD) - 1);
+
    if (buf->header.dwBytesRecorded + sizeof(DWORD) * 3 + data_size >
          sizeof(DWORD) * WINMM_MIDI_BUF_LEN)
       return false;
 
    buf->data[i++] = delta_time;
    buf->data[i++] = 0;
-   buf->data[i++] = MEVT_F_LONG << 24 | MEVT_LONGMSG << 24 | data_size;
+   buf->data[i++] = MEVT_F_LONG | MEVT_LONGMSG << 24 | data_size;
 
    memcpy(&buf->data[i], data, data_size);
    buf->header.dwBytesRecorded += sizeof(DWORD) * 3 + data_size;
@@ -481,7 +484,6 @@ static void winmm_midi_free(void *p)
 
    if (d->out_dev)
    {
-      midiStreamStop(d->out_dev);
       winmm_midi_free_output_buffers(d->out_dev, d->out_bufs);
       midiStreamClose(d->out_dev);
    }
@@ -606,6 +608,10 @@ static bool winmm_midi_flush(void *p)
 #ifdef DEBUG
          RARCH_ERR("[MIDI]: midiStreamOut failed with error %d.\n", mmr);
 #endif
+         /* Core sent MIDI message not understood by the MIDI driver
+          * Make this buffer available to be used again */
+         buf->header.dwFlags |= MHDR_DONE;
+         buf->header.dwFlags &= ~MHDR_INQUEUE;
          return false;
       }
 

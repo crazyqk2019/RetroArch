@@ -32,6 +32,7 @@ IMPORT(OSIsThreadTerminated);
 IMPORT(OSSetThreadPriority);
 IMPORT(OSCreateThread);
 IMPORT(OSSetThreadCleanupCallback);
+IMPORT(OSSetThreadDeallocator);
 IMPORT(OSResumeThread);
 IMPORT(OSIsThreadSuspended);
 IMPORT(OSSuspendThread);
@@ -39,6 +40,7 @@ IMPORT(OSGetCurrentThread);
 IMPORT(OSExitThread);
 IMPORT(OSJoinThread);
 IMPORT(OSYieldThread);
+IMPORT(OSSetThreadName);
 IMPORT(OSGetCoreId);
 IMPORT(OSIsMainCore);
 IMPORT(OSGetSystemTime);
@@ -54,6 +56,12 @@ IMPORT(OSSignalSemaphore);
 IMPORT(OSWaitSemaphore);
 IMPORT(OSTryWaitSemaphore);
 
+IMPORT(OSAllocVirtAddr);
+IMPORT(OSFreeVirtAddr);
+IMPORT(OSGetMapVirtAddrRange);
+IMPORT(OSMapMemory);
+IMPORT(OSUnmapMemory);
+
 IMPORT(exit);
 IMPORT(_Exit);
 IMPORT(__os_snprintf);
@@ -63,6 +71,7 @@ IMPORT(DCInvalidateRange);
 IMPORT(DCFlushRange);
 IMPORT(DCStoreRange);
 IMPORT(DCStoreRangeNoSync);
+IMPORT(ICInvalidateRange);
 
 IMPORT(__gh_errno_ptr);
 
@@ -150,6 +159,12 @@ IMPORT(shutdown);
 IMPORT(socket);
 IMPORT(select);
 IMPORT(socketlasterr);
+
+IMPORT_END();
+
+IMPORT_BEGIN(nn_nets2);
+
+IMPORT(somemopt);
 
 IMPORT_END();
 

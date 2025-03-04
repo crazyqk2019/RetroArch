@@ -112,7 +112,7 @@ public final class UserPreferences
 
 	/**
 	 * Updates the libretro configuration file
-	 * with new values if settings have changed.
+	 * with new values if version has changed.
 	 * 
 	 * @param ctx the current {@link Context}.
 	 */
@@ -121,28 +121,32 @@ public final class UserPreferences
 		String path = getDefaultConfigPath(ctx);
 		ConfigFile config = new ConfigFile(path);
 
-		Log.i(TAG, "Writing config to: " + path);
-
 		final String dataDir = ctx.getApplicationInfo().dataDir;
 		final String coreDir = dataDir + "/cores/";
+		final String dstPath	= dataDir;
+		final String dstPathSubdir = "assets";
 
 		final SharedPreferences prefs = getPreferences(ctx);
 
 		config.setString("libretro_directory", coreDir);
-		config.setInt("audio_out_rate", getOptimalSamplingRate(ctx));
+
+		int samplingRate = getOptimalSamplingRate(ctx);
+		if (samplingRate != -1) {
+			config.setInt("audio_out_rate", samplingRate);
+		}
 
 		try
 		{
-			int version							= ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
-			final String dst_path			= dataDir;
-			final String dst_path_subdir	= "assets";
+			int version      = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
+			int last_version = config.keyExists("bundle_assets_extract_last_version") ?
+					config.getInt("bundle_assets_extract_last_version") : 0;
 
-			Log.i(TAG, "dst dir is: " + dst_path);
-			Log.i(TAG, "dst subdir is: " + dst_path_subdir);
+			if (version == last_version)
+				return;
 
 			config.setString("bundle_assets_src_path", ctx.getApplicationInfo().sourceDir);
-			config.setString("bundle_assets_dst_path", dst_path);
-			config.setString("bundle_assets_dst_path_subdir", dst_path_subdir);
+			config.setString("bundle_assets_dst_path", dstPath);
+			config.setString("bundle_assets_dst_path_subdir", dstPathSubdir);
 			config.setInt("bundle_assets_extract_version_current", version);
 		}
 		catch (NameNotFoundException ignored)
@@ -152,11 +156,17 @@ public final class UserPreferences
 		// Refactor this entire mess and make this usable for per-core config
 		if (Build.VERSION.SDK_INT >= 17 && prefs.getBoolean("audio_latency_auto", true))
 		{
-			config.setInt("audio_block_frames", getLowLatencyBufferSize(ctx));
+			int bufferSize = getLowLatencyBufferSize(ctx);
+			if (bufferSize != -1) {
+				config.setInt("audio_block_frames", bufferSize);
+			}
 		}
 
 		try
 		{
+			Log.i(TAG, "Writing config to: " + path);
+			Log.i(TAG, "dst dir is: " + dstPath);
+			Log.i(TAG, "dst subdir is: " + dstPathSubdir);
 			config.write(path);
 		}
 		catch (IOException e)
@@ -250,9 +260,13 @@ public final class UserPreferences
 	private static int getLowLatencyOptimalSamplingRate(Context ctx)
 	{
 		AudioManager manager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+		String value = manager.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
 
-		return Integer.parseInt(manager
-				.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE));
+		if(value == null || value.isEmpty()) {
+			return -1;
+		}
+
+		return Integer.parseInt(value);
 	}
 
 	/**
@@ -266,8 +280,13 @@ public final class UserPreferences
 	private static int getLowLatencyBufferSize(Context ctx)
 	{
 		AudioManager manager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
-		int buffersize = Integer.parseInt(manager
-				.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER));
+		String value = manager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+
+		if(value == null || value.isEmpty()) {
+			return -1;
+		}
+
+		int buffersize = Integer.parseInt(value);
 		Log.i(TAG, "Queried ideal buffer size (frames): " + buffersize);
 		return buffersize;
 	}

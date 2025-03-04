@@ -12,6 +12,7 @@ if [ "$HAVE_C99" = 'no' ]; then
 fi
 
 check_switch cxx CXX11 -std=c++11 ''
+check_switch cxx CXX17 -std=c++17 ''
 check_switch '' NOUNUSED -Wno-unused-result ''
 check_switch '' NOUNUSED_VARIABLE -Wno-unused-variable ''
 
@@ -136,7 +137,8 @@ if [ "$HAVE_EGL" = 'yes' ]; then
    EGL_LIBS="$EGL_LIBS $EXTRA_GL_LIBS"
 fi
 
-check_lib '' SSA -lass ass_library_init
+check_header '' XDELTA lzma.h
+check_lib '' SSA '-lfribidi -lass' ass_library_init
 check_lib '' SSE '-msse -msse2'
 check_pkgconf EXYNOS libdrm_exynos
 
@@ -153,6 +155,8 @@ fi
 }
 
 add_define MAKEFILE ASSETS_DIR "${ASSETS_DIR:-$SHARE_DIR}/retroarch"
+add_define MAKEFILE FILTERS_DIR "${FILTERS_DIR:-$SHARE_DIR}/retroarch"
+add_define MAKEFILE CORE_INFO_DIR "${CORE_INFO_DIR:-$SHARE_DIR}/retroarch"
 add_define MAKEFILE BIN_DIR "${BIN_DIR:-${PREFIX}/bin}"
 add_define MAKEFILE DOC_DIR "${DOC_DIR:-${SHARE_DIR}/doc/retroarch}"
 add_define MAKEFILE MAN_DIR "${MAN_DIR:-${SHARE_DIR}/man}"
@@ -163,6 +167,8 @@ check_platform DOS LANGEXTRA 'Extra languages are' false
 check_lib '' THREADS "$PTHREADLIB" pthread_create
 check_enabled THREADS THREAD_STORAGE 'Thread Local Storage' 'Threads are' false
 check_lib '' THREAD_STORAGE "$PTHREADLIB" pthread_key_create
+
+check_pkgconf LIBCHECK check 0.15
 
 if [ "$OS" = 'Linux' ]; then
    check_header '' CDROM sys/ioctl.h scsi/sg.h
@@ -200,15 +206,12 @@ fi
 
 check_enabled NETWORKING CHEEVOS cheevos 'Networking is' false
 check_enabled NETWORKING DISCORD discord 'Networking is' false
-check_enabled NETWORKING MINIUPNPC miniupnpc 'Networking is' false
 check_enabled NETWORKING SSL ssl 'Networking is' false
 check_enabled NETWORKING TRANSLATE OCR 'Networking is' false
 check_enabled NETWORKING HAVE_NETPLAYDISCOVERY 'Netplay discovery' 'Networking is' false
 
 check_enabled NETWORKING NETWORKGAMEPAD 'the networked game pad' 'Networking is' true
-check_enabled MINIUPNPC BUILTINMINIUPNPC 'builtin miniupnpc' 'miniupnpc is' true
 
-check_lib '' MINIUPNPC '-lminiupnpc'
 check_lib '' STDIN_CMD "$CLIB" fcntl
 
 if [ "$HAVE_NETWORK_CMD" = "yes" ] || [ "$HAVE_STDIN_CMD" = "yes" ]; then
@@ -243,13 +246,21 @@ check_platform Darwin METAL 'Metal is' true
 if [ "$OS" = 'Darwin' ]; then
    check_lib '' COREAUDIO "-framework AudioUnit" AudioUnitInitialize
    check_lib '' CORETEXT "-framework CoreText" CTFontCreateWithName
-   check_lib '' COCOA "-framework AppKit" NSApplicationMain
+   add_opt CRTSWITCHRES no
+
+   if [ "$HAVE_METAL" = yes ]; then
+      check_lib '' COCOA_METAL "-framework AppKit" NSApplicationMain
+   else
+      check_lib '' COCOA "-framework AppKit" NSApplicationMain
+   fi
+
    check_lib '' AVFOUNDATION "-framework AVFoundation"
    check_lib '' CORELOCATION "-framework CoreLocation"
    check_lib '' IOHIDMANAGER "-framework IOKit" IOHIDManagerCreate
    check_lib '' AL "-framework OpenAL" alcOpenDevice
    HAVE_X11=no # X11 breaks on recent OSXes even if present.
    HAVE_SDL=no
+   HAVE_SW2=no
 else
    check_lib '' AL -lopenal alcOpenDevice
 fi
@@ -258,6 +269,8 @@ check_pkgconf RSOUND rsound 1.1
 check_pkgconf ROAR libroar 1.0.12
 check_val '' JACK -ljack '' jack 0.120.1 '' false
 check_val '' PULSE -lpulse '' libpulse '' '' false
+check_val '' PIPEWIRE -lpipewire-0.3 '' libpipewire-0.3 '' '' false
+check_val '' PIPEWIRE_STABLE -lpipewire-0.3 '' libpipewire-0.3 1.0.0 '' false
 check_val '' SDL -lSDL SDL sdl 1.2.10 '' false
 check_val '' SDL2 -lSDL2 SDL2 sdl2 2.0.0 '' false
 
@@ -267,27 +280,59 @@ if [ "$HAVE_SDL2" = 'yes' ] && [ "$HAVE_SDL" = 'yes' ]; then
 fi
 
 check_enabled CXX11 CXX C++ 'C++11 support is' false
+check_enabled CXX17 CXX C++ 'C++17 support is' false
 
 check_platform Haiku DISCORD 'Discord is' false
 check_enabled CXX DISCORD discord 'The C++ compiler is' false
 check_enabled CXX QT 'Qt companion' 'The C++ compiler is' false
 
 if [ "$HAVE_QT" != 'no' ]; then
-   check_pkgconf QT5CORE Qt5Core 5.2
-   check_pkgconf QT5GUI Qt5Gui 5.2
-   check_pkgconf QT5WIDGETS Qt5Widgets 5.2
-   check_pkgconf QT5CONCURRENT Qt5Concurrent 5.2
-   check_pkgconf QT5NETWORK Qt5Network 5.2
-   #check_pkgconf QT5WEBENGINE Qt5WebEngine 5.4
+   _have_qt=$HAVE_QT
+   if [ "$HAVE_CXX17" = 'yes' ]; then
+      check_pkgconf QT6CORE Qt6Core 6.2
+      check_pkgconf QT6GUI Qt6Gui 6.2
+      check_pkgconf QT6WIDGETS Qt6Widgets 6.2
+      check_pkgconf QT6CONCURRENT Qt6Concurrent 6.2
+      check_pkgconf QT6NETWORK Qt6Network 6.2
+      #check_pkgconf QT6WEBENGINE Qt6WebEngine 6.2
 
-   # pkg-config is needed to reliably find Qt5 libraries.
+      # pkg-config is needed to reliably find Qt6 libraries.
 
-   check_enabled QT5CORE QT Qt 'Qt5Core is' true
-   check_enabled QT5GUI QT Qt 'Qt5GUI is' true
-   check_enabled QT5WIDGETS QT Qt 'Qt5Widgets is' true
-   check_enabled QT5CONCURRENT QT Qt 'Qt5Concurrent is' true
-   check_enabled QT5NETWORK QT Qt 'Qt5Network is' true
-   #check_enabled QT5WEBENGINE QT Qt 'Qt5Webengine is' true
+      check_enabled QT6CORE QT Qt 'Qt6Core is' user
+      check_enabled QT6GUI QT Qt 'Qt6GUI is' user
+      check_enabled QT6WIDGETS QT Qt 'Qt6Widgets is' user
+      check_enabled QT6CONCURRENT QT Qt 'Qt6Concurrent is' user
+      check_enabled QT6NETWORK QT Qt 'Qt6Network is' user
+      #check_enabled QT6WEBENGINE QT Qt 'Qt6Webengine is' user
+
+      if [ "$HAVE_QT6CORE" = 'yes' ] && \
+         [ "$HAVE_QT6GUI" = 'yes' ] &&  \
+         [ "$HAVE_QT6WIDGETS" = 'yes' ] &&  \
+         [ "$HAVE_QT6CONCURRENT" = 'yes' ] && \
+         [ "$HAVE_QT6NETWORK" = 'yes' ]
+      then
+         HAVE_QT6='yes'
+         add_define MAKEFILE HAVE_QT6 1
+      fi
+   fi
+   if [ "$HAVE_QT6" != 'yes' ]; then
+      HAVE_QT=$_have_qt
+      check_pkgconf QT5CORE Qt5Core 5.2
+      check_pkgconf QT5GUI Qt5Gui 5.2
+      check_pkgconf QT5WIDGETS Qt5Widgets 5.2
+      check_pkgconf QT5CONCURRENT Qt5Concurrent 5.2
+      check_pkgconf QT5NETWORK Qt5Network 5.2
+      #check_pkgconf QT5WEBENGINE Qt6WebEngine 5.2
+
+      # pkg-config is needed to reliably find Qt5 libraries.
+
+      check_enabled QT5CORE QT Qt 'Qt5Core is' true
+      check_enabled QT5GUI QT Qt 'Qt5GUI is' true
+      check_enabled QT5WIDGETS QT Qt 'Qt5Widgets is' true
+      check_enabled QT5CONCURRENT QT Qt 'Qt5Concurrent is' true
+      check_enabled QT5NETWORK QT Qt 'Qt5Network is' true
+      #check_enabled QT5WEBENGINE QT Qt 'Qt5Webengine is' true
+   fi
 
    if [ "$HAVE_QT" != yes ]; then
       die : 'Notice: Qt support disabled, required libraries were not found.'
@@ -300,34 +345,55 @@ check_enabled FLAC BUILTINFLAC 'builtin flac' 'flac is' true
 
 check_val '' FLAC '-lFLAC' '' flac '' '' false
 
-check_enabled SSL BUILTINMBEDTLS 'builtin mbedtls' 'ssl is' true
 
-if [ "$HAVE_SSL" != 'no' ]; then
-   check_header '' MBEDTLS \
-      mbedtls/config.h \
-      mbedtls/certs.h \
-      mbedtls/debug.h \
-      mbedtls/platform.h \
-      mbedtls/net_sockets.h \
-      mbedtls/ssl.h \
-      mbedtls/ctr_drbg.h \
-      mbedtls/entropy.h
+check_enabled SSL SYSTEMMBEDTLS 'system mbedtls' 'ssl is' false
+check_enabled SSL BUILTINMBEDTLS 'builtin mbedtls' 'ssl is' false
+check_enabled SSL BUILTINBEARSSL 'builtin bearssl' 'ssl is' false
 
-   check_lib '' MBEDTLS -lmbedtls
-   check_lib '' MBEDX509 -lmbedx509
-   check_lib '' MBEDCRYPTO -lmbedcrypto
-
-   if [ "$HAVE_MBEDTLS" = 'no' ] ||
-      [ "$HAVE_MBEDX509" = 'no' ] ||
-      [ "$HAVE_MBEDCRYPTO" = 'no' ]; then
-      if [ "$HAVE_BUILTINMBEDTLS" != 'yes' ]; then
-         die : 'Notice: System mbedtls libraries not found, disabling SSL support.'
-         HAVE_SSL=no
-      fi
-   else
-      HAVE_SSL=yes
-   fi
+if [ "$HAVE_SYSTEMMBEDTLS" = "auto" ]; then SYSTEMMBEDTLS_IS_AUTO=yes; else SYSTEMMBEDTLS_IS_AUTO=no; fi
+check_val '' SYSTEMMBEDTLS '-lmbedtls' 'mbedtls' mbedtls 2.5.1 '' true
+check_val '' SYSTEMMBEDX509 '-lmbedx509' 'mbedtls' mbedx509 2.5.1 '' true
+check_val '' SYSTEMMBEDCRYPTO '-lmbedcrypto' 'mbedtls' mbedcrypto 2.5.1 '' true
+if [ "$HAVE_SYSTEMMBEDTLS" = 'yes' ] && [ -z "$SYSTEMMBEDTLS_VERSION" ]; then
+  # Ancient versions (such as the one included in the Ubuntu version used for
+  # build checks) don't have this header
+  check_header '' SYSTEMMBEDTLS mbedtls/net_sockets.h
 fi
+if [ "$HAVE_SYSTEMMBEDX509" = 'no' ] || [ "$HAVE_SYSTEMMBEDCRYPTO" = 'no' ]; then HAVE_SYSTEMMBEDTLS=no; fi
+if [ "$SYSTEMMBEDTLS_IS_AUTO" = "yes" ] && [ "$HAVE_SYSTEMMBEDTLS" = "yes" ]; then HAVE_SYSTEMMBEDTLS=auto; fi
+
+SSL_BACKEND_CHOSEN=no
+if [ "$HAVE_SYSTEMMBEDTLS" = "yes" ]; then
+  if [ "$SSL_BACKEND_CHOSEN" = "yes" ]; then die 1 "Can't enable multiple SSL backends"; fi
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$HAVE_BUILTINMBEDTLS" = "yes" ]; then
+  if [ "$SSL_BACKEND_CHOSEN" = "yes" ]; then die 1 "Can't enable multiple SSL backends"; fi
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$HAVE_BUILTINBEARSSL" = "yes" ]; then
+  if [ "$SSL_BACKEND_CHOSEN" = "yes" ]; then die 1 "Can't enable multiple SSL backends"; fi
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$SSL_BACKEND_CHOSEN" = "no" ] && [ "$HAVE_SYSTEMMBEDTLS" = "auto" ]; then
+  HAVE_SYSTEMMBEDTLS=yes
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$SSL_BACKEND_CHOSEN" = "no" ] && [ "$HAVE_BUILTINMBEDTLS" = "auto" ]; then
+  HAVE_BUILTINMBEDTLS=yes
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$SSL_BACKEND_CHOSEN" = "no" ] && [ "$HAVE_BUILTINBEARSSL" = "auto" ]; then
+  HAVE_BUILTINBEARSSL=yes
+  SSL_BACKEND_CHOSEN=yes
+fi
+if [ "$HAVE_SYSTEMMBEDTLS" = "auto" ]; then HAVE_SYSTEMMBEDTLS=no; fi
+if [ "$HAVE_BUILTINMBEDTLS" = "auto" ]; then HAVE_BUILTINMBEDTLS=no; fi
+if [ "$HAVE_BUILTINBEARSSL" = "auto" ]; then HAVE_BUILTINBEARSSL=no; fi
+
+if [ "$HAVE_SSL" = "auto" ]; then HAVE_SSL=$SSL_BACKEND_CHOSEN; fi
+if [ "$HAVE_SSL" = "yes" ] && [ "$SSL_BACKEND_CHOSEN" = "no" ]; then die 1 "error: SSL enabled, but all backends disabled"; fi
+
 
 check_enabled THREADS LIBUSB libusb 'Threads are' false
 check_enabled HID LIBUSB libusb 'HID is' false
@@ -368,6 +434,10 @@ if [ "$HAVE_OPENGL" != 'no' ] && [ "$HAVE_OPENGLES" != 'yes' ]; then
    elif [ "$OS" = 'Win32' ]; then
       check_header '' OPENGL "GL/gl.h"
       check_lib '' OPENGL -lopengl32
+   elif [ "$HAVE_GLX" = 'no' ]; then
+      # Use vendor-neutral OpenGL implementation instead of GLX
+      check_header '' OPENGL "GL/gl.h"
+      check_lib '' OPENGL -lOpenGL
    else
       check_header '' OPENGL "GL/gl.h"
       check_lib '' OPENGL -lGL
@@ -466,12 +536,14 @@ check_pkgconf DBUS dbus-1
 check_val '' UDEV "-ludev" '' libudev '' '' false
 check_val '' V4L2 -lv4l2 '' libv4l2 '' '' false
 check_val '' FREETYPE -lfreetype freetype2 freetype2 '' '' false
+check_val '' FONTCONFIG -lfontconfig fontconfig fontconfig '' '' false
 check_val '' X11 -lX11 '' x11 '' '' false
 
 if [ "$HAVE_X11" != 'no' ]; then
    check_val '' XCB -lxcb '' xcb '' '' false
    check_val '' XEXT -lXext '' xext '' '' false
    check_val '' XF86VM -lXxf86vm '' xxf86vm '' '' false
+   check_val '' XSCRNSAVER -lXss '' xscrnsaver '' '' false
 else
    die : 'Notice: X11 not present. Skipping X11 code paths.'
 fi
@@ -490,7 +562,7 @@ check_header '' XSHM X11/Xlib.h X11/extensions/XShm.h
 check_val '' XKBCOMMON -lxkbcommon '' xkbcommon 0.3.2 '' false
 check_val '' WAYLAND '-lwayland-egl -lwayland-client' '' wayland-egl 10.1.0 '' false
 check_val '' WAYLAND_CURSOR -lwayland-cursor '' wayland-cursor 1.12 '' false
-check_pkgconf WAYLAND_PROTOS wayland-protocols 1.15
+check_pkgconf WAYLAND_PROTOS wayland-protocols 1.32
 check_pkgconf WAYLAND_SCANNER wayland-scanner '1.15 1.12'
 
 if [ "$HAVE_WAYLAND_SCANNER" = yes ] &&
@@ -501,6 +573,8 @@ if [ "$HAVE_WAYLAND_SCANNER" = yes ] &&
          -p "$HAVE_WAYLAND_PROTOS" \
          -s "$SHARE_DIR" ||
          die 1 'Error: Failed generating wayland protocols.'
+
+      check_pkgconf LIBDECOR libdecor-0
 else
     die : 'Notice: wayland libraries not found, disabling wayland support.'
     HAVE_WAYLAND='no'
@@ -515,6 +589,7 @@ fi
 
 check_lib '' STRCASESTR "$CLIB" strcasestr
 check_lib '' MMAP "$CLIB" mmap
+check_lib '' MEMFD_CREATE "$CLIB" memfd_create
 
 check_enabled CXX VULKAN vulkan 'The C++ compiler is' false
 check_enabled CXX OPENGL_CORE 'OpenGL core' 'The C++ compiler is' false
@@ -554,9 +629,30 @@ if [ "$HAVE_MENU" != 'no' ]; then
 fi
 
 if [ "$HAVE_STEAM" = 'yes' ]; then
+   add_opt CORE_INFO_CACHE no
    add_opt ONLINE_UPDATER no
    add_opt UPDATE_CORES no
-   die : 'Notice: Steam build enabled, disabling online updater as well.'
+   die : 'Notice: Steam build enabled, disabling:'
+   die : '* Core info cache.'
+   die : '* Core updater.'
+   die : '* Online updater.'
+
+   # Keep base directory relative to installation on Linux just like it is on Windows
+   if [ "$OS" = "Linux" ]; then
+      add_define MAKEFILE UNIX_CWD_ENV 1
+   fi
+fi
+
+if [ "$HAVE_MIST" = 'yes' ]; then
+   if [ "$HAVE_STEAM" != 'yes' ]; then
+      die 1 'Error: mist builds requires steam to be enabled'
+   fi
+
+   if [ ! -d "$MIST_PATH" ]; then
+      die 1 'Error: MIST_PATH must be pointing to the location of mist artifacts'
+   fi
+
+   add_define MAKEFILE MIST_PATH "$MIST_PATH"
 fi
 
 check_enabled CXX SLANG slang 'The C++ compiler is' false
@@ -573,14 +669,14 @@ if [ "$HAVE_GLSLANG" != no ]; then
    check_lib cxx GLSLANG -lglslang '' '-lSPIRV'
    check_lib cxx GLSLANG_OSDEPENDENT -lOSDependent
    check_lib cxx GLSLANG_OGLCOMPILER -lOGLCompiler
+   check_lib cxx GLSLANG_MACHINEINDEPENDENT -lMachineIndependent
+   check_lib cxx GLSLANG_GENERICCODEGEN -lGenericCodeGen
    check_lib cxx GLSLANG_HLSL -lHLSL '' '-lglslang -lSPIRV'
    check_lib cxx GLSLANG_SPIRV -lSPIRV
    check_lib cxx GLSLANG_SPIRV_TOOLS_OPT -lSPIRV-Tools-opt
    check_lib cxx GLSLANG_SPIRV_TOOLS -lSPIRV-Tools
 
    if [ "$HAVE_GLSLANG" = no ] ||
-      [ "$HAVE_GLSLANG_OSDEPENDENT" = no ] ||
-      [ "$HAVE_GLSLANG_OGLCOMPILER" = no ] ||
       [ "$HAVE_GLSLANG_HLSL" = no ] ||
       [ "$HAVE_GLSLANG_SPIRV" = no ] ||
       [ "$HAVE_GLSLANG_SPIRV_TOOLS_OPT" = no ] ||
@@ -593,6 +689,14 @@ if [ "$HAVE_GLSLANG" != no ]; then
       fi
    else
       HAVE_GLSLANG=yes
+   fi
+fi
+
+if [ "$HAVE_CRTSWITCHRES" != no ]; then
+   if [ "$HAVE_CXX11" = 'no' ]; then
+      HAVE_CRTSWITCHRES=no
+   else
+      HAVE_CRTSWITCHRES=yes
    fi
 fi
 
@@ -622,6 +726,10 @@ check_macro NEON __ARM_NEON__
 
 add_define MAKEFILE OS "$OS"
 
+if [ "$ARCHITECTURE_NAME" = 'Power Macintosh' ]; then
+   HAVE_LANGEXTRA='no'
+fi
+
 if [ "$HAVE_DEBUG" = 'yes' ]; then
    add_define MAKEFILE DEBUG 1
    if [ "$HAVE_OPENGL" = 'yes' ] ||
@@ -637,3 +745,11 @@ fi
 
 check_enabled 'ZLIB BUILTINZLIB' RPNG RPNG 'zlib is' false
 check_enabled V4L2 VIDEOPROCESSOR 'video processor' 'Video4linux2 is' true
+
+if [ "$HAVE_CXX11" = 'yes' ]; then
+   if [ "$OS" = 'Linux' ]; then
+      check_enabled 'VIDEOCORE X11' SR2 'CRT modeswitching' 'CRT is' true
+   else
+      check_platform Win32 SR2 'CRT modeswitching is' true
+   fi
+fi

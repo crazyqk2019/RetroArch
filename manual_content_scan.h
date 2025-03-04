@@ -65,23 +65,38 @@ enum manual_content_scan_dat_file_path_status
    MANUAL_CONTENT_SCAN_DAT_FILE_TOO_LARGE
 };
 
+/* Defines all possible return values for
+ * manual_content_scan_set_menu_from_playlist() */
+enum manual_content_scan_playlist_refresh_status
+{
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_OK = 0,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_MISSING_CONFIG,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_INVALID_CONTENT_DIR,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_INVALID_SYSTEM_NAME,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_INVALID_CORE,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_INVALID_DAT_FILE,
+   MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_DAT_FILE_TOO_LARGE
+};
+
 /* Holds all configuration parameters required
  * for a manual content scan task */
 typedef struct
 {
+   char core_name[NAME_MAX_LENGTH];
+   char system_name[NAME_MAX_LENGTH];
+   char database_name[NAME_MAX_LENGTH];
+   char content_dir[DIR_MAX_LENGTH];
    char playlist_file[PATH_MAX_LENGTH];
-   char content_dir[PATH_MAX_LENGTH];
-   char system_name[PATH_MAX_LENGTH];
-   char database_name[PATH_MAX_LENGTH];
-   char core_name[PATH_MAX_LENGTH];
    char core_path[PATH_MAX_LENGTH];
    char file_exts[PATH_MAX_LENGTH];
    char dat_file_path[PATH_MAX_LENGTH];
    bool core_set;
+   bool file_exts_custom_set;
    bool search_recursively;
    bool search_archives;
    bool filter_dat_content;
    bool overwrite_playlist;
+   bool validate_entries;
 } manual_content_scan_task_config_t;
 
 /*****************/
@@ -93,6 +108,10 @@ typedef struct
  *   make use of standard 'menu_settings' code
  *   for several config parameters (rather than
  *   implementing unnecessary custom menu entries) */
+
+/* Returns a pointer to the internal
+ * 'content_dir' string */
+char *manual_content_scan_get_content_dir_ptr(void);
 
 /* Returns a pointer to the internal
  * 'system_name_custom' string */
@@ -133,6 +152,10 @@ bool *manual_content_scan_get_filter_dat_content_ptr(void);
 /* Returns a pointer to the internal
  * 'overwrite_playlist' bool */
 bool *manual_content_scan_get_overwrite_playlist_ptr(void);
+
+/* Returns a pointer to the internal
+ * 'validate_entries' bool */
+bool *manual_content_scan_get_validate_entries_ptr(void);
 
 /* Sanitisation */
 
@@ -178,6 +201,15 @@ bool manual_content_scan_set_menu_system_name(
 bool manual_content_scan_set_menu_core_name(
       enum manual_content_scan_core_type core_type,
       const char *core_name);
+
+/* Sets all parameters for the next manual scan
+ * operation according the to recorded values in
+ * the specified playlist.
+ * Returns MANUAL_CONTENT_SCAN_PLAYLIST_REFRESH_OK
+ * if playlist contains a valid scan record. */
+enum manual_content_scan_playlist_refresh_status
+      manual_content_scan_set_menu_from_playlist(playlist_t *playlist,
+            const char *path_content_database, bool show_hidden_files);
 
 /* Menu getters */
 
@@ -231,7 +263,8 @@ bool manual_content_scan_get_task_config(
  * content directory
  * > Returns NULL in the event of failure
  * > Returned string list must be free()'d */
-struct string_list *manual_content_scan_get_content_list(manual_content_scan_task_config_t *task_config);
+struct string_list *manual_content_scan_get_content_list(
+      manual_content_scan_task_config_t *task_config);
 
 /* Adds specified content to playlist, if not already
  * present */

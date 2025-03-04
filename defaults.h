@@ -35,27 +35,30 @@ enum default_dirs
    DEFAULT_DIR_AUDIO_FILTER,
    DEFAULT_DIR_VIDEO_FILTER,
    DEFAULT_DIR_ASSETS,
+#ifdef _3DS
+   DEFAULT_DIR_BOTTOM_ASSETS,
+#endif
    DEFAULT_DIR_CORE,
    DEFAULT_DIR_CORE_INFO,
    DEFAULT_DIR_OVERLAY,
-#ifdef HAVE_VIDEO_LAYOUT
-   DEFAULT_DIR_VIDEO_LAYOUT,
-#endif
+   DEFAULT_DIR_OSK_OVERLAY,
    DEFAULT_DIR_PORT,
    DEFAULT_DIR_SHADER,
    DEFAULT_DIR_SAVESTATE,
-   DEFAULT_DIR_RESAMPLER,
    DEFAULT_DIR_SRAM,
    DEFAULT_DIR_SCREENSHOT,
    DEFAULT_DIR_SYSTEM,
    DEFAULT_DIR_PLAYLIST,
+   DEFAULT_DIR_CONTENT_FAVORITES,
    DEFAULT_DIR_CONTENT_HISTORY,
+   DEFAULT_DIR_CONTENT_IMAGE_HISTORY,
+   DEFAULT_DIR_CONTENT_MUSIC_HISTORY,
+   DEFAULT_DIR_CONTENT_VIDEO_HISTORY,
    DEFAULT_DIR_REMAP,
    DEFAULT_DIR_CACHE,
    DEFAULT_DIR_WALLPAPERS,
    DEFAULT_DIR_THUMBNAILS,
    DEFAULT_DIR_DATABASE,
-   DEFAULT_DIR_CURSOR,
    DEFAULT_DIR_CHEATS,
    DEFAULT_DIR_RECORD_CONFIG,
    DEFAULT_DIR_RECORD_OUTPUT,
@@ -65,46 +68,6 @@ enum default_dirs
 
 struct defaults
 {
-#ifdef HAVE_MENU
-   struct
-   {
-      struct
-      {
-         bool menu_color_theme_enable;
-         unsigned menu_color_theme;
-      } materialui;
-
-      struct
-      {
-         bool set;
-         unsigned menu_btn_ok;
-         unsigned menu_btn_cancel;
-      } controls;
-   } menu;
-#endif
-
-   struct
-   {
-      bool set;
-      bool enable;
-   } overlay;
-
-   char dirs [DEFAULT_DIR_LAST + 1][PATH_MAX_LENGTH];
-
-   struct
-   {
-      char config[PATH_MAX_LENGTH];
-      char core[PATH_MAX_LENGTH];
-      char buildbot_server_url[255];
-   } path;
-
-   struct
-   {
-      int out_latency;
-      float video_refresh_rate;
-      char menu[32];
-   } settings;
-
 #ifndef IS_SALAMANDER
    playlist_t *content_history;
    playlist_t *content_favorites;
@@ -116,6 +79,27 @@ struct defaults
    playlist_t *video_history;
 #endif
 #endif
+   int settings_out_latency;
+   int settings_in_latency;
+#ifdef HAVE_MENU
+   unsigned menu_materialui_menu_color_theme;
+#endif
+
+   float settings_video_refresh_rate;
+
+   char dirs [DEFAULT_DIR_LAST + 1][DIR_MAX_LENGTH];
+   char path_config[PATH_MAX_LENGTH];
+   char path_buildbot_server_url[NAME_MAX_LENGTH];
+   char settings_menu[32];
+
+#ifdef HAVE_MENU
+   bool menu_materialui_menu_color_theme_enable;
+   bool menu_controls_menu_btn_ok;
+   bool menu_controls_menu_btn_cancel;
+   bool menu_controls_set;
+#endif
+   bool overlay_set;
+   bool overlay_enable;
 };
 
 bool dir_set_defaults(enum default_dirs dir_type, const char *dirpath);

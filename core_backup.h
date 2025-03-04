@@ -72,7 +72,7 @@ typedef struct
 typedef struct
 {
    char *backup_path;
-   core_backup_list_date_t date;
+   core_backup_list_date_t date;       /* unsigned alignment */
    uint32_t crc;
    enum core_backup_mode backup_mode;
 } core_backup_list_entry_t;
@@ -156,21 +156,6 @@ bool core_backup_list_get_crc(
       core_backup_list_t *backup_list,
       uint32_t crc, enum core_backup_mode backup_mode,
       const core_backup_list_entry_t **entry);
-
-/* Fetches a string representation of a backup
- * list entry timestamp.
- * Returns false in the event of an error */
-bool core_backup_list_get_entry_timestamp_str(
-      const core_backup_list_entry_t *entry,
-      enum core_backup_date_separator_type date_separator,
-      char *timestamp, size_t len);
-
-/* Fetches a string representation of a backup
- * list entry crc value.
- * Returns false in the event of an error */
-bool core_backup_list_get_entry_crc_str(
-      const core_backup_list_entry_t *entry,
-      char *crc, size_t len);
 
 RETRO_END_DECLS
 

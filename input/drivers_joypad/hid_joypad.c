@@ -20,12 +20,12 @@
 /* TODO/FIXME - static global */
 static const hid_driver_t *generic_hid = NULL;
 
-static bool hid_joypad_init(void *data)
+static void *hid_joypad_init(void *data)
 {
    generic_hid = input_hid_init_first();
    if (!generic_hid)
-       return false;
-   return true;
+      return NULL;
+   return (void*)-1;
 }
 
 static bool hid_joypad_query_pad(unsigned pad)
@@ -46,7 +46,7 @@ static void hid_joypad_free(void)
    generic_hid = NULL;
 }
 
-static int16_t hid_joypad_button(unsigned port, uint16_t joykey)
+static int32_t hid_joypad_button(unsigned port, uint16_t joykey)
 {
    if (generic_hid && generic_hid->button)
       return generic_hid->button((void*)hid_driver_get_data(), port, joykey);
@@ -130,6 +130,9 @@ input_device_driver_t hid_joypad = {
    hid_joypad_axis,
    hid_joypad_poll,
    hid_joypad_rumble,
+   NULL, /* set_rumble_gain */
+   NULL, /* set_sensor_state */
+   NULL, /* get_sensor_input */
    hid_joypad_name,
    "hid"
 };

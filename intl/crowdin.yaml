@@ -1,5 +1,7 @@
-"project_identifier": "retroarch"
-"api_key": "07c53d49b32e30803060b1acec1623ab"
+"project_id": "380544"
+"main_file_id": "11735"
+"api_token": "_secret_"
+"base_url": "https://api.crowdin.com"
 "preserve_hierarchy": true
 
 "files":
@@ -15,5 +17,5 @@
     {
       "source": "/googleplay_us.json",
       "translation": "/googleplay_%two_letters_code%.json",
-    },    
+    },
   ]

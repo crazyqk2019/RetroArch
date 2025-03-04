@@ -20,7 +20,7 @@
 #include <stdint.h>
 
 #include "switch_audio_compat.h"
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 #include "../../verbosity.h"
 
 #ifdef HAVE_LIBNX
@@ -73,10 +73,10 @@ static size_t switch_audio_buffer_size(void *data)
 #endif
 }
 
-static ssize_t switch_audio_write(void *data, const void *buf, size_t size)
+static ssize_t switch_audio_write(void *data, const void *s, size_t len)
 {
-   size_t to_write     = size;
-	switch_audio_t *swa = (switch_audio_t*) data;
+   size_t to_write     = len;
+	switch_audio_t *swa = (switch_audio_t*)data;
 
    if (!swa)
       return -1;
@@ -86,7 +86,7 @@ static ssize_t switch_audio_write(void *data, const void *buf, size_t size)
       uint32_t num;
       if (switch_audio_ipc_output_get_released_buffer(swa, num) != 0)
       {
-         RARCH_LOG("Failed to get released buffer?\n");
+         RARCH_ERR("[Audio]: Failed to get released buffer?\n");
          return -1;
       }
 
@@ -125,9 +125,9 @@ static ssize_t switch_audio_write(void *data, const void *buf, size_t size)
 		to_write = switch_audio_buffer_size(NULL) - swa->current_buffer->data_size;
 
 #ifndef HAVE_LIBNX
-   memcpy(((uint8_t*) swa->current_buffer->sample_data) + swa->current_buffer->data_size, buf, to_write);
+   memcpy(((uint8_t*) swa->current_buffer->sample_data) + swa->current_buffer->data_size, s, to_write);
 #else
-   memcpy(((uint8_t*) swa->current_buffer->buffer) + swa->current_buffer->data_size, buf, to_write);
+   memcpy(((uint8_t*) swa->current_buffer->buffer) + swa->current_buffer->data_size, s, to_write);
 #endif
 	swa->current_buffer->data_size   += to_write;
 	swa->current_buffer->buffer_size  = switch_audio_buffer_size(NULL);

@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <retro_assert.h>
 #include <retro_inline.h>
 #include <boolean.h>
 #include <formats/image.h>
@@ -141,17 +140,15 @@ struct rjpeg
 
 typedef struct
 {
-   uint32_t img_x;
-   uint32_t img_y;
-   int      img_n;
-   int      img_out_n;
-
-   int      buflen;
-   uint8_t  buffer_start[128];
-
    uint8_t *img_buffer;
    uint8_t *img_buffer_end;
    uint8_t *img_buffer_original;
+   int      img_n;
+   int      img_out_n;
+   int      buflen;
+   uint32_t img_x;
+   uint32_t img_y;
+   uint8_t  buffer_start[128];
 } rjpeg_context;
 
 static INLINE uint8_t rjpeg_get8(rjpeg_context *s)
@@ -171,31 +168,32 @@ static INLINE uint8_t rjpeg_get8(rjpeg_context *s)
 
 typedef struct
 {
-   uint8_t  fast[1 << FAST_BITS];
-   /* weirdly, repacking this into AoS is a 10% speed loss, instead of a win */
-   uint16_t code[256];
-   uint8_t  values[256];
-   uint8_t  size[257];
    unsigned int maxcode[18];
    int    delta[17];   /* old 'firstsymbol' - old 'firstcode' */
+   /* weirdly, repacking this into AoS is a 10% speed loss, instead of a win */
+   uint16_t code[256];
+   uint8_t  fast[1 << FAST_BITS];
+   uint8_t  values[256];
+   uint8_t  size[257];
 } rjpeg_huffman;
 
 typedef struct
 {
    rjpeg_context *s;
-   rjpeg_huffman huff_dc[4];
-   rjpeg_huffman huff_ac[4];
-   uint8_t dequant[4][64];
-   int16_t fast_ac[4][1 << FAST_BITS];
-
-   /* sizes for components, interleaved MCUs */
-   int img_h_max, img_v_max;
-   int img_mcu_x, img_mcu_y;
-   int img_mcu_w, img_mcu_h;
+   /* kernels */
+   void (*idct_block_kernel)(uint8_t *out, int out_stride, short data[64]);
+   void (*YCbCr_to_RGB_kernel)(uint8_t *out, const uint8_t *y, const uint8_t *pcb,
+         const uint8_t *pcr, int count, int step);
+   uint8_t *(*resample_row_hv_2_kernel)(uint8_t *out, uint8_t *in_near,
+         uint8_t *in_far, int w, int hs);
 
    /* definition of jpeg image component */
    struct
    {
+      uint8_t *data;
+      void *raw_data, *raw_coeff;
+      uint8_t *linebuf;
+      short   *coeff;            /* progressive only */
       int id;
       int h,v;
       int tq;
@@ -203,35 +201,31 @@ typedef struct
       int dc_pred;
 
       int x,y,w2,h2;
-      uint8_t *data;
-      void *raw_data, *raw_coeff;
-      uint8_t *linebuf;
-      short   *coeff;            /* progressive only */
       int      coeff_w;          /* number of 8x8 coefficient blocks */
       int      coeff_h;          /* number of 8x8 coefficient blocks */
    } img_comp[4];
 
-   uint32_t       code_buffer;   /* jpeg entropy-coded buffer */
-   int            code_bits;     /* number of valid bits */
-   unsigned char  marker;        /* marker seen while filling entropy buffer */
-   int            nomore;        /* flag if we saw a marker so must stop */
+   /* sizes for components, interleaved MCUs */
+   int img_h_max, img_v_max;
+   int img_mcu_x, img_mcu_y;
+   int img_mcu_w, img_mcu_h;
 
+   int            code_bits;     /* number of valid bits */
+   int            nomore;        /* flag if we saw a marker so must stop */
    int            progressive;
    int            spec_start;
    int            spec_end;
    int            succ_high;
    int            succ_low;
    int            eob_run;
-
    int scan_n, order[4];
    int restart_interval, todo;
-
-   /* kernels */
-   void (*idct_block_kernel)(uint8_t *out, int out_stride, short data[64]);
-   void (*YCbCr_to_RGB_kernel)(uint8_t *out, const uint8_t *y, const uint8_t *pcb,
-         const uint8_t *pcr, int count, int step);
-   uint8_t *(*resample_row_hv_2_kernel)(uint8_t *out, uint8_t *in_near,
-         uint8_t *in_far, int w, int hs);
+   uint32_t       code_buffer;   /* jpeg entropy-coded buffer */
+   rjpeg_huffman huff_dc[4];     /* unsigned int alignment */
+   rjpeg_huffman huff_ac[4];     /* unsigned int alignment */
+   int16_t fast_ac[4][1 << FAST_BITS];
+   unsigned char  marker;        /* marker seen while filling entropy buffer */
+   uint8_t dequant[4][64];
 } rjpeg_jpeg;
 
 #define RJPEG_F2F(x)  ((int) (((x) * 4096 + 0.5)))
@@ -417,7 +411,6 @@ static INLINE int rjpeg_jpeg_huff_decode(rjpeg_jpeg *j, rjpeg_huffman *h)
 
    /* convert the huffman code to the symbol id */
    c = ((j->code_buffer >> (32 - k)) & rjpeg_bmask[k]) + h->delta[k];
-   retro_assert((((j->code_buffer) >> (32 - h->size[c])) & rjpeg_bmask[h->size[c]]) == h->code[c]);
 
    /* convert the id to a symbol */
    j->code_bits -= k;
@@ -437,9 +430,8 @@ static INLINE int rjpeg_extend_receive(rjpeg_jpeg *j, int n)
    if (j->code_bits < n)
       rjpeg_grow_buffer_unsafe(j);
 
-   sgn = (int32_t)j->code_buffer >> 31; /* sign bit is always in MSB */
-   k = RJPEG_LROT(j->code_buffer, n);
-   retro_assert(n >= 0 && n < (int) (sizeof(rjpeg_bmask)/sizeof(*rjpeg_bmask)));
+   sgn             = (int32_t)j->code_buffer >> 31; /* sign bit is always in MSB */
+   k               = RJPEG_LROT(j->code_buffer, n);
    j->code_buffer  = k & ~rjpeg_bmask[n];
    k              &= rjpeg_bmask[n];
    j->code_bits   -= n;
@@ -831,9 +823,9 @@ static void rjpeg_idct_block(uint8_t *out, int out_stride, short data[64])
    for (i = 0; i < 8; ++i,++d, ++v)
    {
       /* if all zeroes, shortcut -- this avoids dequantizing 0s and IDCTing */
-      if (     d[ 8] == 0 
-            && d[16] == 0 
-            && d[24] == 0 
+      if (     d[ 8] == 0
+            && d[16] == 0
+            && d[24] == 0
             && d[32] == 0
             && d[40] == 0
             && d[48] == 0
@@ -878,7 +870,7 @@ static void rjpeg_idct_block(uint8_t *out, int out_stride, short data[64])
        * we've got an extra 1<<3, so 1<<17 total we need to remove.
        * so we want to round that, which means adding 0.5 * 1<<17,
        * aka 65536. Also, we'll end up with -128 to 127 that we want
-       * to encode as 0..255 by adding 128, so we'll add that before the shift 
+       * to encode as 0..255 by adding 128, so we'll add that before the shift
        */
       x0 += 65536 + (128<<17);
       x1 += 65536 + (128<<17);
@@ -1330,7 +1322,7 @@ static void rjpeg_jpeg_reset(rjpeg_jpeg *j)
    j->todo                = j->restart_interval ? j->restart_interval : 0x7fffffff;
    j->eob_run             = 0;
 
-   /* no more than 1<<31 MCUs if no restart_interal? that's plenty safe,
+   /* no more than 1<<31 MCUs if no restart_interval? that's plenty safe,
     * since we don't even allow 1<<30 pixels */
 }
 

@@ -39,7 +39,7 @@
 #include <queues/fifo_queue.h>
 #include <string/stdstring.h>
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 #include "../../verbosity.h"
 
 #ifdef _XBOX
@@ -136,8 +136,8 @@ static void dsound_thread(void *data)
 static DWORD CALLBACK dsound_thread(PVOID data)
 #endif
 {
-   DWORD write_ptr;
-   dsound_t *ds = (dsound_t*)data;
+   DWORD write_ptr = 0;
+   dsound_t *ds    = (dsound_t*)data;
 
    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
@@ -205,7 +205,7 @@ static DWORD CALLBACK dsound_thread(PVOID data)
 
       IDirectSoundBuffer_Unlock(ds->dsb, region.chunk1,
             region.size1, region.chunk2, region.size2);
-      write_ptr = (write_ptr + region.size1 + region.size2) 
+      write_ptr = (write_ptr + region.size1 + region.size2)
          % ds->buffer_size;
 
       if (is_pull)
@@ -315,15 +315,20 @@ static BOOL CALLBACK enumerate_cb(LPGUID guid,
 
    if (guid)
    {
-      unsigned i;
       LPGUID guid_copy = (LPGUID)malloc(sizeof(GUID) * 1);
-      guid_copy->Data1 = guid->Data1;
-      guid_copy->Data2 = guid->Data2;
-      guid_copy->Data3 = guid->Data3;
-      for (i = 0; i < 8; i++)
-         guid_copy->Data4[i] = guid->Data4[i];
 
-      list->elems[list->size-1].userdata = guid_copy;
+      if (guid_copy)
+      {
+         unsigned i;
+
+         guid_copy->Data1 = guid->Data1;
+         guid_copy->Data2 = guid->Data2;
+         guid_copy->Data3 = guid->Data3;
+         for (i = 0; i < 8; i++)
+            guid_copy->Data4[i] = guid->Data4[i];
+
+         list->elems[list->size - 1].userdata = guid_copy;
+      }
    }
 
    return TRUE;
@@ -496,7 +501,7 @@ static void dsound_set_nonblock_state(void *data, bool state)
       ds->nonblock = state;
 }
 
-static ssize_t dsound_write(void *data, const void *buf_, size_t size)
+static ssize_t dsound_write(void *data, const void *buf_, size_t len)
 {
    size_t     written = 0;
    dsound_t       *ds = (dsound_t*)data;
@@ -507,46 +512,47 @@ static ssize_t dsound_write(void *data, const void *buf_, size_t size)
 
    if (ds->nonblock)
    {
-      if (size > 0)
+      if (len > 0)
       {
          size_t avail;
 
          EnterCriticalSection(&ds->crit);
          avail = FIFO_WRITE_AVAIL(ds->buffer);
-         if (avail > size)
-            avail = size;
+         if (avail > len)
+            avail = len;
 
          fifo_write(ds->buffer, buf, avail);
          LeaveCriticalSection(&ds->crit);
 
          buf     += avail;
-         size    -= avail;
+         len     -= avail;
          written += avail;
       }
    }
    else
    {
-      while (size > 0)
+      while (len > 0)
       {
          size_t avail;
 
          EnterCriticalSection(&ds->crit);
          avail = FIFO_WRITE_AVAIL(ds->buffer);
-         if (avail > size)
-            avail = size;
+         if (avail > len)
+            avail = len;
 
          fifo_write(ds->buffer, buf, avail);
          LeaveCriticalSection(&ds->crit);
 
          buf     += avail;
-         size    -= avail;
+         len     -= avail;
          written += avail;
 
          if (!ds->thread_alive)
             break;
 
          if (avail == 0)
-            WaitForSingleObject(ds->event, INFINITE);
+            if (!(WaitForSingleObject(ds->event, 50) == WAIT_OBJECT_0))
+               return -1;
       }
    }
 

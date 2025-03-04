@@ -39,25 +39,29 @@
 #include <wiiu/procui.h>
 #include <wiiu/sysapp.h>
 
-#include "file_path_special.h"
 
 #include "../frontend.h"
 #include "../frontend_driver.h"
+#include "../../file_path_special.h"
 #include "../../defaults.h"
 #include "../../paths.h"
 #include "../../retroarch.h"
 #include "../../verbosity.h"
-
-#include "hbl.h"
-#include "wiiu_dbg.h"
-#include "system/exception_handler.h"
-#include "tasks/tasks_internal.h"
+#include "../../tasks/tasks_internal.h"
 
 #ifndef IS_SALAMANDER
 #ifdef HAVE_MENU
 #include "../../menu/menu_driver.h"
 #endif
+
+#ifdef HAVE_NETWORKING
+#include "../../network/netplay/netplay.h"
 #endif
+#endif
+
+#include "hbl.h"
+#include "wiiu_dbg.h"
+#include "system/exception_handler.h"
 
 #define WIIU_SD_PATH "sd:/"
 #define WIIU_USB_PATH "usb:/"
@@ -96,12 +100,9 @@ static void fix_asset_directory(void)
    rename(src_path_buf, dst_path_buf);
 }
 
-static void frontend_wiiu_get_environment_settings(int *argc, char *argv[],
+static void frontend_wiiu_get_env_settings(int *argc, char *argv[],
       void *args, void *params_data)
 {
-   unsigned i;
-   (void)args;
-
    fill_pathname_basedir(g_defaults.dirs[DEFAULT_DIR_PORT], elf_path_cst, sizeof(g_defaults.dirs[DEFAULT_DIR_PORT]));
 
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CORE_ASSETS], g_defaults.dirs[DEFAULT_DIR_PORT],
@@ -129,19 +130,22 @@ static void frontend_wiiu_get_environment_settings(int *argc, char *argv[],
          "filters", sizeof(g_defaults.dirs[DEFAULT_DIR_VIDEO_FILTER]));
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_DATABASE], g_defaults.dirs[DEFAULT_DIR_PORT],
          "database/rdb", sizeof(g_defaults.dirs[DEFAULT_DIR_DATABASE]));
-   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_CURSOR], g_defaults.dirs[DEFAULT_DIR_PORT],
-         "database/cursors", sizeof(g_defaults.dirs[DEFAULT_DIR_CURSOR]));
    fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_LOGS], g_defaults.dirs[DEFAULT_DIR_CORE],
          "logs", sizeof(g_defaults.dirs[DEFAULT_DIR_LOGS]));
-   fill_pathname_join(g_defaults.path.config, g_defaults.dirs[DEFAULT_DIR_PORT],
-         file_path_str(FILE_PATH_MAIN_CONFIG), sizeof(g_defaults.path.config));
+   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS], g_defaults.dirs[DEFAULT_DIR_PORT],
+         "thumbnails", sizeof(g_defaults.dirs[DEFAULT_DIR_THUMBNAILS]));
+   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_OVERLAY], g_defaults.dirs[DEFAULT_DIR_PORT],
+         "overlays", sizeof(g_defaults.dirs[DEFAULT_DIR_OVERLAY]));
+   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT], g_defaults.dirs[DEFAULT_DIR_PORT],
+         "screenshots", sizeof(g_defaults.dirs[DEFAULT_DIR_SCREENSHOT]));
+   fill_pathname_join(g_defaults.dirs[DEFAULT_DIR_AUTOCONFIG], g_defaults.dirs[DEFAULT_DIR_PORT],
+         "autoconfig", sizeof(g_defaults.dirs[DEFAULT_DIR_AUTOCONFIG]));
+   fill_pathname_join(g_defaults.path_config, g_defaults.dirs[DEFAULT_DIR_PORT],
+         FILE_PATH_MAIN_CONFIG, sizeof(g_defaults.path_config));
 
-   for (i = 0; i < DEFAULT_DIR_LAST; i++)
-   {
-      const char *dir_path = g_defaults.dirs[i];
-      if (!string_is_empty(dir_path))
-         path_mkdir(dir_path);
-   }
+#ifndef IS_SALAMANDER
+   dir_check_defaults("custom.ini");
+#endif
 }
 
 static void frontend_wiiu_deinit(void *data)
@@ -162,12 +166,9 @@ static void frontend_wiiu_init(void *data)
    DEBUG_LINE();
 }
 
-static int frontend_wiiu_get_rating(void)
-{
-   return 10;
-}
+static int frontend_wiiu_get_rating(void) { return 10; }
 
-enum frontend_architecture frontend_wiiu_get_architecture(void)
+enum frontend_architecture frontend_wiiu_get_arch(void)
 {
    return FRONTEND_ARCH_PPC;
 }
@@ -183,19 +184,19 @@ static int frontend_wiiu_parse_drive_list(void *data, bool load_content)
    if (!list)
       return -1;
 
-   menu_entries_append_enum(list, WIIU_SD_PATH,
+   menu_entries_append(list, WIIU_SD_PATH,
          msg_hash_to_str(MENU_ENUM_LABEL_FILE_DETECT_CORE_LIST_PUSH_DIR),
          enum_idx,
-         FILE_TYPE_DIRECTORY, 0, 0);
+         FILE_TYPE_DIRECTORY, 0, 0, NULL);
 
-   menu_entries_append_enum(list, WIIU_USB_PATH,
+   menu_entries_append(list, WIIU_USB_PATH,
          msg_hash_to_str(MENU_ENUM_LABEL_FILE_DETECT_CORE_LIST_PUSH_DIR),
          enum_idx,
-         FILE_TYPE_DIRECTORY, 0, 0);
-   menu_entries_append_enum(list, WIIU_STORAGE_USB_PATH,
+         FILE_TYPE_DIRECTORY, 0, 0, NULL);
+   menu_entries_append(list, WIIU_STORAGE_USB_PATH,
          msg_hash_to_str(MENU_ENUM_LABEL_FILE_DETECT_CORE_LIST_PUSH_DIR),
          enum_idx,
-         FILE_TYPE_DIRECTORY, 0, 0);
+         FILE_TYPE_DIRECTORY, 0, 0, NULL);
 #endif
    return 0;
 }
@@ -206,49 +207,74 @@ static void frontend_wiiu_exec(const char *path, bool should_load_content)
    {
       u32 magic;
       u32 argc;
-      char * argv[3];
-      char args[];
-   }*param     = getApplicationEndAddr();
-   int len     = 0;
-   param->argc = 0;
-
-   if (!path || !*path)
-   {
-      RARCH_LOG("No executable path provided, cannot Restart\n");
-   }
+#ifndef IS_SALAMANDER
+#ifdef HAVE_NETWORKING
+      char *argv[NETPLAY_FORK_MAX_ARGS + 1];
+#else
+      char *argv[3];
+#endif
+#else
+      char *argv[2];
+#endif
+      char  args[];
+   } *param  = getApplicationEndAddr();
+   char *arg = param->args;
 
    DEBUG_STR(path);
 
-   strcpy(param->args + len, elf_path_cst);
-   param->argv[param->argc] = param->args + len;
-   len += strlen(param->args + len) + 1;
-   param->argc++;
+   param->argc    = 1;
+   param->argv[0] = arg;
+   arg += strlcpy(arg, elf_path_cst, PATH_MAX_LENGTH);
+   arg += 1;
 
-   RARCH_LOG("Attempt to load core: [%s].\n", path);
+   param->argv[1] = NULL;
+
 #ifndef IS_SALAMANDER
-   if (should_load_content && !path_is_empty(RARCH_PATH_CONTENT))
+   if (should_load_content)
    {
-      strcpy(param->args + len, path_get(RARCH_PATH_CONTENT));
-      param->argv[param->argc] = param->args + len;
-      len += strlen(param->args + len) + 1;
-      param->argc++;
+      const char *content = path_get(RARCH_PATH_CONTENT);
+#ifdef HAVE_NETWORKING
+      char *arg_data[NETPLAY_FORK_MAX_ARGS];
 
-      RARCH_LOG("content path: [%s].\n", path_get(RARCH_PATH_CONTENT));
+      if (netplay_driver_ctl(RARCH_NETPLAY_CTL_GET_FORK_ARGS, (void*)arg_data))
+      {
+         char **cur_arg = arg_data;
+
+         do
+         {
+            param->argv[param->argc++] = arg;
+            arg += strlcpy(arg, *cur_arg, PATH_MAX_LENGTH);
+            arg += 1;
+         }
+         while (*(++cur_arg));
+
+         param->argv[param->argc] = NULL;
+      }
+      else
+#endif
+      if (!string_is_empty(content))
+      {
+         param->argc    = 2;
+         param->argv[1] = arg;
+         arg += strlcpy(arg, content, PATH_MAX_LENGTH);
+         arg += 1;
+
+         param->argv[2] = NULL;
+      }
    }
 #endif
-   param->argv[param->argc] = NULL;
 
+   if (HBL_loadToMemory(path, (u32)arg - (u32)param) < 0)
    {
-      if (HBL_loadToMemory(path, (u32)param->args - (u32)param + len) < 0)
-         RARCH_LOG("Failed to load core\n");
-      else
-      {
-         param->magic = ARGV_MAGIC;
-         ARGV_PTR = param;
-         DEBUG_VAR(param->argc);
-         DEBUG_VAR(param->argv);
+      RARCH_ERR("Failed to load core\n");
+   }
+   else
+   {
+      param->magic = ARGV_MAGIC;
+      ARGV_PTR     = param;
 
-      }
+      DEBUG_VAR(param->argc);
+      DEBUG_VAR(param->argv);
    }
 }
 
@@ -258,15 +284,12 @@ static bool frontend_wiiu_set_fork(enum frontend_fork fork_mode)
    switch (fork_mode)
    {
       case FRONTEND_FORK_CORE:
-         RARCH_LOG("FRONTEND_FORK_CORE\n");
          wiiu_fork_mode  = fork_mode;
          break;
       case FRONTEND_FORK_CORE_WITH_ARGS:
-         RARCH_LOG("FRONTEND_FORK_CORE_WITH_ARGS\n");
          wiiu_fork_mode  = fork_mode;
          break;
       case FRONTEND_FORK_RESTART:
-         RARCH_LOG("FRONTEND_FORK_RESTART\n");
          /* NOTE: We don't implement Salamander, so just turn
           * this into FRONTEND_FORK_CORE. */
          wiiu_fork_mode  = FRONTEND_FORK_CORE;
@@ -301,7 +324,7 @@ static void frontend_wiiu_exitspawn(char *s, size_t len, char *args)
 
 frontend_ctx_driver_t frontend_ctx_wiiu =
 {
-   frontend_wiiu_get_environment_settings,
+   frontend_wiiu_get_env_settings,
    frontend_wiiu_init,
    frontend_wiiu_deinit,
    frontend_wiiu_exitspawn,
@@ -316,27 +339,30 @@ frontend_ctx_driver_t frontend_ctx_wiiu =
    NULL,                         /* get_name */
    NULL,                         /* get_os */
    frontend_wiiu_get_rating,
-   NULL,                         /* load_content */
-   frontend_wiiu_get_architecture,
+   NULL,                         /* content_loaded */
+   frontend_wiiu_get_arch,       /* get_architecture */
    NULL,                         /* get_powerstate */
    frontend_wiiu_parse_drive_list,
-   NULL,                         /* get_mem_total */
-   NULL,                         /* get_mem_free */
+   NULL,                         /* get_total_mem */
+   NULL,                         /* get_free_mem */
    NULL,                         /* install_signal_handler */
    NULL,                         /* get_signal_handler_state */
-   NULL,                         /* set_signal_handler_state */
-   NULL,                         /* destroy_signal_handler_state */
-   NULL,                         /* attach_console */
-   NULL,                         /* detach_console */
-   NULL,                         /* watch_path_for_changes */
-   NULL,                         /* check_for_path_changes */
+   NULL,                         /* set_signal_handler_state       */
+   NULL,                         /* destroy_signal_handler_state   */
+   NULL,                         /* attach_console                 */
+   NULL,                         /* detach_console                 */
+   NULL,                         /* get_lakka_version              */
+   NULL,                         /* set_screen_brightness          */
+   NULL,                         /* watch_path_for_changes         */
+   NULL,                         /* check_for_path_changes         */
    NULL,                         /* set_sustained_performance_mode */
-   NULL,                         /* get_cpu_model_name */
-   NULL,                         /* get_user_language */
-   NULL,                         /* is_narrator_running */
-   NULL,                         /* accessibility_speak */
-   "wiiu",
-   NULL,                         /* get_video_driver */
+   NULL,                         /* get_cpu_model_name             */
+   NULL,                         /* get_user_language              */
+   NULL,                         /* is_narrator_running            */
+   NULL,                         /* accessibility_speak            */
+   NULL,                         /* set_gamemode                   */
+   "wiiu",                       /* ident                          */
+   NULL                          /* get_video_driver               */
 };
 
 /* main() and its supporting functions */
@@ -459,7 +485,7 @@ static void main_loop(void)
 
    for (;;)
    {
-      if (video_driver_get_ptr(false))
+      if (video_driver_get_ptr())
       {
          start_time = OSGetSystemTime();
          task_queue_wait(swap_is_pending, &start_time);

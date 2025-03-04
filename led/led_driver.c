@@ -12,10 +12,10 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <string/stdstring.h>
 
 #include "led_driver.h"
+#include "../verbosity.h"
 
 static const led_driver_t *current_led_driver = NULL;
 
@@ -44,13 +44,24 @@ void led_driver_init(const char *led_driver)
       current_led_driver  = &overlay_led_driver;
 #endif
 
-#if HAVE_RPILED
+#ifdef HAVE_RPILED
    if (string_is_equal("rpi", drivername))
       current_led_driver  = &rpi_led_driver;
+   if (string_is_equal("sysled", drivername))
+      current_led_driver  = &sys_led_driver;
 #endif
+
+#if (defined(_WIN32) && !defined(_XBOX) && !defined(__WINRT__)) || defined(HAVE_X11)
+   if (string_is_equal("keyboard", drivername))
+      current_led_driver  = &keyboard_led_driver;
+#endif
+
 
    if (current_led_driver)
       (*current_led_driver->init)();
+
+   if (!string_is_equal("null", drivername))
+      RARCH_LOG("[LED]: Using driver: \"%s\".\n", led_driver);
 }
 
 void led_driver_free(void)

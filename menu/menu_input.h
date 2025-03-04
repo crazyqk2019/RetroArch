@@ -26,6 +26,9 @@
 
 #include "menu_defines.h"
 #include "../input/input_types.h"
+#include "../input/input_driver.h"
+#include "../gfx/gfx_display.h"
+#include "../performance_counters.h"
 
 RETRO_BEGIN_DECLS
 
@@ -96,6 +99,11 @@ RETRO_BEGIN_DECLS
 #define MENU_INPUT_DPI_THRESHOLD_SWIPE 0.55f
 #define MENU_INPUT_DPI_THRESHOLD_SWIPE_TANGENT 0.45f
 
+#define MENU_MAX_BUTTONS           219
+#define MENU_MAX_AXES              32
+#define MENU_MAX_HATS              4
+#define MENU_MAX_MBUTTONS          32 /* Enough to cover largest libretro constant*/
+
 enum menu_pointer_type
 {
    MENU_POINTER_DISABLED = 0,
@@ -136,67 +144,129 @@ enum menu_input_pointer_gesture
    MENU_INPUT_GESTURE_SWIPE_RIGHT
 };
 
+struct menu_bind_state_port
+{
+   int16_t axes[MENU_MAX_AXES];
+   uint16_t hats[MENU_MAX_HATS];
+   bool mouse_buttons[MENU_MAX_MBUTTONS];
+   bool buttons[MENU_MAX_BUTTONS];
+   bool keys[RETROK_LAST];
+};
+
+struct menu_bind_axis_state
+{
+   /* Default axis state. */
+   int16_t rested_axes[MENU_MAX_AXES];
+   /* Locked axis state. If we configured an axis,
+    * avoid having the same axis state trigger something again right away. */
+   int16_t locked_axes[MENU_MAX_AXES];
+};
+
+struct menu_bind_state
+{
+   rarch_timer_t timer_timeout;
+   rarch_timer_t timer_hold;
+
+   struct retro_keybind *output;
+   struct retro_keybind buffer;
+
+   struct menu_bind_state_port state[MAX_USERS];
+   struct menu_bind_axis_state axis_state[MAX_USERS];
+
+   unsigned begin;
+   unsigned last;
+   unsigned order;
+   unsigned user;
+   unsigned port;
+
+   bool skip;
+};
+
+enum menu_inp_ptr_hwst_flags
+{
+   MENU_INP_PTR_FLG_ACTIVE       = (1 << 0),
+   MENU_INP_PTR_FLG_PRESS_SELECT = (1 << 1),
+   MENU_INP_PTR_FLG_PRESS_CANCEL = (1 << 2),
+   MENU_INP_PTR_FLG_PRESS_UP     = (1 << 3),
+   MENU_INP_PTR_FLG_PRESS_DOWN   = (1 << 4),
+   MENU_INP_PTR_FLG_PRESS_LEFT   = (1 << 5),
+   MENU_INP_PTR_FLG_PRESS_RIGHT  = (1 << 6),
+   MENU_INP_PTR_FLG_PRESSED      = (1 << 7),
+   MENU_INP_PTR_FLG_DRAGGED      = (1 << 8)
+};
+
 /* Defines set of (abstracted) inputs/states
  * common to mouse + touchscreen hardware */
 typedef struct menu_input_pointer_hw_state
 {
-   bool active;
    int16_t x;
    int16_t y;
-   bool select_pressed;
-   bool cancel_pressed;
-   bool up_pressed;
-   bool down_pressed;
-   bool left_pressed;
-   bool right_pressed;
+   uint16_t flags;
 } menu_input_pointer_hw_state_t;
 
 typedef struct menu_input_pointer
 {
+   retro_time_t press_duration;  /* int64_t alignment */
+   /**
+    * NOTE: menu drivers typically set y_accel to zero
+    * manually when populating entries.
+    **/
+   float y_accel;
    enum menu_pointer_type type;
-   bool active;
-   bool pressed;
-   bool dragged;
-   retro_time_t press_duration;
    enum menu_input_pointer_press_direction press_direction;
    int16_t x;
    int16_t y;
    int16_t dx;
    int16_t dy;
-   float y_accel;
+   uint16_t flags;
 } menu_input_pointer_t;
 
 typedef struct menu_input
 {
-   menu_input_pointer_t pointer;
+   menu_input_pointer_t pointer; /* retro_time_t alignment */
    unsigned ptr;
    bool select_inhibit;
    bool cancel_inhibit;
 } menu_input_t;
 
-typedef struct menu_input_ctx_hitbox
+typedef struct key_desc
 {
-   int32_t x1;
-   int32_t x2;
-   int32_t y1;
-   int32_t y2;
-} menu_input_ctx_hitbox_t;
+   /* libretro key id */
+   unsigned key;
 
-/* Provides access to all pointer device parameters */
-void menu_input_get_pointer_state(menu_input_pointer_t *pointer);
+   /* description */
+   char desc[32];
+} key_desc_t;
 
-/* Getters/setters for menu item (index) currently
- * selected/highlighted (hovered over) by the pointer
- * device
- * Note: Each menu driver is responsible for setting this */
-unsigned menu_input_get_pointer_selection(void);
+typedef struct menu_input_ctx_line
+{
+   const char *label;
+   const char *label_setting;
+   unsigned type;
+   unsigned idx;
+   input_keyboard_line_complete_t cb;
+} menu_input_ctx_line_t;
 
-void menu_input_set_pointer_selection(unsigned selection);
+/**
+ * Copy parameters from the global menu_input_state to a menu_input_pointer_t
+ * in order to provide access to all pointer device parameters.
+ *
+ * @param copy_target  menu_input_pointer_t struct where values will be copied
+ **/
+void menu_input_get_pointer_state(menu_input_pointer_t *copy_target);
 
-/* Allows pointer y acceleration to be overridden
- * (typically want to set acceleration to zero when
- * calling populate entries) */
-void menu_input_set_pointer_y_accel(float y_accel);
+bool menu_input_dialog_start(menu_input_ctx_line_t *line);
+
+const char *menu_input_dialog_get_buffer(void);
+
+bool menu_input_dialog_start_search(void);
+
+bool menu_input_dialog_get_display_kb(void);
+
+void menu_input_dialog_end(void);
+
+/* TODO/FIXME - public global variables */
+extern struct key_desc key_descriptors[RARCH_MAX_KEYS];
 
 RETRO_END_DECLS
 

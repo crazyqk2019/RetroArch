@@ -33,9 +33,9 @@
 
 struct rxml_parse_buffer
 {
+   rxml_node_t *stack[32];
    char xml[BUFSIZE];
    char val[BUFSIZE];
-   rxml_node_t* stack[32];
 };
 
 struct rxml_document
@@ -105,7 +105,7 @@ rxml_document_t *rxml_load_document(const char *path)
       goto error;
 
    memory_buffer[len]      = '\0';
-   if (filestream_read(file, memory_buffer, len) != (size_t)len)
+   if (filestream_read(file, memory_buffer, len) != len)
       goto error;
 
    filestream_close(file);
@@ -118,7 +118,7 @@ rxml_document_t *rxml_load_document(const char *path)
 
 error:
    free(memory_buffer);
-   if(file)
+   if (file)
       filestream_close(file);
    return NULL;
 }
@@ -129,7 +129,7 @@ rxml_document_t *rxml_load_document_string(const char *str)
    rxml_document_t *doc          = NULL;
    size_t stack_i                = 0;
    size_t level                  = 0;
-   int c                         = 0;
+   int i                         = 0;
    char *valptr                  = NULL;
    rxml_node_t *node             = NULL;
    struct rxml_attrib_node *attr = NULL;
@@ -142,16 +142,6 @@ rxml_document_t *rxml_load_document_string(const char *str)
    doc                           = (rxml_document_t*)malloc(sizeof(*doc));
    if (!doc)
       goto error;
-
-   doc->root_node                = (struct rxml_node *)malloc(
-         sizeof(*doc->root_node));
-   
-   doc->root_node->name          = NULL;
-   doc->root_node->data          = NULL;
-   doc->root_node->attrib        = NULL;
-
-   doc->root_node->children      = NULL;
-   doc->root_node->next          = NULL;
 
    yxml_init(&x, buf->xml, BUFSIZE);
 
@@ -207,6 +197,7 @@ rxml_document_t *rxml_load_document_string(const char *str)
             node->name                     = strdup(x.elem);
 
             attr                           = NULL;
+            valptr                         = buf->val;
 
             ++level;
             break;
@@ -247,47 +238,31 @@ rxml_document_t *rxml_load_document_string(const char *str)
             break;
 
          case YXML_CONTENT:
-            for (c = 0; c < sizeof(x.data) && x.data[c]; ++c)
+            for (i = 0; i < (int)sizeof(x.data) && x.data[i]; i++)
             {
-               *valptr = x.data[c];
+               *valptr = x.data[i];
                ++valptr;
             }
             break;
 
          case YXML_ATTRSTART:
             if (attr)
-            {
-               struct rxml_attrib_node 
-                  *new_node = (struct rxml_attrib_node*)
-                  calloc(1, sizeof(*attr));
-               attr         = new_node;
-               attr->next   = new_node ;
-            }
+               attr = attr->next   = (struct rxml_attrib_node*)
+                     calloc(1, sizeof(*attr));
             else
-            {
-               struct rxml_attrib_node 
-                  *new_node    = (struct rxml_attrib_node*)
-                  calloc(1, sizeof(*attr));
-               attr            = new_node;
-               
-               if (node)
-                  node->attrib = new_node;
-            }
+               attr = node->attrib = (struct rxml_attrib_node*)calloc(1, sizeof(*attr));
 
-            if (attr)
-            {
-               if (attr->attrib)
-                  free(attr->attrib);
-               attr->attrib = strdup(x.attr);
-            }
+            if (attr->attrib)
+               free(attr->attrib);
+            attr->attrib = strdup(x.attr);
 
             valptr       = buf->val;
             break;
 
          case YXML_ATTRVAL:
-            for(c = 0; c < sizeof(x.data) && x.data[c]; ++c)
+            for (i = 0; i < (int)sizeof(x.data) && x.data[i]; i++)
             {
-               *valptr = x.data[c];
+               *valptr = x.data[i];
                ++valptr;
             }
             break;

@@ -19,7 +19,52 @@
 #include <stdint.h>
 #include <boolean.h>
 
+#include "SDL.h"
+
 #include "../video_defines.h"
+#include "../font_driver.h"
+#include "../../retroarch.h"
+
+enum sd2l_flags
+{
+   SDL2_FLAG_QUITTING      = (1 << 0),
+   SDL2_FLAG_SHOULD_RESIZE = (1 << 1)
+};
+
+typedef struct sdl2_tex
+{
+   SDL_Texture *tex;
+
+   unsigned w;
+   unsigned h;
+   size_t pitch;
+   bool active;
+   bool rgb32;
+} sdl2_tex_t;
+
+typedef struct _sdl2_video
+{
+   double rotation;
+
+   struct video_viewport vp;
+   video_info_t video;
+
+   sdl2_tex_t frame; /* ptr alignment */
+   sdl2_tex_t menu;  /* ptr alignment */
+   sdl2_tex_t font;  /* ptr alignment */
+
+   SDL_Window *window;
+   SDL_Renderer *renderer;
+
+   void *font_data;
+   const font_renderer_driver_t *font_driver;
+
+   uint8_t font_r;
+   uint8_t font_g;
+   uint8_t font_b;
+
+   uint8_t flags;
+} sdl2_video_t;
 
 void sdl2_set_handles(void *data, enum rarch_display_type 
       display_type);

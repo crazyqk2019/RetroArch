@@ -48,23 +48,25 @@ enum string_list_type
    STRING_LIST_WIFI_DRIVERS,
    STRING_LIST_LOCATION_DRIVERS,
    STRING_LIST_AUDIO_DRIVERS,
+#ifdef HAVE_MICROPHONE
+   STRING_LIST_MICROPHONE_DRIVERS,
+#endif
    STRING_LIST_AUDIO_RESAMPLER_DRIVERS,
    STRING_LIST_VIDEO_DRIVERS,
    STRING_LIST_INPUT_DRIVERS,
    STRING_LIST_INPUT_JOYPAD_DRIVERS,
    STRING_LIST_INPUT_HID_DRIVERS,
    STRING_LIST_RECORD_DRIVERS,
-   STRING_LIST_MIDI_DRIVERS,
-   STRING_LIST_SUPPORTED_CORES_PATHS,
-   STRING_LIST_SUPPORTED_CORES_NAMES
+   STRING_LIST_CLOUD_SYNC_DRIVERS,
+#ifdef HAVE_LAKKA
+   STRING_LIST_TIMEZONES,
+#endif
+   STRING_LIST_MIDI_DRIVERS
 };
 
 struct string_list *dir_list_new_special(const char *input_dir,
       enum dir_list_type type, const char *filter,
       bool show_hidden_files);
-
-struct string_list *string_list_new_special(enum string_list_type type,
-      void *data, unsigned *len, size_t *list_size);
 
 const char *char_list_new_special(enum string_list_type type, void *data);
 

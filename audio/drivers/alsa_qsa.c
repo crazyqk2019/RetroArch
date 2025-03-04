@@ -19,7 +19,7 @@
 #include <sys/asoundlib.h>
 #include <retro_math.h>
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 
 #define MAX_FRAG_SIZE 3072
 #define DEFAULT_RATE 48000
@@ -29,18 +29,18 @@
 typedef struct alsa
 {
    uint8_t **buffer;
+   snd_pcm_t *pcm;
    uint8_t *buffer_chunk;
    unsigned buffer_index;
    unsigned buffer_ptr;
    volatile unsigned buffered_blocks;
 
-   snd_pcm_t *pcm;
+   unsigned buf_size;
+   unsigned buf_count;
    bool nonblock;
    bool has_float;
    bool can_pause;
    bool is_paused;
-   unsigned buf_size;
-   unsigned buf_count;
 } alsa_qsa_t;
 
 typedef long snd_pcm_sframes_t;
@@ -69,7 +69,7 @@ static void *alsa_qsa_init(const char *device,
       goto error;
    }
 
-   if((err = snd_pcm_nonblock_mode(alsa->pcm, 1)) < 0)
+   if ((err = snd_pcm_nonblock_mode(alsa->pcm, 1)) < 0)
    {
       RARCH_ERR("[ALSA QSA]: Can't set blocking mode: %s\n",
             snd_strerror(err));
@@ -219,14 +219,14 @@ static int check_pcm_status(void *data, int channel_type)
    return ret;
 }
 
-static ssize_t alsa_qsa_write(void *data, const void *buf, size_t size)
+static ssize_t alsa_qsa_write(void *data, const void *buf, size_t len)
 {
-   alsa_qsa_t          *alsa = (alsa_qsa_t*)data;
-   snd_pcm_sframes_t written = 0;
+   alsa_qsa_t *alsa = (alsa_qsa_t*)data;
+   ssize_t  written = 0;
 
    while (size)
    {
-      size_t avail_write = MIN(alsa->buf_size - alsa->buffer_ptr, size);
+      size_t avail_write = MIN(alsa->buf_size - alsa->buffer_ptr, len);
 
       if (avail_write)
       {
@@ -235,7 +235,7 @@ static ssize_t alsa_qsa_write(void *data, const void *buf, size_t size)
 
          alsa->buffer_ptr      += avail_write;
          buf                    = (void*)((uint8_t*)buf + avail_write);
-         size                  -= avail_write;
+         len                   -= avail_write;
          written               += avail_write;
       }
 
@@ -260,7 +260,6 @@ static ssize_t alsa_qsa_write(void *data, const void *buf, size_t size)
                return -1;
          }
       }
-
    }
 
    return written;
@@ -313,11 +312,10 @@ static bool alsa_qsa_start(void *data, bool is_shutdown)
 
 static void alsa_qsa_set_nonblock_state(void *data, bool state)
 {
+   int err;
    alsa_qsa_t *alsa = (alsa_qsa_t*)data;
 
-   int err;
-
-   if((err = snd_pcm_nonblock_mode(alsa->pcm, state)) < 0)
+   if ((err = snd_pcm_nonblock_mode(alsa->pcm, state)) < 0)
    {
       RARCH_ERR("Can't set blocking mode to %d: %s\n", state,
             snd_strerror(err));

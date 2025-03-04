@@ -26,12 +26,10 @@
 
 #include "core_info.h"
 
-RETRO_BEGIN_DECLS
-
 /* Default maximum playlist size */
 #define COLLECTION_SIZE 0x7FFFFFFF
 
-typedef struct content_playlist playlist_t;
+RETRO_BEGIN_DECLS
 
 enum playlist_runtime_status
 {
@@ -63,7 +61,17 @@ enum playlist_thumbnail_mode
    PLAYLIST_THUMBNAIL_MODE_OFF,
    PLAYLIST_THUMBNAIL_MODE_SCREENSHOTS,
    PLAYLIST_THUMBNAIL_MODE_TITLE_SCREENS,
-   PLAYLIST_THUMBNAIL_MODE_BOXARTS
+   PLAYLIST_THUMBNAIL_MODE_BOXARTS,
+   PLAYLIST_THUMBNAIL_MODE_LOGOS,
+
+   PLAYLIST_THUMBNAIL_MODE_LAST
+};
+
+enum playlist_thumbnail_match_mode
+{
+   PLAYLIST_THUMBNAIL_MATCH_MODE_DEFAULT = 0,
+   PLAYLIST_THUMBNAIL_MATCH_MODE_WITH_LABEL = PLAYLIST_THUMBNAIL_MATCH_MODE_DEFAULT,
+   PLAYLIST_THUMBNAIL_MATCH_MODE_WITH_FILENAME
 };
 
 enum playlist_sort_mode
@@ -73,18 +81,38 @@ enum playlist_sort_mode
    PLAYLIST_SORT_MODE_OFF
 };
 
-/* TODO/FIXME - since gfx_thumbnail_path.h has now
- * been divorced from the menu code, perhaps jdgleaver
- * can refactor this? */
-
 /* Note: We already have a left/right enum defined
  * in gfx_thumbnail_path.h - but we can't include
  * menu code here, so have to make a 'duplicate'... */
 enum playlist_thumbnail_id
 {
    PLAYLIST_THUMBNAIL_RIGHT = 0,
-   PLAYLIST_THUMBNAIL_LEFT
+   PLAYLIST_THUMBNAIL_LEFT,
+   PLAYLIST_THUMBNAIL_ICON
 };
+
+enum playlist_thumbnail_name_flags
+{
+   PLAYLIST_THUMBNAIL_FLAG_INVALID          = 0,
+   PLAYLIST_THUMBNAIL_FLAG_FULL_NAME        = (1 << 0),
+   PLAYLIST_THUMBNAIL_FLAG_STD_NAME         = (1 << 1),
+   PLAYLIST_THUMBNAIL_FLAG_SHORT_NAME       = (1 << 2),
+   PLAYLIST_THUMBNAIL_FLAG_NONE             = (1 << 3)
+};
+
+typedef struct content_playlist playlist_t;
+
+/* Holds all parameters required to uniquely
+ * identify a playlist content path */
+typedef struct
+{
+   char *real_path;
+   char *archive_path;
+   uint32_t real_path_hash;
+   uint32_t archive_path_hash;
+   bool is_archive;
+   bool is_in_archive;
+} playlist_path_id_t;
 
 struct playlist_entry
 {
@@ -99,7 +127,8 @@ struct playlist_entry
    char *runtime_str;
    char *last_played_str;
    struct string_list *subsystem_roms;
-   enum playlist_runtime_status runtime_status;
+   playlist_path_id_t *path_id;
+   unsigned entry_slot;
    unsigned runtime_hours;
    unsigned runtime_minutes;
    unsigned runtime_seconds;
@@ -112,28 +141,30 @@ struct playlist_entry
    unsigned last_played_hour;
    unsigned last_played_minute;
    unsigned last_played_second;
+   enum playlist_runtime_status runtime_status;
+   enum playlist_thumbnail_name_flags thumbnail_flags;
 };
 
 /* Holds all configuration parameters required
  * when initialising/saving playlists */
 typedef struct
 {
-   char path[PATH_MAX_LENGTH];
-   char base_content_directory[PATH_MAX_LENGTH];
    size_t capacity;
    bool old_format;
    bool compress;
    bool fuzzy_archive_match;
-   bool autofix_paths;   
+   bool autofix_paths;
+   char path[PATH_MAX_LENGTH];
+   char base_content_directory[DIR_MAX_LENGTH];
 } playlist_config_t;
 
 /* Convenience function: copies specified playlist
  * path to specified playlist configuration object */
-void playlist_config_set_path(playlist_config_t *config, const char *path);
+size_t playlist_config_set_path(playlist_config_t *config, const char *path);
 
 /* Convenience function: copies base content directory
  * path to specified playlist configuration object */
-void playlist_config_set_base_content_directory(playlist_config_t* config, const char* path);
+size_t playlist_config_set_base_content_directory(playlist_config_t* config, const char* path);
 
 /* Creates a copy of the specified playlist configuration.
  * Returns false in the event of an error */
@@ -223,7 +254,8 @@ void playlist_delete_by_path(playlist_t *playlist,
 /**
  * playlist_resolve_path:
  * @mode      : PLAYLIST_LOAD or PLAYLIST_SAVE
- * @path        : The path to be modified
+ * @is_core   : Set true if path to be resolved is a core file
+ * @path      : The path to be modified
  *
  * Resolves the path of an item, such as the content path or path to the core, to a format
  * appropriate for saving or loading depending on the @mode parameter
@@ -233,7 +265,21 @@ void playlist_delete_by_path(playlist_t *playlist,
  * install (iOS)
  **/
 void playlist_resolve_path(enum playlist_file_mode mode,
-      char *path, size_t len);
+      bool is_core, char *path, size_t len);
+
+/**
+ * playlist_content_path_is_valid:
+ * @path      : Content path
+ *
+ * Checks whether specified playlist content path
+ * refers to an existent file. Handles all playlist
+ * content path 'types' (i.e. can validate paths
+ * referencing files inside archives).
+ *
+ * Returns true if file referenced by content
+ * path exists on the host filesystem.
+ **/
+bool playlist_content_path_is_valid(const char *path);
 
 /**
  * playlist_push:
@@ -258,6 +304,11 @@ void playlist_update(playlist_t *playlist, size_t idx,
 void playlist_update_runtime(playlist_t *playlist, size_t idx,
       const struct playlist_entry *update_entry,
       bool register_update);
+
+void playlist_update_thumbnail_name_flag(playlist_t *playlist, size_t idx,
+     enum playlist_thumbnail_name_flags thumbnail_flags);
+enum playlist_thumbnail_name_flags playlist_get_next_thumbnail_name_flag(playlist_t *playlist, size_t idx);
+enum playlist_thumbnail_name_flags playlist_get_curr_thumbnail_name_flag(playlist_t *playlist, size_t idx);
 
 void playlist_get_index_by_path(playlist_t *playlist,
       const char *search_path,
@@ -311,6 +362,12 @@ bool playlist_entries_are_equal(
       const struct playlist_entry *entry_b,
       const playlist_config_t *config);
 
+/* Returns true if entries at specified indices
+ * of specified playlist have identical content
+ * and core paths */
+bool playlist_index_entries_are_equal(
+      playlist_t *playlist, size_t idx_a, size_t idx_b);
+
 void playlist_get_crc32(playlist_t *playlist, size_t idx,
       const char **crc32);
 
@@ -318,12 +375,21 @@ void playlist_get_crc32(playlist_t *playlist, size_t idx,
 void playlist_get_db_name(playlist_t *playlist, size_t idx,
       const char **db_name);
 
-char *playlist_get_default_core_path(playlist_t *playlist);
-char *playlist_get_default_core_name(playlist_t *playlist);
+const char *playlist_get_default_core_path(playlist_t *playlist);
+const char *playlist_get_default_core_name(playlist_t *playlist);
 enum playlist_label_display_mode playlist_get_label_display_mode(playlist_t *playlist);
 enum playlist_thumbnail_mode playlist_get_thumbnail_mode(
       playlist_t *playlist, enum playlist_thumbnail_id thumbnail_id);
+bool playlist_thumbnail_match_with_filename(playlist_t *playlist);
 enum playlist_sort_mode playlist_get_sort_mode(playlist_t *playlist);
+const char *playlist_get_scan_content_dir(playlist_t *playlist);
+const char *playlist_get_scan_file_exts(playlist_t *playlist);
+const char *playlist_get_scan_dat_file_path(playlist_t *playlist);
+bool playlist_get_scan_search_recursively(playlist_t *playlist);
+bool playlist_get_scan_search_archives(playlist_t *playlist);
+bool playlist_get_scan_filter_dat_content(playlist_t *playlist);
+bool playlist_get_scan_overwrite_playlist(playlist_t *playlist);
+bool playlist_scan_refresh_enabled(playlist_t *playlist);
 
 void playlist_set_default_core_path(playlist_t *playlist, const char *core_path);
 void playlist_set_default_core_name(playlist_t *playlist, const char *core_name);
@@ -331,6 +397,13 @@ void playlist_set_label_display_mode(playlist_t *playlist, enum playlist_label_d
 void playlist_set_thumbnail_mode(
       playlist_t *playlist, enum playlist_thumbnail_id thumbnail_id, enum playlist_thumbnail_mode thumbnail_mode);
 void playlist_set_sort_mode(playlist_t *playlist, enum playlist_sort_mode sort_mode);
+void playlist_set_scan_content_dir(playlist_t *playlist, const char *content_dir);
+void playlist_set_scan_file_exts(playlist_t *playlist, const char *file_exts);
+void playlist_set_scan_dat_file_path(playlist_t *playlist, const char *dat_file_path);
+void playlist_set_scan_search_recursively(playlist_t *playlist, bool search_recursively);
+void playlist_set_scan_search_archives(playlist_t *playlist, bool search_archives);
+void playlist_set_scan_filter_dat_content(playlist_t *playlist, bool filter_dat_content);
+void playlist_set_scan_overwrite_playlist(playlist_t *playlist, bool overwrite_playlist);
 
 /* Returns true if specified entry has a valid
  * core association (i.e. a non-empty string

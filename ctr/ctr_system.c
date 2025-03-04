@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include "ctr_debug.h"
 
 #define CTR_APPMEMALLOC_PTR ((u32*)0x1FF80040)
@@ -20,6 +19,8 @@ u32 __heapBase;
 
 u32 __stack_bottom;
 u32 __stack_size_extra;
+
+u32 __saved_stack;
 
 extern u32 __linear_heap_size_hbl;
 extern u32 __heap_size_hbl;
@@ -74,6 +75,11 @@ void __system_allocateHeaps(void)
    /* Allocate the linear heap */
    svcControlMemory(&__linear_heap, 0x0, 0x0, __linear_heap_size, MEMOP_ALLOC_LINEAR, MEMPERM_READ | MEMPERM_WRITE);
 
+#ifdef USE_CTRULIB_2
+   /* Mappable allocator init */
+   mappableInit(OS_MAP_AREA_BEGIN, OS_MAP_AREA_END);
+#endif
+
    /* Set up newlib heap */
    fake_heap_end = (char*)0x13F00000;
 }
@@ -102,15 +108,26 @@ extern char** __system_argv;
 void __attribute__((noreturn)) __libctru_exit(int rc)
 {
    u32 tmp = 0;
+   int size = 0;
 
    if (__system_argv)
       free(__system_argv);
 
    /* Unmap the linear heap */
-   svcControlMemory(&tmp, __linear_heap, 0x0, __linear_heap_size, MEMOP_FREE, 0x0);
+   /* Do this 1MB at a time to avoid kernel panics, see https://github.com/LumaTeam/Luma3DS/issues/1504 */
+   while (__linear_heap_size > 0) {
+      size = __linear_heap_size < 0x100000 ? __linear_heap_size : 0x100000;
+      __linear_heap_size -= size;
+      svcControlMemory(&tmp, __linear_heap + __linear_heap_size, 0x0, size, MEMOP_FREE, 0x0);
+   }
 
    /* Unmap the application heap */
-   svcControlMemory(&tmp, __heapBase, 0x0, __heap_size, MEMOP_FREE, 0x0);
+   /* Do this 1MB at a time to avoid kernel panics */
+   while (__heap_size > 0) {
+      size = __heap_size < 0x100000 ? __heap_size : 0x100000;
+      __heap_size -= size;
+      svcControlMemory(&tmp, __heapBase + __heap_size, 0x0, size, MEMOP_FREE, 0x0);
+   }
 
    if (__stack_size_extra)
       svcControlMemory(&tmp, __stack_bottom, 0x0, __stack_size_extra, MEMOP_FREE, 0x0);
@@ -170,12 +187,12 @@ Result APT_ReceiveDeliverArg_(void* param, size_t param_size,
    staticbufs[2]          = saved_threadstorage[2];
 	staticbufs[3]          = saved_threadstorage[3];
 
-   if(R_FAILED(ret))
+   if (R_FAILED(ret))
       return ret;
 
-   if(source_pid)
+   if (source_pid)
       *source_pid         = ((u64*)cmdbuf)[1];
-   if(received)
+   if (received)
       *received           = ((bool*)cmdbuf)[16];
 
 	return cmdbuf[1];
@@ -195,7 +212,7 @@ void __system_initArgv(void)
    u8 hmac[0x20];
    bool received;
 
-   if(!__service_ptr
+   if (!__service_ptr
       && R_SUCCEEDED(APT_ReceiveDeliverArg_(&param, sizeof(param), hmac, sizeof(hmac), NULL, &received))
       && received
       && !memcmp(hmac, __argv_hmac, sizeof(__argv_hmac)))
@@ -214,20 +231,7 @@ void __system_initArgv(void)
       for (i = 1; i < __system_argc; i++)
          __system_argv[i] = __system_argv[i - 1] + strlen(__system_argv[i - 1]) + 1;
 
-      i             = __system_argc - 1;
-      __system_argc = 1;
-
-      while (i)
-      {
-         if(__system_argv[i] && isalnum(__system_argv[i][0])
-               && strncmp(__system_argv[i], "3dslink:/", 9))
-         {
-            __system_argv[1] = __system_argv[i];
-            __system_argc = 2;
-            break;
-         }
-         i--;
-      }
+      __system_argv[__system_argc] = NULL;
    }
    else
    {
@@ -240,6 +244,9 @@ void __system_initArgv(void)
 
 void initSystem(void (*retAddr)(void))
 {
+   register u32 sp_val __asm__("sp");
+   __saved_stack = sp_val;
+
    __libctru_init(retAddr);
    __appInit();
    __system_initArgv();
@@ -250,6 +257,7 @@ void __attribute__((noreturn)) __ctru_exit(int rc)
 {
    __libc_fini_array();
    __appExit();
+   asm ("mov sp, %[saved_stack] \n\t" : : [saved_stack] "r"  (__saved_stack) : "sp");
    __libctru_exit(rc);
 }
 
@@ -298,6 +306,20 @@ void wait_for_input(void)
 
       svcSleepThread(1000000);
    }
+}
+
+void error_and_quit(const char* errorStr)
+{
+   errorConf error;
+#ifdef IS_SALAMANDER
+   gfxInitDefault();
+#endif
+   errorInit(&error, ERROR_TEXT, CFG_LANGUAGE_EN);
+   errorText(&error, errorStr);
+   errorDisp(&error);
+
+   gfxExit();
+   exit(0);
 }
 
 long sysconf(int name)

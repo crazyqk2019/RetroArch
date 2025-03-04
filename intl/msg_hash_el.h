@@ -45,6 +45,10 @@ MSG_HASH(
    "Εξερεύνηση"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CONTENTLESS_CORES_TAB,
+   "Πυρήνες Χωρίς Περιεχόμενα"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ADD_TAB,
    "Εισαγωγή περιεχομένου"
    )
@@ -68,12 +72,20 @@ MSG_HASH(
    "Επιλέξτε ποιον πυρήνα θα χρησιμοποιήσετε."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_HELP_CORE_LIST,
+   "Αναζήτηση για μια εφαρμογή πυρήνα libretro. Όπου το πρόγραμμα περιήγησης ξεκινά εξαρτάται από τη διαδρομή του καταλόγου πυρήνα. Αν είναι κενό, θα ξεκινήσει στη ρίζα.\nΑν ο κατάλογος πυρήνων είναι ένας κατάλογος, το μενού θα το χρησιμοποιήσει ως κορυφαίο φάκελο. Αν ο κατάλογος πυ[...]"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
    "Φόρτωση Περιεχομένου"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_CONTENT_LIST,
    "Επιλέξτε ποιο περιεχόμενο θα ξεκινήσετε."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_LOAD_CONTENT_LIST,
+   "Περιηγηθείτε για περιεχόμενο. Για να φορτώσετε περιεχόμενο, χρειάζεστε έναν «Πυρήνα» για χρήση και ένα αρχείο περιεχομένου.\nΓια να ελέγξετε πού ξεκινά η αναζήτηση περιεχομένου από το μενού, ορίστε τον «Κατάλογο προγράμματος περιήγησης αρχείων». Εάν δεν οριστεί, θα ξεκινή[...]"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_DISC,
@@ -87,10 +99,20 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DUMP_DISC,
    "Αντιγραφή Δίσκου"
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Is a specific image format used? Is it determined automatically? User choice? */
    MENU_ENUM_SUBLABEL_DUMP_DISC,
    "Αντιγραφή του φυσικού δίσκου στην εσωτερική μνήμη. Θα αποθηκευτεί σαν αρχείο \"εικόνας\"."
    )
+#ifdef HAVE_LAKKA
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_EJECT_DISC,
+   "Εξαγωγή Δίσκου"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_EJECT_DISC,
+   "Εξάγει το δίσκο από φυσική μονάδα CD/DVD."
+   )
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLISTS_TAB,
    "Λίστες Αναπαραγωγής"
@@ -104,20 +126,24 @@ MSG_HASH(
    "Εισαγωγή Περιεχομένου"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_ADD_CONTENT_LIST,
+   "Δημιουργήστε και ενημερώστε τις λίστες αναπαραγωγής σκανάροντας περιεχόμενο."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHOW_WIMP,
    "Εμφάνιση Μενού Επιφάνειας Εργασίας"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SHOW_WIMP,
-   "Ανοίγει το παραδοσιακό μενού επιτραπέζιων υπολογιστών."
+   "Άνοιγμα του παραδοσιακού μενού επιφάνειας εργασίας."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_DISABLE_KIOSK_MODE,
-   "Απενεργοποίηση Λειτουργίας Παιδιού"
+   "Απενεργοποίηση λειτουργίας Kiosk (απαιτείται επανεκκίνηση)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_DISABLE_KIOSK_MODE,
-   "Απενεργοποιεί την λειτουργία κιόσκη. (Χρειάζεται επανεκκίνηση)"
+   "Εμφάνιση όλων των σχετικών ρυθμίσεων ρυθμίσεων."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONLINE_UPDATER,
@@ -169,19 +195,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESTART_RETROARCH,
-   "Επανεκκίνηση RetroArch"
+   "Επανεκκίνηση"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RESTART_RETROARCH,
-   "Επανεκκίνηση του προγράμματος."
+   "Επανεκκινήστε την εφαρμογή RetroArch."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUIT_RETROARCH,
-   "Έξοδος από RetroArch"
+   "Έξοδος"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
-   "Έξοδος από το πρόγραμμα."
+   "Τερματισμός της εφαρμογής RetroArch. Η αποθήκευση ρυθμίσεων κατά την έξοδο είναι ενεργοποιημένη."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_QUIT_RETROARCH_NOSAVE,
+   "Τερματισμός της εφαρμογής RetroArch. Η αποθήκευση ρυθμίσεων κατά την έξοδο είναι απενεργοποιημένη."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_QUIT_RETROARCH,
+   "Τερματισμός του RetroArch. Τερματίζοντας το πρόγραμμα απρόοπτα (SIGKILL κτλ) θα τερματίσει το RetroArch χωρίς αποθήκευση των ρυθμίσεων. Στα συστήματα βασισμένα στο Unix, το SIGINT/SIGTERM επιτρέπει την ομαλή απαρχικοποίηση που περιλαμβάνει την αποθήκευση ρυθμίσεων."
    )
 
 /* Main Menu > Load Core */
@@ -202,11 +236,11 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_SIDELOAD_CORE_LIST,
    "Εγκατάσταση ή ανάκτηση πυρήνα από των κατάλογο των ληφθέντων."
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Maybe add a description? */
    MENU_ENUM_LABEL_VALUE_START_VIDEO_PROCESSOR,
    "Έναρξη Επεξεργαστή Βίντεο"
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Maybe add a description? */
    MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,
    "Έναρξη Απομακρυσμένου RetroPad"
    )
@@ -264,6 +298,22 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_VIDEO,
    "Βίντεο που έχουν προηγουμένως αναπαραχθεί θα εμφανίζονται εδώ."
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_GOTO_EXPLORE,
+   "Εξερεύνηση"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_GOTO_EXPLORE,
+   "Αναζητηστε όλο το περιεχόμενο ταιριάζοντας την βάση δεδομενων μέσω μιας κατηγοριοποιησης της διεπαφής αναζητήσεων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_GOTO_CONTENTLESS_CORES,
+   "Πυρήνες Χωρίς Περιεχόμενα"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_GOTO_CONTENTLESS_CORES,
+   "Εγκατεστημένοι πυρήνες που μπορούν να λειτουργήσουν χωρίς φόρτωση περιεχομένου θα εμφανιστούν εδώ."
+   )
 
 /* Main Menu > Online Updater */
 
@@ -278,6 +328,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_UPDATE_INSTALLED_CORES,
    "Ενημέρωση όλων των εγκατεστημένων δίσκων στην τελευταία διαθέσιμη έκδοση."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SWITCH_INSTALLED_CORES_PFD,
+   "Αλλάξτε τους πυρήνες στην έκδοση του Google Play"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_SWITCH_INSTALLED_CORES_PFD,
+   "Αντικαταστηστε όλους τους παλιούς και χειροκίνητα εγκατεστημένους πυρήνες με τις πιο πρόσφατες εκδόσεις τους στο Play Store, όπου είναι διαθέσιμες."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST,
@@ -298,6 +356,18 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT,
    "Λήψη Περιεχομένου"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_DOWNLOAD_CORE_CONTENT,
+   "Κατεβάστε δωρεάν περιεχόμενο για τον επιλεγμένο πυρήνα."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_SYSTEM_FILES,
+   "Λήψη Αρχείων Συστήματος Πυρήνα"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_DOWNLOAD_CORE_SYSTEM_FILES,
+   "Κατεβάστε τα αρχεία βοηθητικού συστήματος που απαιτούνται για τη σωστή / βέλτιστη λειτουργία πυρήνα."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UPDATE_CORE_INFO_FILES,
@@ -360,7 +430,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETWORK_INFORMATION,
-   "Εμφάνιση ανταπτόρων δικτύου και τις συσχετιζόμενες διευθύνσεις IP."
+   "Προβολή διεπαφών δικτύου και συναφών διευθύνσεων IP."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION,
@@ -368,7 +438,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION,
-   "Εμφάνιση πληροφοριών για την συγκεκριμένη συσκευή."
+   "Προβολή πληροφοριών για την συγκεκριμένη συσκευή."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DATABASE_MANAGER,
@@ -396,6 +466,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_CORE_LABEL,
    "Επιγραφή πυρήνα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_CORE_VERSION,
+   "Έκδοση Πυρήνα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SYSTEM_NAME,
@@ -430,32 +504,64 @@ MSG_HASH(
    "Απαιτούμενο API γραφικών"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_SUPPORT_LEVEL,
+   "Υποστήριξη αποθήκευσης κατάστασης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_DISABLED,
+   "Κανείς"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_BASIC,
+   "Βασικό (Αποθήκευση/Φόρτωση)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_SERIALIZED,
+   "Σειριακή (Αποθήκευση/Φόρτωση, Αναίρεση)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_DETERMINISTIC,
+   "Ντετερμινιστική (Αποθήκευση/Φόρτωση, Αναίρεση, Προώθηση, Netplay)"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_FIRMWARE,
    "Λογισμικό"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MISSING,
-   "Λείπει"
+   MENU_ENUM_LABEL_VALUE_CORE_INFO_FIRMWARE_IN_CONTENT_DIRECTORY,
+   "- Σημείωση: Το 'Αρχεία συστήματος βρίσκονται στον Κατάλογο Περιεχομένου' είναι ενεργοποιημένο."
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_PRESENT,
-   "Παρόν"
+   MENU_ENUM_LABEL_VALUE_MISSING_REQUIRED,
+   "Λείπει, Απαιτείται:"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_OPTIONAL,
-   "Προεραιτικό"
+   MENU_ENUM_LABEL_VALUE_MISSING_OPTIONAL,
+   "Λείπει, Προαιρετικό:"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_REQUIRED,
-   "Απαραίτητο"
+   MENU_ENUM_LABEL_VALUE_PRESENT_REQUIRED,
+   "Υπάρχων, Απαιτείται:"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PRESENT_OPTIONAL,
+   "Υπάρχον, Προαιρετικό:"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_LOCK,
-   "Κλείδωμα Εγκατεστημένο Πυρήνα"
+   "Κλείδωμα Εγκατεστημένου Πυρήνα"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_LOCK,
    "Αποτροπή τροποποιήσεων του τρέχοντος εγκατεστημένου πυρήνα. Μπορεί να χρησιμοποιηθεί για αποφυγή ανεπιθύμητων ενημερώσεων όταν το περιεχόμενο απαιτεί συγκεκριμένη έκδοση πυρήνα (π.χ. Παιχνίδια Arcade)."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_SET_STANDALONE_EXEMPT,
+   "Εξαίρεση από το μενού 'Πυρήνες χωρίς περιεχόμενο'"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_SET_STANDALONE_EXEMPT,
+   "Αποτρέψτε την εμφάνιση αυτού του πυρήνα στην καρτέλα/μενού 'Πυρήνες χωρίς περιεχόμενο'. Εφαρμόζεται μόνο όταν η λειτουργία εμφάνισης έχει οριστεί σε 'Προσαρμοσμένη'."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_DELETE,
@@ -478,8 +584,20 @@ MSG_HASH(
    "Επαναφορά Αντιγράφου Ασφαλείας"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_RESTORE_BACKUP_LIST,
+   "Εγκαταστήστε μια παλαιότερη έκδοση του πυρήνα από μια λίστα αρχειοθετημενων αντιγράφων ασφαλείας."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_DELETE_BACKUP_LIST,
    "Διαγραφή Αντιγράφου Ασφαλείας"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_DELETE_BACKUP_LIST,
+   "Αφαιρέστε ένα αρχείο από τη λίστα των αποθηκευμένων αντιγράφων ασφαλείας."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_BACKUP_MODE_AUTO,
+   "[Αυτόματο]"
    )
 
 /* Main Menu > Information > System Information */
@@ -487,6 +605,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_BUILD_DATE,
    "Ημερομηνία Κατασκευής"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RETROARCH_VERSION,
+   "Έκδοση RetroArch"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_GIT_VERSION,
@@ -506,15 +628,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CPU_ARCHITECTURE,
-   "Αρχιτεκτονική Επεξεργαστή:"
+   "Αρχιτεκτονική Επεξεργαστή"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CPU_CORES,
-   "Πυρήνες Επεξεργαστή:"
+   "Πυρήνες Επεξεργαστή"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_CPU_CORES,
-   "Αριθμός πυρήνων που έχει ο επεξεργαστής."
+   MENU_ENUM_LABEL_VALUE_JIT_AVAILABLE,
+   "JIT διαθέσιμο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FRONTEND_IDENTIFIER,
@@ -524,7 +646,7 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FRONTEND_OS,
    "Λειτουργικό Σύστημα"
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Maybe add a description? */
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RETRORATING_LEVEL,
    "Επίπεδο RetroRating"
    )
@@ -563,6 +685,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETWORK_COMMAND_IFACE_SUPPORT,
    "Υποστήριξη Γραμμής Εντολών Δικτύου"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETWORK_REMOTE_SUPPORT,
+   "Υποστήριξη χειριστηρίων μέσω δικτύου"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_COCOA_SUPPORT,
@@ -749,10 +875,6 @@ MSG_HASH(
    "Υποστήριξη Netplay (peer-to-peer)"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_PYTHON_SUPPORT,
-   "Υποστήριξη Python (υποστήριξη script στις σκιάσεις)"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_V4L2_SUPPORT,
    "Υποστήριξη Video4Linux2"
    )
@@ -783,6 +905,74 @@ MSG_HASH(
    "Είδος"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_ACHIEVEMENTS,
+   "Επιτεύγματα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_CATEGORY,
+   "Κατηγορία"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_LANGUAGE,
+   "Γλώσσα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_REGION,
+   "Περιοχή"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_CONSOLE_EXCLUSIVE,
+   "Αποκλειστική κονσόλα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_PLATFORM_EXCLUSIVE,
+   "Αποκλειστική πλατφόρμα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_SCORE,
+   "Βαθμολογία"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_MEDIA,
+   "Μέσα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_CONTROLS,
+   "Χειρισμοί"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_ARTSTYLE,
+   "Στυλ τέχνης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_GAMEPLAY,
+   "Τρόπος παιχνιδιού"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_NARRATIVE,
+   "Αφηγηματική"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_PACING,
+   "Βηματοδότηση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_PERSPECTIVE,
+   "Προοπτική"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_SETTING,
+   "Ρυθμίσεις"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_VISUAL,
+   "Εμφάνιση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_VEHICULAR,
+   "Όχημα"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_PUBLISHER,
    "Εκδότης"
    )
@@ -793,6 +983,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_ORIGIN,
    "Προέλευση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_FRANCHISE,
+   "Ομάδα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_TGDB_RATING,
@@ -816,11 +1010,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_RELEASE_MONTH,
-   "Μήνας Κυκλοφορίας"
+   "Μήνας κυκλοφορίας"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_RELEASE_YEAR,
-   "Έτος Κυκλοφορίας"
+   "Έτος κυκλοφορίας"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_BBFC_RATING,
@@ -878,20 +1072,32 @@ MSG_HASH(
    "Φόρτωση Διαμορφώσεων"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_RESET_TO_DEFAULT_CONFIG,
-   "Επαναφορά Προεπιλογών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_RESET_TO_DEFAULT_CONFIG,
-   "Επαναφορά της τρέχουσας διαμόρφωσης στις προεπιλεγμένες ρυθμίσεις."
+   MENU_ENUM_SUBLABEL_CONFIGURATIONS,
+   "Φόρτωση υφιστάμενων ρυθμίσεων και αντικατάσταση τρεχουσών τιμών."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_CURRENT_CONFIG,
    "Αποθήκευση Τρέχουσας Διαμόρφωσης"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_SAVE_CURRENT_CONFIG,
+   "Αντικατάσταση τρέχοντος αρχείου ρυθμίσεων."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_NEW_CONFIG,
    "Αποθήκευση Νέας Διαμόρφωσης"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_SAVE_NEW_CONFIG,
+   "Αποθήκευση των τρεχουσών ρυθμίσεων για διαχωρισμό αρχείου."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RESET_TO_DEFAULT_CONFIG,
+   "Επαναφορά Προεπιλογών"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_RESET_TO_DEFAULT_CONFIG,
+   "Επαναφορά τρεχουσών ρυθμίσεων στις προκαθορισμένες τιμές."
    )
 
 /* Main Menu > Help */
@@ -960,7 +1166,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_SETTINGS,
-   "Αλλαγή ρυθμίσεων εξόδου ήχου."
+   "Αλλαγή ρυθμίσεων εισόδου/εξόδου ήχου."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_SETTINGS,
@@ -1003,6 +1209,94 @@ MSG_HASH(
    "Αλλαγή ρυθμίσεων αποθήκευσης."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SETTINGS,
+   "Συγχρονισμός cloud"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_SETTINGS,
+   "Αλλαγή ρυθμίσεων συγχρονισμού cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_ENABLE,
+   "Ενεργοποίηση συγχρονισμού cloud"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_ENABLE,
+   "Προσπάθεια συγχρονισμού ρυθμίσεων, sram και καταστάσεων σε πάροχο cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_DESTRUCTIVE,
+   "Καταστροφικός συγχρονισμός cloud"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_SAVES,
+   "Συγχρονισμός: Αποθηκεύσεων/καταστάσεων"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_CONFIGS,
+   "Συγχρονισμός: Αρχεία ρυθμίσεων"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_THUMBS,
+   "Συγχρονισμός: Εικόνες προεπισκόπησης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_SYSTEM,
+   "Συγχρονισμός: Αρχεία συστήματος"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_SAVES,
+   "Όταν ενεργοποιηθεί, οι αποθηκεύσεις/καταστάσεις θα συγχρονιστούν στο cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_CONFIGS,
+   "Όταν ενεργοποιηθεί, τα αρχεία ρυθμίσεων θα συγχρονιστούν στο cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_THUMBS,
+   "Όταν ενεργοποιηθεί, οι μικρογραφίες θα συγχρονιστούν στο cloud. Δεν συνιστάται γενικά παρά μόνο για μεγάλες συλλογές προσαρμοσμένων μικρογραφιών εικόνων. Διαφορετικά, ο λήπτης μικρογραφιών είναι μια καλύτερη επιλογή."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_SYSTEM,
+   "Όταν ενεργοποιηθεί, τα αρχεία συστήματος θα συγχρονιστούν στο cloud. Αυτό μπορεί να αυξήσει σημαντικά τον χρόνο που χρειάζεται για συγχρονισμό: να χρησιμοποιηθεί με προσοχή."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_DESTRUCTIVE,
+   "Όταν απενεργοποιηθεί, τα αρχεία μετακινούνται σε ένα φάκελο αντιγράφων ασφαλείας πριν αντικατασταθούν ή διαγραφούν."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_DRIVER,
+   "Σύστημα υποστήριξης συγχρονισμού cloud"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_DRIVER,
+   "Ποιο πρωτόκολλο δικτύου cloud να χρησιμοποιηθεί."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_URL,
+   "Διεύθυνση cloud"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_URL,
+   "Η διεύθυνση για το σημείου εισόδου API στην υπηρεσία cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_USERNAME,
+   "Όνομα Χρήστη"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_USERNAME,
+   "Το όνομα χρήστη για τον λογαριασμό cloud."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_PASSWORD,
+   "Κωδικός"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOUD_SYNC_PASSWORD,
+   "Ο κωδικός για τον λογαριασμό cloud."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOGGING_SETTINGS,
    "Αρχείο Καταγραφής"
    )
@@ -1013,6 +1307,90 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_FILE_BROWSER_SETTINGS,
    "Περιηγητής Αρχείων"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_MENU_FILE_BROWSER_SETTINGS,
+   "Αλλαγή ρυθμίσεων Περιήγηση Αρχείων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_CONFIG,
+   "Αρχείο ρυθμίσεων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_COMPRESSED_ARCHIVE,
+   "Συμπιεσμένο αρχείο αρχείου."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_RECORD_CONFIG,
+   "Εγγραφή αρχείου ρυθμίσεων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_CURSOR,
+   "Αρχείο δρομέα βάσης δεδομένων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_CONFIG,
+   "Αρχείο ρυθμίσεων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_SHADER_PRESET,
+   "Προκαθορισμένο αρχείο shader."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_SHADER,
+   "Αρχείο shader."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_REMAP,
+   "Αρχείο διαμόρφωσης συντομεύσεων ελέγχου."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_CHEAT,
+   "Αρχείο cheat."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_OVERLAY,
+   "Αρχείο επικαλύμματος."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_RDB,
+   "Αρχείο βάσης δεδομένων."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_FONT,
+   "Αρχείο γραμματοσειράς TrueType."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_PLAIN_FILE,
+   "Απλό αρχείο."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_MOVIE_OPEN,
+   "Βίντεο. Επιλέξτε το για να ανοίξετε αυτό το αρχείο με το πρόγραμμα αναπαραγωγής βίντεο."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_MUSIC_OPEN,
+   "Μουσική. Επιλέξτε το για να ανοίξετε αυτό το αρχείο με το πρόγραμμα αναπαραγωγής μουσικής."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_IMAGE,
+   "Αρχείο εικόνας."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_IMAGE_OPEN_WITH_VIEWER,
+   "Εικόνα. Επιλέξτε το για άνοιγμα αυτού του αρχείου με τον πρόγραμμα προβολής εικόνας."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_CORE_SELECT_FROM_COLLECTION,
+   "Ο πυρήνας Libretro. Επιλέγοντας αυτό θα συσχετίσει αυτόν τον πυρήνα με το παιχνίδι."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_CORE,
+   "Πυρήνας Libretro. Επιλέξτε αυτό το αρχείο για να φορτώσετε αυτόν τον πυρήνα στο RetroArch."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_FILE_BROWSER_DIRECTORY,
+   "Κατάλογος. Επιλέξτε το για να ανοίξετε αυτόν τον κατάλογο."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_SETTINGS,
@@ -1051,6 +1429,10 @@ MSG_HASH(
    "Υπηρεσία Τεχνητής Νοημοσύνης"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_AI_SERVICE_SETTINGS,
+   "Αλλάξτε τις ρυθμίσεις από την υπηρεσία τεχνίτης νοημοσύνης (Μετάφραση/TTS/Διάφορα)."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCESSIBILITY_SETTINGS,
    "Για άτομα με ειδικές ανάγκες"
    )
@@ -1080,7 +1462,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETWORK_SETTINGS,
-   "Αλλαγή ρυθμίσεων εξυπηρετητή και δικτύου."
+   "Αλλαγή ρυθμίσεων server και δικτύου."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS,
@@ -1107,6 +1489,47 @@ MSG_HASH(
    "Αλλαγή προκαθορισμένων ευρετηρίων όπου βρίσκονται τα αρχεία."
    )
 
+/* Core option category placeholders for icons */
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MAPPING_SETTINGS,
+   "Χάρτης συντομεύσεων"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MEDIA_SETTINGS,
+   "Μέσα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PERFORMANCE_SETTINGS,
+   "Επίδοση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SOUND_SETTINGS,
+   "Ήχος"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SPECS_SETTINGS,
+   "Προδιαγραφές"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_STORAGE_SETTINGS,
+   "Αποθηκευτικός χώρος"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SYSTEM_SETTINGS,
+   "Σύστημα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TIMING_SETTINGS,
+   "Χρονισμός"
+   )
+
+#ifdef HAVE_MIST
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_STEAM_SETTINGS,
+   "Αλλαγή ρυθμίσεων που σχετίζονται με το Steam."
+   )
+#endif
+
 /* Settings > Drivers */
 
 MSG_HASH(
@@ -1114,9 +1537,14 @@ MSG_HASH(
    "Οδηγός Εισαγωγής"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_DRIVER,
+   "Οδηγός εισόδου προς χρήση. Κάποιοι οδηγοί βίντεο εξαναγκάζουν έναν διαφορετικό οδηγό εισόδου."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_JOYPAD_DRIVER,
    "Χειριστήριο"
    )
+
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DRIVER,
    "Οδηγός Βίντεο"
@@ -1133,6 +1561,8 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_DRIVER,
    "Οδηγός ήχου προς χρήση."
    )
+#ifdef HAVE_MICROPHONE
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_DRIVER,
    "Οδηγός Επαναδειγματολήπτη Ήχου"
@@ -1158,6 +1588,10 @@ MSG_HASH(
    "Οδηγός Wi-Fi"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_WIFI_DRIVER,
+   "Επιλογή οδηγού Wi-Fi."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOCATION_DRIVER,
    "Οδηγός Τοποθεσίας"
    )
@@ -1168,10 +1602,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_DRIVER,
    "Οδηγός Μενού"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_DRIVER,
-   "Οδηγός Μενού προς χρήση."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RECORD_DRIVER,
@@ -1225,20 +1655,20 @@ MSG_HASH(
    "Προσαρμογή μεγέθους"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SCALING_SETTINGS,
+   "Αλλάξτε τις ρυθμίσεις μεγέθους της εικόνας."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SYNCHRONIZATION_SETTINGS,
    "Συγχρονισμός Ήχου"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SYNCHRONIZATION_SETTINGS,
+   "Αλλάξτε τις ρυθμίσεις συγχρονισμού της εικόνας."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SUSPEND_SCREENSAVER_ENABLE,
    "Αναστολή Προφύλαξης Οθόνης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_SUSPEND_SCREENSAVER_ENABLE,
-   "Αποτρέπει την προφύλαξη οθόνης του συστήματος από το να ενεργοποιηθεί."
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_THREADED,
-   "Βελτιώνει την επίδοση με τίμημα την καθυστέρηση και περισσότερα κολλήματα στο βίντεο. Χρησιμοποιείστε μόνο εάν δεν μπορείτε να αποκτήσετε πλήρη ταχύτητα με άλλον τρόπο."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION,
@@ -1252,17 +1682,17 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SMOOTH,
    "Διγραμμικό Φιλτράρισμα"
    )
+#if defined(DINGUX)
+#if defined(RS90) || defined(MIYOO)
+#endif
+#endif
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_SMOOTH,
-   "Προσθέτει μία μικρή θολούρα στην εικόνα ώστε να αφαιρέσει τις σκληρές γωνίες των pixel. Αυτή η επιλογή έχει πολύ μικρή επιρροή στην επίδοση."
+   MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_DELAY,
+   "Καθυστέρηση αυτόματων σκιών"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FILTER,
    "Φίλτρο Βίντεο"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_FILTER,
-   "Εφαρμόστε ένα φίλτρο βίντεο που λειτουργεί με τον επεξεργαστή.\nΣΗΜΕΙΩΣΗ: Μπορεί να έχει μεγάλο κόστος στην επίδοση. Μερικά φίλτρα βίντεο μπορεί να δουλεύουν μόνο με πυρήνες που χρησιμοποιούν 32bit ή 16bit χρώμα."
    )
 
 /* Settings > Video > CRT SwitchRes */
@@ -1284,10 +1714,6 @@ MSG_HASH(
    "Εναλλάξτε μεταξύ αυτών των επιλογών εάν η εικόνα δεν είναι σωστά κεντραρισμένη στην οθόνη."
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CRT_SWITCH_RESOLUTION_USE_CUSTOM_REFRESH_RATE,
-   "Χρήση Προσαρμοσμένου Ρυθμού Ανανέωσης"
-   )
-MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_RESOLUTION_USE_CUSTOM_REFRESH_RATE,
    "Χρήση προσαρμοσμένου ρυθμού ανανέωσης προσδιορισμένου στο αρχείο διαμόρφωσης εάν χρειάζεται."
    )
@@ -1298,13 +1724,15 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_MONITOR_INDEX,
    "Ένδειξη Οθόνης"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_MONITOR_INDEX,
-   "Επιλέγει ποιά οθόνη θα χρησιμοποιηθεί."
-   )
+#if defined (WIIU)
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ROTATION,
    "Περιστροφή"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_ROTATION,
+   "Forces a certain rotation of the screen. The rotation is added to rotations which the core sets."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCREEN_ORIENTATION,
@@ -1315,12 +1743,12 @@ MSG_HASH(
    "Επιβάλλεται συγκεκριμένος προσανατολισμός της οθόνης από το λειτουργικό σύστημα."
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE,
-   "Κάθετος Ρυθμός Ανανέωσης"
+   MENU_ENUM_LABEL_VALUE_VIDEO_GPU_INDEX,
+   "Λίστα GPU"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_REFRESH_RATE,
-   "Ο κάθετος ρυθμός ανανέωσης της οθόνης. Χρησιμοποιείται για τον υπολογισμό του κατάλληλου ρυθμού εισαγωγής ήχου.\nΣΗΜΕΙΩΣΗ: Αυτή η επιλογή αγνοείται εάν έχετε ενεργοποιήσει το 'Threaded Video'."
+   MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE,
+   "Κάθετος Ρυθμός Ανανέωσης"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE_AUTO,
@@ -1338,6 +1766,16 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_REFRESH_RATE_POLLED,
    "Ο ρυθμός ανανέωσης όπως αναφέρεται από τον οδηγό οθόνης."
    )
+#if defined(DINGUX) && defined(DINGUX_BETA)
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_REFRESH_RATE,
+   "Κάθετος Ρυθμός Ανανέωσης"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_DINGUX_REFRESH_RATE,
+   "Ορίστε τον κάθετο ρυθμό ανανέωσης της οθόνης. Τα '50 Hz' θα ενεργοποιήσουν την ομαλή εκτέλεση βίντεο κατά την εκτέλεση του Ευρωπαϊκού περιεχομένου (PAL)."
+   )
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FORCE_SRGB_DISABLE,
    "Εξαναγκασμένη απενεργοποίηση sRGB FBO"
@@ -1350,16 +1788,8 @@ MSG_HASH(
    "Έναρξη σε Κατάσταση Πλήρης Οθόνης"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_FULLSCREEN,
-   "Έναρξη σε πλήρη οθόνη. Μπορεί να αλλάξει κατά την εκτέλεση. Μπορεί να παρακαμπτεί από έναν διακόπτη γραμμής τερματικού."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOWED_FULLSCREEN,
    "Παράθυρο Πλήρης Οθόνης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_WINDOWED_FULLSCREEN,
-   "Εάν χρησιμοποιηθεί πλήρης οθόνη προτιμήστε την κατάσταση παραθύρου πλήρης οθόνης."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_X,
@@ -1377,16 +1807,16 @@ MSG_HASH(
    "Κλίμακα Παραθύρου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_WINDOW_SCALE,
-   "Ορισμός μεγέθους παραθύρου σε σχέση με το μέγεθος της οπτικής γωνίας του πυρήνα. Διαφορετικά, παρακάτω μπορείτε να ορίσετε το πλάτος και το ύψος του παραθύρου σε σταθερό μέγεθος."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_OPACITY,
    "Διαφάνεια Παραθύρου"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_SHOW_DECORATIONS,
    "Εμφάνιση Διακοσμητικών Παραθύρου"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_UI_MENUBAR_ENABLE,
+   "Εμφάνιση Γραμμής Μενού"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_WIDTH,
@@ -1412,8 +1842,8 @@ MSG_HASH(
    "Ακέραια Κλίμακα"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_SCALE_INTEGER,
-   "Αλλαγή κλίμακας βίντεο σε ακέραια βήματα. Το βασικό μέγεθος εξαρτάται από την γεωμετρία και την κλίμακα οθόνης του συστήματος. Εάν η 'Εξαναγκασμένη Κλίμακα' δεν έχει οριστεί, οι άξωνες X/Y θα αλλάζουν κλίμακα ξεχωριστά."
+   MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_SCALING_SMART,
+   "Έξυπνο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_INDEX,
@@ -1424,6 +1854,16 @@ MSG_HASH(
    "Διαμόρφωση Αναλογίας Οθόνης"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_CONFIG,
+   "Διαμόρφωση"
+   )
+#if defined(DINGUX)
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_IPU_KEEP_ASPECT,
+   "Διατήρηση Αναλογίας Διαστάσεων"
+   )
+#endif
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_X,
    "Προτιμώμενη Θέση Άξωνα X Αναλογίας Οθόνης"
    )
@@ -1431,6 +1871,8 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_Y,
    "Προτιμώμενη Θέση Άξωνα Y Αναλογίας Οθόνης"
    )
+#if defined(RARCH_MOBILE)
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_WIDTH,
    "Προτιμώμενο Πλάτος Αναλογίας Οθόνης"
@@ -1448,35 +1890,34 @@ MSG_HASH(
    "Προτιμώμενο ύψος οπτικής γωνίας το οποίο χρησιμοποιείται εάν η Αναλογία Οθόνης είναι ορισμένη ως 'Προτιμώμενη'."
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_CROP_OVERSCAN,
-   "Περικοπή Υπερσάρωσης (Επαναφόρτωση)"
+   MENU_ENUM_SUBLABEL_VIDEO_CROP_OVERSCAN,
+   "Αφαιρεί μερικά pixel γύρω από την εικόνα όπου εθιμικά οι προγραμματιστές άφηναν κενά ή και που περιέχουν άχρηστα pixel."
    )
+
+/* Settings > Video > HDR */
+
 
 /* Settings > Video > Synchronization */
 
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_VSYNC,
-   "Συγχρονίζει την έξοδο βίντεο της κάρτας γραφικών με τον ρυθμό ανανέωσης της οθόνης. Προτείνεται."
+   MENU_ENUM_LABEL_VALUE_VIDEO_VSYNC,
+   "Κάθετος Συγχρονισμός (VSync)"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_SWAP_INTERVAL,
-   "Διάστημα Εναλλαγής Κάθετου Συγχρονισμόυ (Vsync)"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_SWAP_INTERVAL,
-   "Χρησιμοποιεί ένα προτιμώμενο διάστημα αλλαγής για το Vsync. Ορίστε αυτό ώστε να μειώσεται στο μισό τον ρυθμό ανανέωσης της οθόνης αποτελεσματικά."
+   MENU_ENUM_LABEL_VALUE_VIDEO_SWAP_INTERVAL_AUTO,
+   "Αυτόματο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ADAPTIVE_VSYNC,
-   "Προσαρμοστικό Vsync"
+   "Προσαρμοστικός Συγχρονισμός Vsync"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY,
-   "Καθυστέρηση Καρέ"
+   MENU_ENUM_SUBLABEL_VIDEO_ADAPTIVE_VSYNC,
+   "Το V-Sync είναι ενεργό μέχρι τα καρέ να πέσουν χαμηλότερα από τα αναγραφόμενα. Με αυτόν το τρόπο θα μειωθεί το τραύλισμα της οθόνης (stuttering) όταν οι επιδόσεις χαμηλώνουν ενώ ταυτόχρονα είναι ενεργειακά πιο αποδοτικό."
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_FRAME_DELAY,
-   "Μειώνει την καθυστέρηση με μεγαλύτερο κίνδυνο για κολλήματα στο βίντεο. Προσθέτει μία επιβράδυνση μετά το V-Sync (σε ms)."
+   MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY_AUTOMATIC,
+   "Αυτόματο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HARD_SYNC,
@@ -1489,10 +1930,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HARD_SYNC_FRAMES,
    "Σκληρός Συγχρονισμός Καρέ Κάρτας Γραφικών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_VIDEO_HARD_SYNC_FRAMES,
-   "Ορίζει πόσα καρέ μπορεί ο επεξεργαστής να βρίσκεται μπροστά από την κάρτα γραφικών όταν χρησιμοποιείται τον 'Σκληρό Συγχρονισμό Κάρτα Γραφικών'."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VRR_RUNLOOP_ENABLE,
@@ -1509,9 +1946,15 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_OUTPUT_SETTINGS,
    "Αλλαγή ρυθμίσεων εξόδου ήχου."
    )
+#ifdef HAVE_MICROPHONE
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_SYNCHRONIZATION_SETTINGS,
    "Συγχρονισμός Ήχου"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_AUDIO_SYNCHRONIZATION_SETTINGS,
+   "Αλλάξτε τις ρυθμίστεις συγχρονισμού του ήχου."
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIDI_SETTINGS,
@@ -1526,12 +1969,16 @@ MSG_HASH(
    "Εμφάνιση και/ή επεξεργασία ρυθμίσεων μίκτη."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MENU_SOUNDS,
+   "Ήχοι Μενού"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_MUTE,
    "Σίγαση Ήχου"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MUTE,
-   "Σίγαση/κατάργηση σίγασης ήχου."
+   "Σίγαση ήχου."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_MIXER_MUTE,
@@ -1539,7 +1986,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MIXER_MUTE,
-   "Σίγαση/κατάργηση σίγασης μίκτη ήχου."
+   "Σίγαση μίκτη ήχου."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_VOLUME,
@@ -1585,10 +2032,6 @@ MSG_HASH(
    "Ενεργοποίηση Ήχου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_AUDIO_ENABLE,
-   "Ενεργοποίηση εξόδου ήχου."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_DEVICE,
    "Συσκευή Ήχου"
    )
@@ -1597,23 +2040,43 @@ MSG_HASH(
    "Παράκαμψη της προκαθορισμένης συσκευής ήχου που χρησιμοποιεί ο οδηγός ήχου. Αυτή η επιλογή εξαρτάται από τον οδηγό."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_HELP_AUDIO_DEVICE,
+   "Παράκαμψη της προκαθορισμένης συσκευής ήχου που χρησιμοποιεί ο οδηγός ήχου. Αυτή η επιλογή εξαρτάται από τον οδηγό."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_LATENCY,
    "Καθυστέρηση Ήχου (ms)"
    )
+
+#ifdef HAVE_MICROPHONE
+/* Settings > Audio > Input */
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_AUDIO_LATENCY,
-   "Επιθυμητή καθυστέρηση ήχου σε milliseconds. Ίσως να μην τηρηθεί εάν ο οδηγός ήχου δεν μπορεί να παρέχει την επιλεγμένη καθυστέρηση."
+   MENU_ENUM_LABEL_VALUE_MICROPHONE_DEVICE,
+   "Συσκευή Ήχου"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MICROPHONE_RESAMPLER_QUALITY,
+   "Ποιότητα Επαναδειγματολήπτη Ήχου"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_EXCLUSIVE_MODE,
+   "Αποκλειστική Λειτουργία WASAPI"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_FLOAT_FORMAT,
+   "Ασταθής Μορφή WASAPI"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_SH_BUFFER_LENGTH,
+   "Μήκος Κοινόχρηστης Ενδιάμεσης Μνήμης WASAPI"
+   )
+#endif
 
 /* Settings > Audio > Resampler */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_QUALITY,
    "Ποιότητα Επαναδειγματολήπτη Ήχου"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_QUALITY,
-   "Ελαττώστε αυτή την τιμή για καλύτερη επίδοση/χαμηλότερη καθυστέρηση αντί ποιότητας ήχου, αυξήστε εάν θέλετε καλύτερη ποιότητα με κόστος στην επίδοση/χαμηλότερη καθυστέρηση."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_OUTPUT_RATE,
@@ -1726,6 +2189,18 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTODETECT_ENABLE,
    "Ενεργοποίηση Αυτόματης Διαμόρφωσης"
    )
+#if defined(HAVE_DINPUT) || defined(HAVE_WINRAWINPUT)
+#endif
+#ifdef ANDROID
+#endif
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS_OFF,
+   "Ανενεργό"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS_ON,
+   "Ενεργό"
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_DEADZONE,
    "Νεκρή Ζώνη του Αναλογικού Μοχλού"
@@ -1750,13 +2225,18 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BIND_HOLD,
    "Δευτερόλεπτα τα οποία χρειάζεται να κρατήσετε πατημένο κάποιο κουμπί μέχρι την σύνδεση του."
    )
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_ENABLE,
+   "Πλήκτρο \"Turbo\""
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_MODE,
    "Λειτουργία Turbo"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_DEFAULT_BUTTON,
-   "Προκαθορισμένο Πλήκτρο για Τούρμπο"
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_FIRE_SETTINGS,
+   "Πλήκτρο \"Turbo\""
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MENU_SETTINGS,
@@ -1767,12 +2247,12 @@ MSG_HASH(
    "Αλλαγή Ρυθμίσεων Μενού Χειριστηρίων."
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_HOTKEY_BINDS,
-   "Διαμόρφωση ρυθμίσεων πλήκτρων εντολών."
+   MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS,
+   "Ενεργοποίηση πλήκτρων εντολών"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_USER_BINDS,
-   "Διαμόρφωση χειρισμών για αυτόν τον χρήστη."
+   MENU_ENUM_LABEL_VALUE_QUIT_PRESS_TWICE,
+   "Επιβεβαίωση Εξόδου"
    )
 
 /* Settings > Input > Haptic Feedback/Vibration */
@@ -1804,21 +2284,63 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ALL_USERS_CONTROL_MENU,
    "Όλοι Οι Χρήστες Χειρίζονται Το Μενού"
    )
+
+/* Settings > Input > Hotkeys */
+
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_ALL_USERS_CONTROL_MENU,
-   "Επιτρέπει σε οποιονδήποτε χρήστη να χειριστεί το μενού. Εάν απενεργοποιηθεί, μόνο ο Χρήστης 1 μπορεί να χειριστει το μενού."
+   MENU_ENUM_LABEL_VALUE_INPUT_META_ENABLE_HOTKEY,
+   "Ενεργοποίηση Πλήκτρων Συντόμευσης"
    )
-
-/* Settings > Input > Hotkey Binds */
-
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO,
-   "Συνδιασμός Πλήκτρων Χειριστηρίου για Άνοιγμα Μενού"
+   MENU_ENUM_LABEL_VALUE_INPUT_META_MENU_TOGGLE,
+   "Μενού"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
+   "Έξοδος"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_CLOSE_CONTENT_KEY,
+   "Κλείσιμο Περιεχομένου"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_RESET,
+   "Αναπαραγωγή του τρέχοντος περιεχομένου από την αρχή."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_FAST_FORWARD_KEY,
+   "Ταχεία Προώθηση (Εναλλαγή)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_FAST_FORWARD_HOLD_KEY,
+   "Ταχεία Προώθηση (Κράτημα Πλήκτρου)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_FAST_FORWARD_HOLD_KEY,
+   "Ενεργοποιεί την ταχεία προώθηση όταν παραμένει πατημένο. Το περιεχόμενο εκτελείται με κανονική ταχύτητα όταν το πλήκτρο απελευθερώνεται."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_SLOWMOTION_KEY,
+   "Αργή Κίνηση (Εναλλαγή)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SLOWMOTION_HOLD_KEY,
    "Αργή Κίνηση (Πατημένο)"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_REWIND,
+   "Επιστροφή"
+   )
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_VOLUME_UP,
+   "Αύξηση Έντασης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_VOLUME_DOWN,
+   "Μείωση Έντασης"
+   )
+
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_LOAD_STATE_KEY,
    "Φόρτωση κατάστασης"
@@ -1827,42 +2349,7 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SAVE_STATE_KEY,
    "Αποθήκευση κατάστασης"
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
-   "Έξοδος από το RetroArch"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_PLUS,
-   "Θέση κατάστασης αποθήκευσης +"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_MINUS,
-   "Θέση κατάστασης αποθήκευσης -"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_REWIND,
-   "Επιστροφή"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_RESET,
-   "Επαναφορά παιχνιδιού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_NEXT,
-   "Επόμενη σκίαση"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_PREV,
-   "Προηγούμενη σκίαση"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_SCREENSHOT,
-   "Λήψη Στιγμιότυπου"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_EJECT_TOGGLE,
-   "Εξαγωγή δίσκου"
-   )
+
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_NEXT,
    "Επόμενος Δίσκος"
@@ -1871,12 +2358,59 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_PREV,
    "Προηγούμενος Δίσκος"
    )
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_NEXT,
+   "Επόμενη σκίαση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_PREV,
+   "Προηγούμενη σκίαση"
+   )
+
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_CHEAT_TOGGLE,
+   "Ενεργοποιεί ή Απενεργοποιεί τη Λειτουργία Κωδικών."
+   )
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_SCREENSHOT,
+   "Λήψη Στιγμιότυπου"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_FULLSCREEN_TOGGLE_KEY,
+   "Πλήρης Οθόνη (Εναλλαγή)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_FULLSCREEN_TOGGLE_KEY,
+   "Εναλλαγή μεταξύ πλήρους οθόνης και λειτουργίας παραθύρου."
+   )
+
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_FPS_TOGGLE,
+   "Εμαφανίζει τα Καρέ ανά δευτερόλεπτο (FPS)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_FPS_TOGGLE,
+   "Ενεργοποίηση/Απενεργοποίηση της ένδειξης 'καρέ ανά δευτερόλεπτο'."
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_AI_SERVICE,
    "Υπηρεσία Τεχνητής Νοημοσύνης"
    )
 
-/* Settings > Input > Port # Binds */
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_SEND_DEBUG_INFO,
+   "Αποστολή Πληροφοριων Εκσφαλματωσης (Debuging)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_SEND_DEBUG_INFO,
+   "Στέλνει διαγνωστικές πληροφορίες σχετικά με τη συσκευή σας και τις ρυθμίσεις του RetroArch στους διακομιστές μας για ανάλυση."
+   )
+
+/* Settings > Input > Port # Controls */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_TYPE,
@@ -2042,16 +2576,18 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_RIGHT,
    "Όπλο D-pad Δεξιά"
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_ENABLE,
-   "Ενεργοποίηση Turbo"
-   )
 
 /* Settings > Latency */
 
+#if !(defined(HAVE_DYNAMIC) || defined(HAVE_DYLIB))
+#endif
 
 /* Settings > Core */
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_SHARED_CONTEXT,
+   "Enable Hardware Shared Context"
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DUMMY_ON_CORE_SHUTDOWN,
    "Φόρτωση Dummy στο Κλείσιμο Πυρήνα"
@@ -2061,8 +2597,8 @@ MSG_HASH(
    "Αυτόματη Έναρξη Πυρήνα"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CHECK_FOR_MISSING_FIRMWARE,
-   "Έλεγχος για απών Firmware Πριν την Φόρτωση"
+   MENU_ENUM_SUBLABEL_CORE_INFO_CACHE_ENABLE,
+   "Διατήρηση τοπικής προσωρινής μνήμης των εγκατεστημένων βασικών πληροφοριών. Μειώνει σημαντικά τους χρόνους φόρτωσης σε πλατφόρμες με αργή πρόσβαση στο δίσκο."
    )
 #ifndef HAVE_DYNAMIC
 #endif
@@ -2070,7 +2606,27 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ALLOW_ROTATE,
    "Επίτρεψη περιστροφής"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_MANAGER_LIST,
+   "Διαχείριση Πυρήνων"
+   )
+#ifdef HAVE_MIST
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_MANAGER_STEAM_LIST,
+   "Διαχείριση Πυρήνων"
+   )
 
+
+
+
+
+MSG_HASH(
+   MSG_CORE_STEAM_INSTALLING,
+   "Εγκατάσταση πυρήνα: "
+)
+
+
+#endif
 /* Settings > Configuration */
 
 MSG_HASH(
@@ -2078,12 +2634,24 @@ MSG_HASH(
    "Φόρτωση Επιλογών Πυρήνα Βάση Συγκεκριμένου Περιεχομένου Αυτόματα"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_GAME_SPECIFIC_OPTIONS,
+   "Enable customized core options by default at startup."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_OVERRIDES_ENABLE,
    "Φόρτωση Αρχείων Παράκαμψης Αυτόματα"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_AUTO_OVERRIDES_ENABLE,
+   "Enable customized configuration by default at startup."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_REMAPS_ENABLE,
    "Φόρτωση Αρχείων Αναδιοργάνωσης Πλήτρκων Αυτόματα"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_AUTO_REMAPS_ENABLE,
+   "Enable customized controls by default at startup."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_SHADERS_ENABLE,
@@ -2092,10 +2660,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GLOBAL_CORE_OPTIONS,
    "Χρήση Καθολικού Αρχείου Επιλογών Πυρήνα"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_GLOBAL_CORE_OPTIONS,
-   "Αποθήκευση όλων των επιλογών πυρήνα σε ένα κοινό αρχείο ρυθμίσεων (retroarch-core-options.cfg). Όταν είναι απενεργοποιημένο οι επιλογές για τον κάθε πυρήνα θα αποθηκεύονται σε ξεχωριστό ανά πυρήνα φάκελο/αρχείο στο ευρετήριο 'Config' του RetroArch."
    )
 
 /* Settings > Saving */
@@ -2119,20 +2683,32 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_LOG_VERBOSITY,
    "Ενεργοποίηση ή απενεργοποίηση αρχείων καταγραφής στο τερματικό."
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PERFCNT_ENABLE,
+   "Μετρητές Επιδόσεων"
+   )
 
 /* Settings > File Browser */
 
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SHOW_HIDDEN_FILES,
+   "Εμφάνιση Κρυφών Αρχείων και Καταλόγων"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE,
    "Φιλτράρισμα άγνωστων επεκτάσεων"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_FILTER_BY_CURRENT_CORE,
+   "Φιλτράρισμα με βάση τον τρέχων πυρήνα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USE_BUILTIN_PLAYER,
    "Χρήση Ενσωματωμένου Αναπαραγωγέα Πολυμέσων Use Builtin Media Player"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_FILTER_BY_CURRENT_CORE,
-   "Φιλτράρισμα με βάση τον τρέχων πυρήνα"
+   MENU_ENUM_LABEL_VALUE_USE_BUILTIN_IMAGE_VIEWER,
+   "Χρήση Ενσωματωμένου Προβολέα Εικόνων"
    )
 
 /* Settings > Frame Throttle */
@@ -2140,10 +2716,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_SETTINGS,
    "Επιστροφή"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_META_REWIND,
-   "Διαχειρίζεται τις ρυθμίσεις επαναφοράς."
    )
 
 /* Settings > Frame Throttle > Rewind */
@@ -2153,8 +2725,16 @@ MSG_HASH(
    "Ενεργοποίηση Επιστροφής"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_REWIND_GRANULARITY,
+   "Επιστροφή κάποιων Καρέ πίσω"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_BUFFER_SIZE,
    "Μέγεθος Ενδιάμεσης Μνήμης Επιστροφής (MB)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_REWIND_BUFFER_SIZE,
+   "Η ποσότητα μνήμης (σε MB) που θα κρατηθεί για το buffer επαναφοράς. Έαν Αυξηθεί, αυξάνεται και η χρονική διάρκεια οπου μπορείτε να επιστρέψετε σε κάποιο προηγούμενο σημείο της ιστορίας."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_BUFFER_SIZE_STEP,
@@ -2167,12 +2747,20 @@ MSG_HASH(
 /* Settings > Recording */
 
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_QUALITY,
+   "Ποιότητα Εγγραφής"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_GPU_RECORD,
    "Χρήση Εγγραφής Κάρτας Γραφικών"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STREAMING_MODE,
    "Μέσο Απευθείας Μετάδοσης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_STREAMING_MODE_LOCAL,
+   "Τοπικό"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UDP_STREAM_PORT,
@@ -2187,7 +2775,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONSCREEN_OVERLAY_SETTINGS,
-   "Προσαρμογή Προσόψεων και Χειρισμών Οθόνης"
+   "Προσαρμογή Προσόψεων και Χειρισμών Οθόνης."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_ONSCREEN_VIDEO_LAYOUT_SETTINGS,
+   "Διάταξη Βίντεο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONSCREEN_NOTIFICATIONS_SETTINGS,
@@ -2195,7 +2787,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONSCREEN_NOTIFICATIONS_SETTINGS,
-   "Προσαρμόστε τις Ειδοποιήσεις Οθόνης"
+   "Προσαρμόστε τις Ειδοποιήσεις Οθόνης."
    )
 
 /* Settings > On-Screen Display > On-Screen Overlay */
@@ -2204,10 +2796,7 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_ENABLE,
    "Εμφάνιση Επικαλύμματος"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_OVERLAY_ENABLE,
-   "Ενεργοποίηση του επικαλλύματος."
-   )
+
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_HIDE_IN_MENU,
    "Απόκρυψη Επικαλύμματος Στο Μενού"
@@ -2216,21 +2805,11 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_HIDE_IN_MENU,
    "Απόκρυψη του επικαλλύματος μέσα στο μενού και εμφάνιση του ξανά με την έξοδο από το μενού."
    )
+#if defined(ANDROID)
+#endif
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_PHYSICAL_INPUTS,
+   MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_INPUTS,
    "Εμφάνιση Εισαγωγών Στο Επικάλλυμα"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_OVERLAY_SHOW_PHYSICAL_INPUTS,
-   "Εμφάνιση εισαγωγών πληκτρολογίου/χειριστηρίου στο επικάλλυμα οθόνης."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_PHYSICAL_INPUTS_PORT,
-   "Εμφάνιση Θύρας Εισαγωγών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_OVERLAY_SHOW_PHYSICAL_INPUTS_PORT,
-   "Επιλογή της θύρας για όταν είναι ενεργοποιημένη η επιλογή 'Εμφάνιση Εισαγωγών Στην Οθόνη'"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_OVERLAY,
@@ -2252,19 +2831,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_OVERLAY_PRESET,
    "Προκαθορισμένο Επικάλλυμα"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_OVERLAY_PRESET,
-   "Επιλογή ενός επικαλλύματος από τον περιηγητή αρχείων."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_OVERLAY_SCALE,
-   "Κλίμακα Επικαλύμματος"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_OVERLAY_SCALE,
-   "Κλίμακα όλων των στοιχείων του επικαλλύματος."
-   )
 
+/* Settings > On-Screen Display > On-Screen Overlay > Keyboard Overlay */
+
+
+/* Settings > On-Screen Display > On-Screen Overlay > Overlay Lightgun */
+
+
+/* Settings > On-Screen Display > On-Screen Overlay > Overlay Mouse */
 
 
 /* Settings > On-Screen Display > Video Layout */
@@ -2291,10 +2865,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STATISTICS_SHOW,
    "Εμφάνιση Στατιστικών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_STATISTICS_SHOW,
-   "Εμφάνιση τεχνικών στατιστικών στην οθόνη."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_SCREENSHOT,
@@ -2361,6 +2931,18 @@ MSG_HASH(
    "Θέση Ειδοποιήσης Y"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_MESSAGE_COLOR_RED,
+   "Χρώματα Ειδοποιήσεων (Κόκκινο)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_MESSAGE_COLOR_GREEN,
+   "Χρώματα Ειδοποιήσεων (Πράσινο)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_MESSAGE_COLOR_BLUE,
+   "Χρώματα Ειδοποιήσεων (Μπλε)"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_MESSAGE_BGCOLOR_ENABLE,
    "Φόντο Ειδοποιήσεων"
    )
@@ -2383,10 +2965,8 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SETTINGS,
    "Εμφάνιση"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SETTINGS,
-   "Προσαρμόζει τις εμφανισιακές ρυθμίσεις της οθόνης του μενού."
-   )
+#ifdef _3DS
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHOW_ADVANCED_SETTINGS,
    "Εμφάνιση Ρυθμίσεων Για Προχωρημένους"
@@ -2400,8 +2980,16 @@ MSG_HASH(
    "Εισαγωγή Κωδικού για Απενεργοποίηση της Παιδικής Λειτουργίας"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_PAUSE_LIBRETRO,
-   "Εάν απενεργοποιηθεί το περιεχόμενο θα συνεχίσει να τρέχει στο παρασκήνιο όταν το μενού του RetroArch είναι ανοικτό."
+   MENU_ENUM_LABEL_VALUE_MENU_SCREENSAVER_TIMEOUT,
+   "Χρονικό Όριο Προβολής Οθόνης Μενού"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_MENU_SCREENSAVER_TIMEOUT,
+   "Ενώ το μενού είναι ενεργό, η προφύλαξη οθόνης θα εμφανίζεται μετά την καθορισμένη περίοδο αδράνειας."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MENU_SCREENSAVER_ANIMATION_SNOW,
+   "Χιονόπτωση"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MOUSE_ENABLE,
@@ -2412,15 +3000,23 @@ MSG_HASH(
    "Υποστήριξη Αφής"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_PAUSE_NONACTIVE,
-   "Παύση παιχνιδιού όταν το RetroArch δεν είναι το ενεργό παράθυρο."
+   MENU_ENUM_LABEL_VALUE_THREADED_DATA_RUNLOOP_ENABLE,
+   "Εργασίες με Νήματα"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_UI_MENUBAR_ENABLE,
-   "Γραμμή Μενού"
+   MENU_ENUM_SUBLABEL_THREADED_DATA_RUNLOOP_ENABLE,
+   "Εκτέλεση εργασιών σε ξεχωριστό νήμα (Thread)."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MENU_SCROLL_DELAY,
+   "Καθυστέρηση Κύλισης Μενού"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_UI_COMPANION_ENABLE,
+   "UI Companion Enable"
    )
 
-/* Settings > User Interface > Views */
+/* Settings > User Interface > Menu Item Visibility */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_VIEWS_SETTINGS,
@@ -2430,185 +3026,35 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SETTINGS_VIEWS_SETTINGS,
    "Ρυθμίσεις"
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_LOAD_CORE,
-   "Προβολή Φόρτωσης Πυρήνα"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_LOAD_CORE,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Φόρτωση Πυρήνα'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_LOAD_CONTENT,
-   "Προβολή Φόρτωσης Περιεχομένου"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_LOAD_CONTENT,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Φόρτωση Περιεχομένου'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_LOAD_DISC,
-   "Προβολή Φόρτωσης Δίσκου"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_LOAD_DISC,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Φόρτωση Δίσκου'."
-   )
+#ifdef HAVE_LAKKA
+#endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_ONLINE_UPDATER,
-   "Προβολή Διαδικτυακού Ενημερωτή"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_ONLINE_UPDATER,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Διαδικτυακού Ενημερωτή'."
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_CORE_UPDATER,
-   "Εμφάνιση/απόκρυψη της ικανότητας ενημέρωσης πυρήνων (και πληροφοριακών αρχείων πυρήνων)."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_INFORMATION,
-   "Προβολή Πληροφοριών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_INFORMATION,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Πληροφορίες'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_CONFIGURATIONS,
-   "Προβολή Διαμορφώσεων"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_CONFIGURATIONS,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Διαμορφώσεις'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_HELP,
-   "Προβολή Βοήθειας"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_HELP,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Βοήθεια'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_QUIT_RETROARCH,
-   "Προβολή Εξόδου RetroArch"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_QUIT_RETROARCH,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Έξοδος από RetroArch'."
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_RESTART_RETROARCH,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Eπανεκκίνηση του RetroArch'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_SETTINGS,
-   "Προβολή Καρτέλας Ρυθμίσεων"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_SETTINGS,
-   "Προβολή καρτέλας ρυθμίσεων μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_FAVORITES,
-   "Προβολή Καρτέλας Αγαπημένων"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_FAVORITES,
-   "Προβολή καρτέλας αγαπημένων μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_IMAGES,
-   "Προβολή Καρτέλας Εικόνων"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_IMAGES,
-   "Προβολή καρτέλας εικόνων μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_MUSIC,
-   "Προβολή Καρτέλας Μουσικής"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_MUSIC,
-   "Προβολή καρτέλας μουσικής μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_VIDEO,
-   "Προβολή Καρτέλας Βίντεο"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_VIDEO,
-   "Προβολή καρτέλας βίντεο μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_NETPLAY,
-   "Προβολή Καρτέλας Netplay"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_NETPLAY,
-   "Προβολή καρτέλας netplay μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_HISTORY,
-   "Προβολή Καρτέλας Ιστορικού"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_HISTORY,
-   "Προβολή καρτέλας πρόσφατου ιστορικού μέσα στο μενού."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_ADD,
-   "Προβολή Καρτέλας Εισαγωγής Περιεχομένου"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_ADD,
-   "Προβολή καρτέλας εισαγωγής περιεχομένου μέσα στο μενού."
+   "Προβολή 'Διαδικτυακού Ενημερωτή'"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_MAIN_TAB,
    "Κεντρικό Μενού"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_PLAYLISTS,
-   "Προβολή Καρτέλας Λίστας Αναπαραγωγής"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_PLAYLISTS,
-   "Προβολή καρτέλας λίστας αναπαραγωγής μέσα στο μενού."
+   MENU_ENUM_LABEL_VALUE_SHOW_CONTENTLESS_CORES_ALL,
+   "Όλα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIMEDATE_ENABLE,
    "Εμφάνιση ημερομηνίας / ώρας"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_TIMEDATE_ENABLE,
-   "Εμφάνιση τρέχουσας ημερομηνίας ή και ώρας μέσα στο μενού."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIMEDATE_STYLE,
    "Στυλ ημερομηνίας / ώρας"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_TIMEDATE_STYLE,
-   "Αλλάζει το στυλ της τρέχουσας ημερομηνίας ή και ώρας που φαίνεται μέσα στο μενού."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BATTERY_LEVEL_ENABLE,
    "Εμφάνιση επιπέδου μπαταρίας"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_BATTERY_LEVEL_ENABLE,
-   "Εμφάνιση τρέχουσας μπαταρίας μέσα στο μενού."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_ENABLE,
    "Εμφάνιση ονόματος πυρήνα"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CORE_ENABLE,
-   "Εμφανίζει το όνομα του τρέχων πυρήνα μέσα στο μενού."
    )
 MSG_HASH( /* FIXME Not RGUI specific */
    MENU_ENUM_LABEL_VALUE_RGUI_SHOW_START_SCREEN,
@@ -2619,81 +3065,22 @@ MSG_HASH( /* FIXME Not RGUI specific */
    "Προβολή οθόνης εκκίνησης στο μενού. Τίθεται αυτόματα σε αρνητικό μετά την πρώτη εκκίνηση του προγράμματος."
    )
 
-/* Settings > User Interface > Views > Quick Menu */
+/* Settings > User Interface > Menu Item Visibility > Quick Menu */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_CONTROLS,
-   "Εμφάνιση Χειριστηρίων"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_CONTROLS,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Χειριστήρια'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_CHEATS,
-   "Εμφάνιση Κωδικών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_CHEATS,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Κωδικοί'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_SHADERS,
-   "Εμφάνιση Σκιάσεων (Shaders)"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_SHADERS,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Σκιάσεων (Shaders)'."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_REWIND,
-   "Προβολή Ρυθμίσεων Επιστροφής"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_REWIND,
-   "Εμφάνιση/απόκρυψη επιλογών Επιστροφής."
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_LATENCY,
-   "Εμφάνιση/απόκρυψη επιλογών Καθυστέρησης."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_LATENCY,
-   "Προβολή Ρυθμίσεων Καθυστέρησης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CONTENT_SHOW_OVERLAYS,
-   "Εμφάνιση/απόκρυψη επιλογών Επικαλλυμάτων."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_OVERLAYS,
-   "Προβολή Ρυθμίσεων Επικαλλυμάτων"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_INFORMATION,
-   "Προβολή Πληροφοριών"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_SHOW_INFORMATION,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Πληροφορίες'."
-   )
 
 /* Settings > User Interface > Views > Settings */
+
 
 
 /* Settings > User Interface > Appearance */
 
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SCALE_FACTOR,
-   "Συντελεστής Κλίμακας Μενού"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_WALLPAPER_OPACITY,
    "Αδιαφάνεια φόντου"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_THUMBNAILS,
-   "Σκίτσα"
+   MENU_ENUM_LABEL_VALUE_MENU_REMEMBER_SELECTION_ALWAYS,
+   "Πάντα"
    )
 
 /* Settings > AI Service */
@@ -2719,10 +3106,6 @@ MSG_HASH(
    "Ενεργοποίηση Επιτευγμάτων"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEEVOS_ENABLE,
-   "Κερδίστε επιτεύγματα σε κλασικά παιχνίδια. Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα https://retroachievements.org"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_HARDCORE_MODE_ENABLE,
    "Σκληροπυρηνική Λειτουργία"
    )
@@ -2735,12 +3118,16 @@ MSG_HASH(
    "Εμβλήματα Επιτευγμάτων"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_CHEEVOS_BADGES_ENABLE,
+   "Enable or disable badge display in the Achievement List."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_TEST_UNOFFICIAL,
    "Δοκιμή Ανεπίσημων Επιτευγμάτων"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CHEEVOS_VERBOSE_ENABLE,
-   "Βερμπαλιστική Λειτουργία"
+   MENU_ENUM_SUBLABEL_CHEEVOS_TEST_UNOFFICIAL,
+   "Enable or disable unofficial achievements and/or beta features for testing purposes."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_AUTO_SCREENSHOT,
@@ -2750,6 +3137,16 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_CHEEVOS_AUTO_SCREENSHOT,
    "Αυτόματη λήψη στιγμιότυπου οθόνης (Screenshot) όταν ένα επίτευγμα υλοποιηθεί."
    )
+
+/* Settings > Achievements > Appearance */
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CHEEVOS_APPEARANCE_SETTINGS,
+   "Εμφάνιση"
+   )
+
+/* Settings > Achievements > Visibility */
+
 
 /* Settings > Network */
 
@@ -2789,10 +3186,6 @@ MSG_HASH(
    MENU_ENUM_SUBLABEL_STDIN_CMD_ENABLE,
    "Enable stdin command interface."
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_UPDATER_SETTINGS,
-   "Ενημερωτής"
-   )
 
 /* Settings > Network > Updater */
 
@@ -2812,12 +3205,12 @@ MSG_HASH(
 /* Settings > Playlists */
 
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_HISTORY_LIST_ENABLE,
-   "Ενεργοποίηση ή απενεργοποίηση λίστας πρόσφατων για παιχνίδια, εικόνες, μουσική και βίντεο."
+   MENU_ENUM_LABEL_VALUE_HISTORY_LIST_ENABLE,
+   "Ιστορικό"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_HISTORY_SIZE,
-   "Μέγεθος Λίστας Ιστορικού"
+   MENU_ENUM_SUBLABEL_HISTORY_LIST_ENABLE,
+   "Ενεργοποίηση ή απενεργοποίηση λίστας πρόσφατων για παιχνίδια, εικόνες, μουσική και βίντεο."
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_HISTORY_SIZE,
@@ -2838,6 +3231,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_LAST_PLAYED,
    "Τελευταίο Παιχνίδι:"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TIME_UNIT_SECONDS_PLURAL,
+   "δευτερόλεπτα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_PORTABLE_PATHS,
@@ -2866,16 +3263,8 @@ MSG_HASH(
    "Ιδιωτικότητα"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_PRIVACY_SETTINGS,
-   "Αλλαγή ρυθμίσεων ιδιοτηκότητας."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCOUNTS_LIST,
    "Λογαριασμοί"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_ACCOUNTS_LIST,
-   "Διαχειρίζεται τους τρέχοντες διαμορφωμένους λογαριασμούς."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_NICKNAME,
@@ -2901,20 +3290,12 @@ MSG_HASH(
    "Ενεργοποίηση Discord Rich Presence"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_DISCORD_ALLOW,
-   "Ενεργοποίηση ή απενεργοποίηση υποστήριξης Discord Rich Presence.\nΣΗΜΕΙΩΣΗ: Δεν θα δουλέψει με την έκδοση του περιηγητή, μόνο με την τοπικά εγκατεστημένη."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOCATION_ALLOW,
    "Επίτρεψη Τοποθεσίας"
    )
 
 /* Settings > User > Accounts */
 
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_ACCOUNTS_RETRO_ACHIEVEMENTS,
-   "Κερδίστε επιτεύγματα σε κλασικά παιχνίδια. Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα http://retroachievements.org"
-   )
 
 /* Settings > User > Accounts > RetroAchievements */
 
@@ -2925,10 +3306,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCOUNTS_CHEEVOS_PASSWORD,
    "Κωδικός"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEEVOS_PASSWORD,
-   "Εισάγεται τον κωδικό πρόσβασης του λογαριασμού σας στο RetroAchievements."
    )
 
 /* Settings > User > Accounts > YouTube */
@@ -2944,6 +3321,9 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TWITCH_STREAM_KEY,
    "Κλειδί Απευθείας Μετάδοσης Twitch"
    )
+
+/* Settings > User > Accounts > Facebook Gaming */
+
 
 /* Settings > Directory */
 
@@ -2969,72 +3349,43 @@ MSG_HASH(
    )
 MSG_HASH( /* FIXME Not RGUI specific */
    MENU_ENUM_LABEL_VALUE_RGUI_BROWSER_DIRECTORY,
-   "Περιηγητής Αρχείων"
-   )
-MSG_HASH( /* FIXME Not RGUI specific */
-   MENU_ENUM_LABEL_VALUE_RGUI_CONFIG_DIRECTORY,
-   "Διαμόρφωση"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_LIBRETRO_DIR_PATH,
-   "Πυρήνας"
+   "Ευρετήριο έναρξης"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LIBRETRO_INFO_PATH,
    "Πληροφορίες Πυρήνα"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONTENT_DATABASE_DIRECTORY,
-   "Βάσεις Δεδομένων"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CURSOR_DIRECTORY,
-   "Δρομείς"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CHEAT_DATABASE_PATH,
-   "Αρχεία Απάτης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEAT_DATABASE_PATH,
-   "Τα αρχεία απάτης αποθηκεύονται εδώ."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_FILTER_DIR,
-   "Φίλτρο Βίντεο"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_AUDIO_FILTER_DIR,
-   "Φίλτρα Ήχου"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_DIR,
-   "Σκίαση Βίντεο"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_OVERLAY_DIRECTORY,
-   "Επικάλλυμα"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_LAYOUT_DIRECTORY,
-   "Διάταξη Βίντεο"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCREENSHOT_DIRECTORY,
-   "Στιγμιότυπο Οθόνης"
+   "Στιγμιότυπα Οθόνης"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_DIRECTORY,
    "Λίστα Αναπαραγωγής"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SAVEFILE_DIRECTORY,
-   "Αρχείο Αποθήκευσης"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CACHE_DIRECTORY,
    "Κρυφή Μνήμη"
    )
+
+#ifdef HAVE_MIST
+/* Settings > Steam */
+
+
+
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_STEAM_RICH_PRESENCE_FORMAT_CONTENT,
+   "Περιεχόμενο"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_STEAM_RICH_PRESENCE_FORMAT_CORE,
+   "Όνομα πυρήνα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_STEAM_RICH_PRESENCE_FORMAT_SYSTEM,
+   "Όνομα συστήματος"
+   )
+#endif
 
 /* Music */
 
@@ -3068,8 +3419,12 @@ MSG_HASH(
    "Αποσύνδεση από τον διακομιστή netplay"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_NETPLAY_DISCONNECT,
-   "Αποσυνδέει μία ενεργή σύνδεση Netplay."
+   MENU_ENUM_LABEL_VALUE_NETPLAY_REFRESH_ROOMS,
+   "Ανανέωση Λίστας Διακομιστών Διαδικτυακού Παιχνιδιού"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_NETPLAY_REFRESH_ROOMS,
+   "Σάρωση για οικοδεσπότες netplay."
    )
 
 /* Netplay > Host */
@@ -3079,15 +3434,11 @@ MSG_HASH(
    "Έναρξη netplay ως οικοδεσπότης"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_NETPLAY_ENABLE_HOST,
-   "Ενεργοποιεί το διαδικτυακό παιχνίδι ως οικοδεσπότης (Διακομιστής)."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_DISABLE_HOST,
    "Λήξη netplay ως οικοδεσπότης"
    )
 
-/* Import content */
+/* Import Content */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCAN_DIRECTORY,
@@ -3118,7 +3469,7 @@ MSG_HASH(
    "Σάρωση με δυνατότητα ρύθμισης παραμέτρων με βάση τα ονόματα αρχείων του περιεχομένου. Το περιεχόμενο δεν είναι απαραίτητο να ταιριάζει με τη βάση δεδομένων."
    )
 
-/* Import content > Scan File */
+/* Import Content > Scan File */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ADD_TO_MIXER_AND_COLLECTION,
@@ -3129,8 +3480,16 @@ MSG_HASH(
    "Προσθήκη στον μίκτη και αναπαραγωγή"
    )
 
-/* Import content > Manual Scan */
+/* Import Content > Manual Scan */
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MANUAL_CONTENT_SCAN_SYSTEM_NAME,
+   "Όνομα συστήματος"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MANUAL_CONTENT_SCAN_CORE_NAME,
+   "Προκαθορισμένος Πυρήνας"
+   )
 
 /* Explore tab */
 MSG_HASH(
@@ -3163,7 +3522,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_EXPLORE_ADD_ADDITIONAL_FILTER,
-   "Πρόσθεση Φίλτρου"
+   "Προσθήκη Φίλτρου"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_EXPLORE_ITEMS_COUNT,
@@ -3190,12 +3549,12 @@ MSG_HASH(
    "Βάσει Είδους Παχινδιού"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_EXPLORE_BY_ORIGIN,
-   "Βάσει Προέλευση"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_EXPLORE_BY_REGION,
    "Βάσει Περιοχής"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_EXPLORE_BY_ORIGIN,
+   "Βάσει Προέλευση"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_EXPLORE_BY_FRANCHISE,
@@ -3208,6 +3567,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_EXPLORE_BY_SYSTEM_NAME,
    "Βάσει Όνομα Συστήματος"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_EXPLORE_VIEW,
+   "Προβολή"
    )
 
 /* Playlist > Playlist Item */
@@ -3233,12 +3596,16 @@ MSG_HASH(
    "Κατάργηση"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_DELETE_ENTRY,
+   "Αφαίρεση αυτής της καταχώρησης από τη λίστα αναπαραγωγής."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ADD_TO_FAVORITES_PLAYLIST,
    "Προσθήκη στα Αγαπημένα"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_ADD_TO_FAVORITES_PLAYLIST,
-   "Προσθήκη καταχώρησης στα αγαπημένα."
+   MENU_ENUM_LABEL_VALUE_SET_CORE_ASSOCIATION,
+   "Ορισμός Συσχέτισης Πυρήνα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESET_CORE_ASSOCIATION,
@@ -3248,12 +3615,28 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INFORMATION,
    "Πληροφορίες"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INFORMATION,
+   "Προβολή περισσότερων πληροφορίών για το περιεχόμενο."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_DOWNLOAD_PL_ENTRY_THUMBNAILS,
+   "Λήψη Μικρογραφιών"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_DOWNLOAD_PL_ENTRY_THUMBNAILS,
+   "Λήψη στιγμιότυπου οθόνης/περίβλημα κουτιού/μικρογραφίες οθόνης τίτλου για το τρέχον περιεχόμενο. Ενημέρωση τυχόν υπάρχουσων μικρογραφιών."
+   )
 
 /* Playlist Item > Set Core Association */
 
 
 /* Playlist Item > Information */
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CONTENT_INFO_LABEL,
+   "Όνομα"
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_INFO_PATH,
    "Διαδρομή Αρχείου"
@@ -3262,11 +3645,11 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_INFO_CORE_NAME,
    "Πυρήνας"
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Unused? */
    MENU_ENUM_LABEL_VALUE_CONTENT_INFO_RUNTIME,
    "Χρόνος Παιχνιδιού"
    )
-MSG_HASH(
+MSG_HASH( /* FIXME Unused? */
    MENU_ENUM_LABEL_VALUE_CONTENT_INFO_LAST_PLAYED,
    "Τελευταίο Παιχνίδι"
    )
@@ -3282,40 +3665,20 @@ MSG_HASH(
    "Συνέχιση"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_RESUME_CONTENT,
-   "Συνέχιση εκτέλεσης του τρέχοντος περιεχομένου και έξοδος από το Γρήγορο Μενού."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESTART_CONTENT,
    "Επανεκκίνηση"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_RESTART_CONTENT,
-   "Επανεκκινεί το περιεχόμενο από την αρχή."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOSE_CONTENT,
    "Κλείσιμο Περιεχομένου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_CLOSE_CONTENT,
-   "Κλείνει το τρέχον περιεχόμενο. Οποιεσδήποτε μη αποθηκευμένες αλλαγές μπορεί να χαθούν."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TAKE_SCREENSHOT,
    "Λήψη Στιγμιότυπου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_TAKE_SCREENSHOT,
-   "Καταγράφει μία εικόνα της οθόνης."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STATE_SLOT,
    "Θέση Κατάστασης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_STATE_SLOT,
-   "Αλλάζει την τρέχουσα επιλεγμένη θέση κατάστασης."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_STATE,
@@ -3354,56 +3717,28 @@ MSG_HASH(
    "Προσθήκη στα Αγαπημένα"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_ADD_TO_FAVORITES,
-   "Προσθήκη καταχώρησης στα αγαπημένα."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_START_RECORDING,
    "Έναρξη Εγγραφής"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_START_RECORDING,
-   "Ξεκινάει την εγγραφή."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_STOP_RECORDING,
    "Τέλος Εγγραφής"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_STOP_RECORDING,
-   "Σταματάει την εγγραφή."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_START_STREAMING,
    "Έναρξη Απευθείας Μετάδοσης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_START_STREAMING,
-   "Ξεκινάει την απευθείας μετάδοση."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUICK_MENU_STOP_STREAMING,
    "Τέλος Απευθείας Μετάδοσης"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_QUICK_MENU_STOP_STREAMING,
-   "Σταματάει την απευθείας μετάδοση."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS,
-   "Επιλογές"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CORE_OPTIONS,
-   "Αλλαγή επιλογών για το τρέχον εκτελούμενο περιεχόμενο."
+   "Επιλογές Πυρήνα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS,
    "Χειρισμοί"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CORE_INPUT_REMAPPING_OPTIONS,
-   "Αλλαγή χειρισμών για το τρέχον εκτελούμενο περιεχόμενο."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_CHEAT_OPTIONS,
@@ -3432,19 +3767,19 @@ MSG_HASH(
 
 /* Quick Menu > Options */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS_CREATE,
-   "Δημιουργία αρχείου επιλογών παιχνιδιού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS_IN_USE,
-   "Αποθήκευση αρχείου επιλογών παιχνιδιού"
-   )
+
+/* Quick Menu > Options > Manage Core Options */
+
+
+/* - Legacy (unused) */
 
 /* Quick Menu > Controls */
 
 
-/* Quick Menu > Controls > Load Remap File */
+/* Quick Menu > Controls > Manage Remap Files */
+
+
+/* Quick Menu > Controls > Manage Remap Files > Load Remap File */
 
 
 /* Quick Menu > Cheats */
@@ -3484,25 +3819,9 @@ MSG_HASH(
 
 /* Quick Menu > Cheats > Start or Continue Cheat Search */
 
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEAT_START_OR_RESTART,
-   "Αριστερά/Δεξιά για αλλαγή μεγέθους bit"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEAT_SEARCH_EQPLUS,
-   "Αριστερά/Δεξιά για αλλαγή τιμής"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_CHEAT_SEARCH_EQMINUS,
-   "Αριστερά/Δεξιά για αλλαγή τιμής"
-   )
 
 /* Quick Menu > Cheats > Load Cheat File (Replace) */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CHEAT_FILE,
-   "Αρχείο Απάτης"
-   )
 
 /* Quick Menu > Cheats > Load Cheat File (Append) */
 
@@ -3549,10 +3868,6 @@ MSG_HASH(
    "Φόρτωση Νέου Δίσκου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_DISK_IMAGE_APPEND,
-   "Εξαγωγή τρέχοντος δίσκου, επιλογή ενός νέου δίσκου από αρχείο, εισαγωγή του και μετά κλείσιμο της τρέχουσας εικονικής θύρας δίσκου. ΣΗΜΕΙΩΣΗ: Αυτή είναι μία απαρχαιωμένη λειτουργία. Προτείνουμε καλύτερα να φορτώσετε λίστες πολλαπλών δίσκων M3U που επιτρέπουν την επιλογή δ[...]"
-   )
-MSG_HASH(
    MENU_ENUM_SUBLABEL_DISK_INDEX,
    "Επιλογή τρέχοντος δίσκου από μία λίστα διαθέσιμων εικόνων. Ο δίσκος θα φορτωθεί όταν επιλεχθεί το 'Εισαγωγή Δίσκου'."
    )
@@ -3560,8 +3875,8 @@ MSG_HASH(
 /* Quick Menu > Shaders */
 
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_PRESET_SAVE,
-   "Αποθήκευση"
+   MENU_ENUM_SUBLABEL_VIDEO_SHADER_PRESET_REMOVE,
+   "Remove shader presets of a specific type."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHADER_APPLY_CHANGES,
@@ -3581,6 +3896,8 @@ MSG_HASH(
    )
 
 /* Quick Menu > Shaders > Save */
+
+
 
 
 /* Quick Menu > Shaders > Remove */
@@ -3610,6 +3927,10 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACHIEVEMENT_RESUME,
    "Συνέχιση Σκληροπυρηνικής Λειτουργίας Επιτευγμάτων"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NOT_LOGGED_IN,
+   "Δεν έχετε συνδεθεί"
+)
 
 /* Quick Menu > Information */
 
@@ -3688,6 +4009,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SELECT_FILE,
    "Επιλογή Αρχείου"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_ROTATION_NORMAL,
+   "Φυσιολογικά"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_ORIENTATION_NORMAL,
+   "Φυσιολογικά"
+   )
 
 /* Settings Options */
 
@@ -3712,8 +4041,20 @@ MSG_HASH(
    "Μέσος Όρος"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NETPLAY_SHARE_NONE,
+   "Κανείς"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_SHARE_NO_PREFERENCE,
    "Καμία προτίμηση"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PLAYLIST_ENTRY_REMOVE_ENABLE_HIST_FAV,
+   "Ιστορικό & Αγαπημένα"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PLAYLIST_ENTRY_REMOVE_ENABLE_NONE,
+   "Ανενεργό"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_INLINE_CORE_DISPLAY_HIST_FAV,
@@ -3760,6 +4101,10 @@ MSG_HASH(
    "<Κανένα>"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NONE,
+   "Τίποτα"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UNKNOWN,
    "Άγνωστο"
    )
@@ -3792,20 +4137,20 @@ MSG_HASH(
    "Αλφαβητικά"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_THUMBNAIL_MODE_BOXARTS,
-   "Εξώφυλλα"
+   MENU_ENUM_LABEL_VALUE_PLAYLIST_MANAGER_SORT_MODE_OFF,
+   "Κανείς"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_THUMBNAIL_MODE_SCREENSHOTS,
-   "Στιγμιότυπα Οθόνης"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_THUMBNAIL_MODE_TITLE_SCREENS,
-   "Οθόνες Τίτλων"
+   "Στιγμιότυπο Οθόνης"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCROLL_NORMAL,
    "Φυσιολογικά"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SCROLL_FAST,
+   "Γρήγορη Ταχύτητα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ON,
@@ -3865,7 +4210,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DONT_CARE,
-   "Αδιάφορο"
+   "Προκαθορισμένο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LINEAR,
@@ -3876,16 +4221,20 @@ MSG_HASH(
    "Κοντινότερο"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CONTENT,
+   "Περιεχόμενο"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MANUAL_CONTENT_SCAN_SYSTEM_NAME_USE_CONTENT_DIR,
+   "<Ευρετήριο περιεχομένων>"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LEFT_ANALOG,
    "Αριστερό Αναλογικό"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RIGHT_ANALOG,
    "Δεξί Αναλογικό"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_KEY,
-   "(Κουμπί: %s)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_LEFT,
@@ -4027,8 +4376,16 @@ MSG_HASH(
 /* RGUI: Settings > User Interface > Appearance */
 
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_RGUI_MENU_COLOR_THEME,
-   "Χρώμα Θέματος Μενού"
+   MENU_ENUM_LABEL_VALUE_MENU_RGUI_ASPECT_RATIO,
+   "Αναλογία Οθόνης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MENU_RGUI_PARTICLE_EFFECT_SCREENSAVER,
+   "Εφέ Φόντου Προφύλαξης Οθόνης"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_MENU_RGUI_PARTICLE_EFFECT_SCREENSAVER,
+   "Εμφάνιση εφέ σωματιδίων στο παρασκήνιο, ενώ το μενού είναι ενεργό."
    )
 
 /* RGUI: Settings Options */
@@ -4038,12 +4395,36 @@ MSG_HASH(
    "Sinc/Lanczos3 (Αργό)"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_UPSCALE_NONE,
+   "Κανείς"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_UPSCALE_AUTO,
+   "Αυτόματο"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_16_9_CENTRE,
    "16:9 (Στο Κέντρο)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_16_10_CENTRE,
    "16:10 (Στο Κέντρο)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_3_2_CENTRE,
+   "3:2 (Στο Κέντρο)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_5_3_CENTRE,
+   "5:3 (Στο Κέντρο)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_AUTO,
+   "Αυτόματο"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_LOCK_NONE,
+   "Ανενεργό"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RGUI_ASPECT_RATIO_LOCK_INTEGER,
@@ -4078,16 +4459,16 @@ MSG_HASH(
    "Ηφαιστιακό Κόκκινο"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RGUI_PARTICLE_EFFECT_NONE,
+   "Ανενεργό"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RGUI_PARTICLE_EFFECT_RAIN,
    "Βροχή"
    )
 
 /* XMB: Settings > User Interface > Appearance */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_LEFT_THUMBNAILS,
-   "Σκίτσα Αριστερά"
-   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DYNAMIC_WALLPAPER,
    "Δυναμικό Φόντο"
@@ -4097,40 +4478,8 @@ MSG_HASH(
    "Ενεργοποίηση οριζόντιας απεικόνισης για το μενού. Θα επηρεάσει την απόδοση."
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_FONT,
-   "Γραμματοσειρά Μενού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_FONT_COLOR_RED,
-   "Γραμματοσειρά Μενού Κόκκινο Χρώμα"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_FONT_COLOR_GREEN,
-   "Γραμματοσειρά Μενού Πράσινο Χρώμα"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_FONT_COLOR_BLUE,
-   "Γραμματοσειρά Μενού Μπλε Χρώμα"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_LAYOUT,
-   "Διάταξη Μενού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_THEME,
-   "Θέμα Εικόνων Μενού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_SHADOWS_ENABLE,
-   "Ενεργοποίηση Σκιών Εικονιδίων"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_MENU_COLOR_THEME,
-   "Χρώμα Θέματος Μενού"
-   )
-MSG_HASH( /* FIXME Unused? */
-   MENU_ENUM_LABEL_VALUE_XMB_MAIN_MENU_ENABLE_SETTINGS,
-   "Ενεργοποίηση Καρτέλας Μενού"
+   MENU_ENUM_SUBLABEL_XMB_THEME,
+   "Select a different theme for the icon. Changes will take effect after you restart the program."
    )
 
 /* XMB: Settings Options */
@@ -4196,10 +4545,6 @@ MSG_HASH(
    "Μεσωνύκτιο Μπλε"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_XMB_MENU_COLOR_THEME_PLAIN,
-   "Απλό"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_XMB_MENU_COLOR_THEME_UNDERSEA,
    "Κάτω Από Την Θάλασσα"
    )
@@ -4210,20 +4555,14 @@ MSG_HASH(
 
 /* Ozone: Settings > User Interface > Appearance */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_OZONE_MENU_COLOR_THEME,
-   "Χρώμα Θέματος Μενού"
-   )
+
+
 
 /* MaterialUI: Settings > User Interface > Appearance */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MATERIALUI_ICONS_ENABLE,
-   "Εικονίδια Μενού"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME,
-   "Χρώμα Θέματος Μενού"
+   "Εικονίδια"
    )
 
 /* MaterialUI: Settings Options */
@@ -4251,6 +4590,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_COLOR_THEME_YELLOW,
    "Κίτρινο"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_TRANSITION_ANIM_AUTO,
+   "Αυτόματο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_TRANSITION_ANIM_NONE,
@@ -4284,6 +4627,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MATERIALUI_THUMBNAIL_VIEW_LANDSCAPE_LIST_LARGE,
    "Λίστα (Μεγάλα)"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MATERIALUI_LANDSCAPE_LAYOUT_OPTIMIZATION_DISABLED,
+   "Ανενεργό"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MATERIALUI_LANDSCAPE_LAYOUT_OPTIMIZATION_ALWAYS,
+   "Ενεργό"
+   )
 
 /* Qt (Desktop Menu) */
 
@@ -4298,6 +4649,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_MENU_FILE_LOAD_CORE,
    "&Φόρτωση Πυρήνα..."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_QT_MENU_FILE_EXIT,
+   "Έξοδος"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_MENU_EDIT,
@@ -4342,6 +4697,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_MENU_HELP_DOCUMENTATION,
    "Εγχειρίδιο"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_QT_LOAD_CUSTOM_CORE,
+   "Φόρτωση Προσαρμοσμένου Πυρήνα..."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_LOAD_CORE,
@@ -4390,6 +4749,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_RESTART_TO_TAKE_EFFECT,
    "Παρακαλώ κάντε επανεκκίνηση του προγράμματος για να εφαρμοστούν οι αλλαγές."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_QT_ITEMS_COUNT,
+   "%1 αντικείμενα"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_STOP,
@@ -4472,6 +4835,10 @@ MSG_HASH(
    "Επιλογή Φακέλου"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_QT_UPDATE_RETROARCH_NIGHTLY,
+   "Ενημέρωση RetroArch (Ασταθής Έκδοση)"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QT_UPDATE_RETROARCH_FAILED,
    "Αποτυχία Ενημέρωσης."
    )
@@ -4531,10 +4898,6 @@ MSG_HASH(
 /* Unsorted */
 
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CORE_UPDATER_SETTINGS,
-   "Ενημερωτής"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCOUNTS_CHEEVOS_SETTINGS,
    "Επιτεύγματα Λογαριασμού"
    )
@@ -4560,7 +4923,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_HISTORY,
-   "Φόρτωση Πρόσφατου"
+   "Ιστορικό"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MULTIMEDIA_SETTINGS,
@@ -4595,10 +4958,6 @@ MSG_HASH(
    "Έναρξη ή Συνέχιση Αναζήτησης Απάτης"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_RUN_MUSIC,
-   "Εκκίνηση"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SECONDS,
    "δευτερόλεπτα"
    )
@@ -4619,8 +4978,8 @@ MSG_HASH(
    "Χρήστης"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_VIDEO_MAX_SWAPCHAIN_IMAGES,
-   "Μέγιστες εικόνες swapchain"
+   MENU_ENUM_SUBLABEL_VIDEO_WAITABLE_SWAPCHAINS,
+   "Σκληρός συγχρονισμός επεξεργαστή και κάρτας γραφικών. Μειώνει την καθυστέρηση με τίμημα την επίδοση."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BROWSE_START,
@@ -4646,6 +5005,10 @@ MSG_HASH(
    "Κατάσταση"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SYSTEM_BGM_ENABLE,
+   "System BGM Enable"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CUSTOM_RATIO,
    "Προτιμώμενη Αναλογία"
    )
@@ -4664,14 +5027,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FORCE_ASPECT,
    "Εξαναγκασμένη αναλογία απεικόνισης"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_RESUME,
-   "Συνέχιση"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_RESUME,
-   "Συνέχιση εκτέλεσης του τρέχοντος περιεχομένου και έξοδος από το Γρήγορο Μενού."
    )
 MSG_HASH( /* FIXME Still exists in a comment about being removed */
    MENU_ENUM_LABEL_VALUE_MATERIALUI_MENU_FOOTER_OPACITY,
@@ -4702,6 +5057,10 @@ MSG_HASH(
    "Βοήθεια"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CLEAR_SETTING,
+   "Εκκαθάριση"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_HELP_AUDIO_VIDEO_TROUBLESHOOTING,
    "Αντιμετώπιση Προβλημάτων Ήχου/Βίντεο"
    )
@@ -4710,12 +5069,12 @@ MSG_HASH(
    "Φόρτωση Περιεχομένου"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_HELP_SCANNING_CONTENT,
-   "Σάρωση Για Περιεχόμενο"
+   MENU_ENUM_LABEL_VALUE_HELP_SEND_DEBUG_INFO,
+   "Αποστολή Πληροφοριων Εκσφαλματωσης (Debuging)"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_HELP_WHAT_IS_A_CORE,
-   "Τι Είναι Ο Πυρήνας;"
+   MENU_ENUM_SUBLABEL_HELP_SEND_DEBUG_INFO,
+   "Στέλνει διαγνωστικές πληροφορίες σχετικά με τη συσκευή σας και τις ρυθμίσεις του RetroArch στους διακομιστές μας για ανάλυση."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MANAGEMENT,
@@ -4728,6 +5087,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_LAN_SCAN_SETTINGS,
    "Αναζήτηση για και σύνδεση με οικοδεσπότη netplay στο τοπικό δίκτυο."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NETPLAY_MODE,
+   "Netplay Client Enable"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NETPLAY_SPECTATOR_MODE_ENABLE,
+   "Netplay Spectator Enable"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_DESCRIPTION,
@@ -4791,6 +5158,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONFIG,
    "Διαμόρφωση"
+   )
+MSG_HASH( /* FIXME Seems related to MENU_ENUM_LABEL_VALUE_CORE_ASSETS_DIRECTORY, possible duplicate */
+   MENU_ENUM_LABEL_VALUE_CORE_ASSETS_DIR,
+   "Λήψεις"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_SETTINGS,
@@ -4859,10 +5230,6 @@ MSG_HASH(
 /* Notifications */
 
 MSG_HASH( /* FIXME Should be MSG_ */
-   MENU_ENUM_LABEL_VALUE_SIDELOAD_CORE_SUCCESS,
-   "Επιτυχής εγκατάσταση πυρήνα"
-   )
-MSG_HASH( /* FIXME Should be MSG_ */
    MENU_ENUM_LABEL_VALUE_SIDELOAD_CORE_ERROR,
    "Αποτυχία εγκατάστασης πυρήνα"
    )
@@ -4883,10 +5250,6 @@ MSG_HASH(
    "Ντόπιος"
    )
 MSG_HASH(
-   MSG_DEVICE_DISCONNECTED_FROM_PORT,
-   "Η συσκευή αποσυνδέθηκε από την θύρα"
-   )
-MSG_HASH(
    MSG_UNKNOWN_NETPLAY_COMMAND_RECEIVED,
    "Λήφθηκε άγνωστη εντολή netplay"
    )
@@ -4903,20 +5266,8 @@ MSG_HASH(
    "Λήφθηκε σύνδεση από: \"%s (%s)\""
    )
 MSG_HASH(
-   MSG_PUBLIC_ADDRESS,
-   "Δημόσια διεύθυνση"
-   )
-MSG_HASH(
-   MSG_UPNP_FAILED,
-   "Αποτυχία Καθορισμού Θυρών"
-   )
-MSG_HASH(
    MSG_SETTING_DISK_IN_TRAY,
    "Τοποθέτηση δίσκου στην μονάδα δίσκου"
-   )
-MSG_HASH(
-   MSG_WAITING_FOR_CLIENT,
-   "Αναμονή για πελάτη ..."
    )
 MSG_HASH(
    MSG_NETPLAY_YOU_HAVE_LEFT_THE_GAME,
@@ -4947,10 +5298,6 @@ MSG_HASH(
    "Η προσπάθεια σύνδεσης netplay απέτυχε επειδή ο συμπέκτης δεν χρησιμοποιεί το RetroArch ή χρησιμοποιεί πιο παλιά έκδοση."
    )
 MSG_HASH(
-   MSG_NETPLAY_OUT_OF_DATE,
-   "Ο συμπαίκτης χρησιμοποιεί πιο παλιά έκδοση RetroArch. Αδύνατη η σύνδεση."
-   )
-MSG_HASH(
    MSG_NETPLAY_DIFFERENT_VERSIONS,
    "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Ο συμπαίκτης netplay χρησιμοποιεί διαφορετική έκδοση του RetroArch. Εάν προκύψουν προβλήματα χρησιμοποιήστε την ίδια έκδοση."
    )
@@ -4961,14 +5308,6 @@ MSG_HASH(
 MSG_HASH(
    MSG_NETPLAY_DIFFERENT_CORE_VERSIONS,
    "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Ο συμπαίκτης netplay χρησιμοποιεί διαφορετική έκδοση του πυρήνα. Εάν προκύψουν προβλήματα χρησιμοποιήστε την ίδια έκδοση."
-   )
-MSG_HASH(
-   MSG_NETPLAY_ENDIAN_DEPENDENT,
-   "Αυτός ο πυρήνας δεν υποστηρίζει σύνδεση διαφορετικών πλατφόρμων για netplay ανάμεσα σε αυτά τα συστήματα"
-   )
-MSG_HASH(
-   MSG_NETPLAY_PLATFORM_DEPENDENT,
-   "Αυτός ο πυρήνας δεν υποστηρίζει σύνδεση διαφορετικών πλατφόρμων για netplay"
    )
 MSG_HASH(
    MSG_NETPLAY_ENTER_PASSWORD,
@@ -5015,16 +5354,17 @@ MSG_HASH(
    "Το ψευδώνυμο σας άλλαξε σε \"%s\""
    )
 MSG_HASH(
+   MSG_NETPLAY_STATUS_PLAYING,
+   "Σε αναπαραγωγή"
+   )
+
+MSG_HASH(
    MSG_AUDIO_VOLUME,
    "Ένταση ήχου"
    )
 MSG_HASH(
    MSG_AUTODETECT,
    "Αυτόματη ανίχνευση"
-   )
-MSG_HASH(
-   MSG_AUTOLOADING_SAVESTATE_FROM,
-   "Αυτόματη φόρτωση κατάστασης αποθήκευσης από"
    )
 MSG_HASH(
    MSG_CAPABILITIES,
@@ -5195,20 +5535,12 @@ MSG_HASH(
    "Παύση."
    )
 MSG_HASH(
-   MSG_RECEIVED,
-   "ελήφθη"
-   )
-MSG_HASH(
    MSG_RECORDING_TO,
    "Εγγραφή σε"
    )
 MSG_HASH(
    MSG_SCANNING,
    "Σάρωση"
-   )
-MSG_HASH(
-   MSG_SCANNING_OF_DIRECTORY_FINISHED,
-   "Η σάρωση του ευρετηρίου ολοκληρώθηκε"
    )
 MSG_HASH(
    MSG_SENDING_COMMAND,
@@ -5227,6 +5559,10 @@ MSG_HASH(
    "Γρήγορη κίνηση."
    )
 MSG_HASH(
+   MSG_UNKNOWN,
+   "Άγνωστο"
+   )
+MSG_HASH(
    MSG_VALUE_REBOOTING,
    "Επανεκκίνηση..."
    )
@@ -5237,6 +5573,22 @@ MSG_HASH(
 MSG_HASH(
    MSG_VERSION_OF_LIBRETRO_API,
    "Έκδοση του libretro API"
+   )
+MSG_HASH(
+   MSG_VIEWPORT_SIZE_CALCULATION_FAILED,
+   "Viewport size calculation failed! Will continue using raw data. This will probably not work right ..."
+   )
+MSG_HASH(
+   MSG_AUTOLOADING_SAVESTATE_FROM,
+   "Αυτόματη φόρτωση κατάστασης αποθήκευσης από"
+   )
+MSG_HASH(
+   MSG_DEVICE_CONFIGURED_IN_PORT,
+   "διαμορφώθηκε στην θύρα"
+   )
+MSG_HASH(
+   MSG_DEVICE_NOT_CONFIGURED,
+   "δεν έχει ρυθμιστεί"
    )
 MSG_HASH(
    MSG_BLUETOOTH_SCAN_COMPLETE,
@@ -5253,6 +5605,18 @@ MSG_HASH(
 MSG_HASH(
    MSG_SCANNING_WIRELESS_NETWORKS,
    "Σάρωση ασύρματων δικτύων..."
+   )
+MSG_HASH(
+   MSG_ENABLING_WIRELESS,
+   "Ενεργοποίηση Wi-Fi..."
+   )
+MSG_HASH(
+   MSG_DISABLING_WIRELESS,
+   "Απενεργοποίηση Wi-Fi..."
+   )
+MSG_HASH(
+   MSG_DISCONNECTING_WIRELESS,
+   "Αποσύνδεση Wi-Fi..."
    )
 MSG_HASH(
    MSG_NETPLAY_LAN_SCANNING,
@@ -5287,24 +5651,104 @@ MSG_HASH(
    "Λανθασμένος κωδικός."
    )
 MSG_HASH(
-   MSG_DEVICE_CONFIGURED_IN_PORT,
-   "Διαμορφώθηκε στην θύρα:"
-   )
-MSG_HASH(
-   MSG_FAILED_TO_SET_DISK,
-   "Αποτυχία ορισμού δίσκου"
-   )
-MSG_HASH(
    MSG_RESAMPLER_QUALITY_NORMAL,
    "Φυσιολογικά"
+   )
+MSG_HASH(
+   MSG_NO_DISC_INSERTED,
+   "Δεν υπάρχει δίσκος στη μονάδα δίσκου."
+   )
+MSG_HASH(
+   MSG_MANUAL_CONTENT_SCAN_START,
+   "Σάρωση περιεχομένου: "
    )
 MSG_HASH(
    MSG_MANUAL_CONTENT_SCAN_IN_PROGRESS,
    "Σάρωση: "
    )
 MSG_HASH(
+   MSG_MANUAL_CONTENT_SCAN_M3U_CLEANUP,
+   "Καθαρισμός καταχωρήσεων M3U: "
+   )
+MSG_HASH(
+   MSG_MANUAL_CONTENT_SCAN_END,
+   "Η Σάρωση ολοκληρώθηκε: "
+   )
+MSG_HASH(
+   MSG_CORE_BACKUP_SCANNING_CORE,
+   "Σάρωση πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_BACKUP_ALREADY_EXISTS,
+   "Υπάρχει ήδη αντίγραφο ασφαλείας του εγκατεστημένου πυρήνα: "
+   )
+MSG_HASH(
+   MSG_BACKING_UP_CORE,
+   "Δημιουργία αντίγραφου ασφαλείας πυρήνα: "
+   )
+MSG_HASH(
+   MSG_PRUNING_CORE_BACKUP_HISTORY,
+   "Αφαίρεση παρωχημένων αντιγράφων ασφαλείας: "
+   )
+MSG_HASH(
+   MSG_CORE_BACKUP_COMPLETE,
+   "Το αντίγραφο ασφαλείας του πυρήνα ολοκληρώθηκε: "
+   )
+MSG_HASH(
+   MSG_CORE_RESTORATION_ALREADY_INSTALLED,
+   "Το επιλεγμένο αντίγραφο ασφαλείας πυρήνα είναι ήδη εγκατεστημένο: "
+   )
+MSG_HASH(
+   MSG_RESTORING_CORE,
+   "Επαναφορά του πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_RESTORATION_COMPLETE,
+   "Η επαναφορά του πυρήνα ολοκληρώθηκε: "
+   )
+MSG_HASH(
+   MSG_CORE_INSTALLATION_ALREADY_INSTALLED,
+   "Το επιλεγμένο αρχείο πυρήνα είναι ήδη εγκατεστημένο: "
+   )
+MSG_HASH(
+   MSG_INSTALLING_CORE,
+   "Εγκατάσταση πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_INSTALLATION_COMPLETE,
+   "Η εγκατάσταση του πυρήνα ολοκληρώθηκε: "
+   )
+MSG_HASH(
+   MSG_CORE_BACKUP_FAILED,
+   "Αποτυχία αντιγράφου ασφαλείας πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_RESTORATION_FAILED,
+   "Αποτυχία αποκατάστασης πυρήνα: "
+   )
+MSG_HASH(
    MSG_CORE_INSTALLATION_FAILED,
    "Αποτυχία Εγκατάστασης Πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_RESTORATION_DISABLED,
+   "Η αποκατάσταση του πυρήνα απενεργοποιήθηκε - ο πυρήνας είναι κλειδωμένος: "
+   )
+MSG_HASH(
+   MSG_CORE_INSTALLATION_DISABLED,
+   "Η εγκατάσταση του πυρήνα απενεργοποιήθηκε - ο πυρήνας είναι κλειδωμένος: "
+   )
+MSG_HASH(
+   MSG_CORE_LOCK_FAILED,
+   "Αποτυχία κλειδώματος πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_UNLOCK_FAILED,
+   "Αποτυχία ξεκλειδώματος πυρήνα: "
+   )
+MSG_HASH(
+   MSG_CORE_DELETE_DISABLED,
+   "Η διαγραφή του πυρήνα απενεργοποιήθηκε - ο πυρήνας είναι κλειδωμένος: "
    )
 
 /* Lakka */
@@ -5337,6 +5781,10 @@ MSG_HASH(
    "Ανάλυση Οθόνης"
    )
 MSG_HASH(
+   MSG_SCREEN_RESOLUTION_DEFAULT,
+   "Ανάλυση Οθόνης: Προεπιλογή"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHUTDOWN,
    "Τερματισμός"
    )
@@ -5353,16 +5801,20 @@ MSG_HASH(
    "Ενεργοποίηση Απαλού Φίλτρου"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_BLUETOOTH_SETTINGS,
-   "Σκανάρισμα και ζεύξη συσκευών bluetooth."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_WIFI_SETTINGS,
    "Οδηγός Wi-Fi"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_WIFI_SETTINGS,
-   "Σαρώνει για ασύρματα δίκτυα και δημιουργεί σύνδεση."
+   "Σάρωση για ασύρματα δίκτυα και δημιουργία σύνδεσης."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_WIFI_ENABLED,
+   "Ενεργοποίηση Wi-Fi"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_WIFI_DISCONNECT,
+   "Αποσύνδεση"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VI_WIDTH,
@@ -5371,6 +5823,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SUSTAINED_PERFORMANCE_MODE,
    "Κατάσταση Συνεχούς Επίδοσης"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CPU_PERF_MODE_MANUAL,
+   "Χειροκίνητο"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PAL60_ENABLE,
@@ -5393,50 +5849,31 @@ MSG_HASH(
    "Ενεργοποίηση Μικρού Πληκτρολογίου"
    )
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_SHOW_REBOOT,
-   "Προβολή Επανεκκίνησης"
+   MSG_INTERNET,
+   "Διαδίκτυο"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_MENU_SHOW_REBOOT,
-   "Εμφάνιση/απόκρυψη της επιλογής 'Επανεκκίνηση'."
-   )
-
-#ifdef HAVE_LAKKA_SWITCH
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SWITCH_GPU_PROFILE,
-   "Υπερχρονισμός Κάρτας Γραφικών"
+   MSG_LOCAL,
+   "Τοπικό"
    )
 MSG_HASH(
-   MENU_ENUM_SUBLABEL_SWITCH_GPU_PROFILE,
-   "Υπερχρονισμός ή υποχρονισμός της Κάρτας Γραφικών του Switch"
+   MENU_ENUM_LABEL_VALUE_BRIGHTNESS_CONTROL,
+   "Φωτεινότητα Οθόνης"
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SWITCH_BACKLIGHT_CONTROL,
-   "Φωτεινότητα οθόνης"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_SWITCH_BACKLIGHT_CONTROL,
-   "Αύξηση ή μείωση της φωτεινότητας της οθόνης του Switch"
-   )
-#endif
-#if defined(HAVE_LAKKA_SWITCH) || defined(HAVE_LIBNX)
+#ifdef HAVE_LIBNX
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SWITCH_CPU_PROFILE,
    "Υπερχρονισμός Επεξεργαστή"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SWITCH_CPU_PROFILE,
-   "Υπερχρονισμός του επεξεργαστή του Switch"
+   "Υπερχρονισμός του επεξεργαστή του Switch."
    )
 #endif
 #ifdef HAVE_LAKKA
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BLUETOOTH_ENABLE,
    "Ενεργοποίηση Bluetooth"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_BLUETOOTH_ENABLE,
-   "Ενεργοποίηση ή απενεργοποίηση bluetooth."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LAKKA_SERVICES,
@@ -5447,28 +5884,69 @@ MSG_HASH(
    "Ενεργοποίηση SAMBA"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_SAMBA_ENABLE,
+   "Enable or disable network sharing of your folders."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SSH_ENABLE,
    "Ενεργοποίηση SSH"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_SSH_ENABLE,
+   "Enable or disable remote command line access."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_LOCALAP_ENABLE,
+   "Σημείο Πρόσβασης Wi-Fi"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TIMEZONE,
+   "Ζώνη ώρας"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_TIMEZONE,
+   "Επιλέξτε τη ζώνη ώρας σας για να προσαρμόσετε την ημερομηνία και την ώρα στην τοποθεσία σας."
+   )
+#ifdef HAVE_LAKKA_SWITCH
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_SWITCH_OC_ENABLE,
+   "Υπερχρονισμός Επεξεργαστή"
+   )
+#endif
+#endif
+#ifdef HAVE_LAKKA_SWITCH
 #endif
 #ifdef GEKKO
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_SCALE,
    "Κλίμακα Ποντικιού"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_INPUT_MOUSE_SCALE,
-   "Προσαρμογή κλίμακας ταχύτητας x/y για το Wiimote lightgun."
-   )
+#endif
+#ifdef UDEV_TOUCH_SUPPORT
 #endif
 #ifdef HAVE_ODROIDGO2
 #else
 #endif
-#if defined(_3DS)
+#ifdef _3DS
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_3DS_LCD_BOTTOM,
    "Κάτω οθόνη 3DS"
    )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CTR_VIDEO_MODE_2D_400X240,
+   "2D (Εφέ Πλέγματος Εικονοστοιχείων)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CTR_VIDEO_MODE_2D_800X240,
+   "2D (Υψηλή Ανάλυση)"
+   )
 #endif
 #ifdef HAVE_QT
+#endif
+#ifdef HAVE_GAME_AI
+
+
+
+
+
 #endif

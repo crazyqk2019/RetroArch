@@ -14,8 +14,8 @@
  *  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(__CELLOS_LV2__) || defined(__PSL1GHT__)
-#include "../defines/ps3_defines.h"
+#if defined(__PSL1GHT__) || defined(__PS3__)
+#include <defines/ps3_defines.h>
 #endif
 
 #include <stdio.h>
@@ -37,6 +37,17 @@
 #error "An UDP port for the PC logging server was not set in the Makefile, cannot continue."
 #endif
 
+#ifdef ORBIS
+void logger_init(void)
+{
+   debugNetInit(PC_DEVELOPMENT_IP_ADDRESS,PC_DEVELOPMENT_UDP_PORT,3);
+}
+
+void logger_shutdown(void)
+{
+   debugNetFinish();
+}
+#else
 /* TODO/FIXME - static global variables */
 static int g_sid;
 static struct sockaddr_in target;
@@ -48,10 +59,7 @@ void logger_init(void)
    unsigned      port = PC_DEVELOPMENT_UDP_PORT;
 
    if (!network_init())
-   {
-      printf("Could not initialize network logger interface.\n");
       return;
-   }
 
    g_sid  = socket_create(
          "ra_netlogger",
@@ -68,10 +76,7 @@ void logger_init(void)
 
 void logger_shutdown(void)
 {
-   if (socket_close(g_sid) < 0)
-      printf("Could not close socket.\n");
-
-   network_deinit();
+   socket_close(g_sid);
 }
 
 void logger_send(const char *__format,...)
@@ -86,15 +91,13 @@ void logger_send(const char *__format,...)
 void logger_send_v(const char *__format, va_list args)
 {
    static char sendbuf[4096];
-   int len;
-
-   vsnprintf(sendbuf,4000,__format, args);
-   len = strlen(sendbuf);
+   int _len = vsnprintf(sendbuf,4000,__format, args);
 
    sendto(g_sid,
          sendbuf,
-         len,
+         _len,
          MSG_DONTWAIT,
          (struct sockaddr*)&target,
          sizeof(target));
 }
+#endif

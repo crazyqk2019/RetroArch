@@ -121,6 +121,23 @@ bool drm_get_connector(int fd, unsigned monitor_index)
    return true;
 }
 
+float drm_calc_refresh_rate(drmModeModeInfo *mode)
+{
+   unsigned int num, den;
+
+   num = mode->clock;
+   den = mode->htotal * mode->vtotal;
+
+   if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+      num *= 2;
+   if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+      den *= 2;
+   if (mode->vscan > 1)
+      den *= mode->vscan;
+
+   return num * 1000.0f / den;
+}
+
 bool drm_get_encoder(int fd)
 {
    unsigned i;
@@ -147,12 +164,12 @@ bool drm_get_encoder(int fd)
 
    for (i = 0; (int)i < g_drm_connector->count_modes; i++)
    {
-      RARCH_LOG("[DRM]: Mode %d: (%s) %d x %d, %u Hz\n",
+      RARCH_LOG("[DRM]: Mode %d: (%s) %d x %d, %f Hz\n",
             i,
             g_drm_connector->modes[i].name,
             g_drm_connector->modes[i].hdisplay,
             g_drm_connector->modes[i].vdisplay,
-            g_drm_connector->modes[i].vrefresh);
+            drm_calc_refresh_rate(&g_drm_connector->modes[i]));
    }
 
    return true;
@@ -173,7 +190,7 @@ float drm_get_refresh_rate(void *data)
 
    if (g_drm_mode)
    {
-      refresh_rate = g_drm_mode->clock * 1000.0f / g_drm_mode->htotal / g_drm_mode->vtotal;
+      refresh_rate = drm_calc_refresh_rate(g_drm_mode);
    }
 
    return refresh_rate;

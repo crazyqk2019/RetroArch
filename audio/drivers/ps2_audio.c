@@ -15,13 +15,12 @@
 
 #include <stdint.h>
 #include <malloc.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <kernel.h>
 #include <audsrv.h>
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 
 #define AUDIO_BUFFER 128 * 1024
 #define AUDIO_CHANNELS 2
@@ -32,26 +31,17 @@ typedef struct ps2_audio
    /* TODO/FIXME - nonblock is not implemented */
    bool nonblock;
    bool running;
-
 } ps2_audio_t;
 
 static void audioConfigure(ps2_audio_t *ps2, unsigned rate)
 {
-   int err;
    struct audsrv_fmt_t format;
 
    format.bits     = AUDIO_BITS;
    format.freq     = rate;
    format.channels = AUDIO_CHANNELS;
 
-   err             = audsrv_set_format(&format);
-
-   if (err)
-   {
-      printf("set format returned %d\n", err);
-      printf("audsrv returned error string: %s\n", audsrv_get_error_string());
-   }
-
+   audsrv_set_format(&format);
    audsrv_set_volume(MAX_VOLUME);
 }
 
@@ -81,14 +71,12 @@ static void ps2_audio_free(void *data)
    free(ps2);
 }
 
-static ssize_t ps2_audio_write(void *data, const void *buf, size_t size)
+static ssize_t ps2_audio_write(void *data, const void *s, size_t len)
 {
    ps2_audio_t* ps2 = (ps2_audio_t*)data;
-
    if (!ps2->running)
       return -1;
-
-   return audsrv_play_audio(buf, size);
+   return audsrv_play_audio(s, len);
 }
 
 static bool ps2_audio_alive(void *data)

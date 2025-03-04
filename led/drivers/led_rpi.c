@@ -13,6 +13,7 @@
  */
 
 #include <stdio.h>
+#include <compat/strl.h>
 
 #include "../led_driver.h"
 #include "../led_defines.h"
@@ -26,8 +27,8 @@ typedef struct
 } rpiled_t;
 
 /* TODO/FIXME - static globals */
-static rpiled_t curins;
-static rpiled_t *cur = &curins;
+static rpiled_t rpi_curins;
+static rpiled_t *rpi_cur = &rpi_curins;
 
 static void rpi_init(void)
 {
@@ -37,15 +38,22 @@ static void rpi_init(void)
    if (!settings)
       return;
 
-   for(i = 0; i < MAX_LEDS; i++)
+   for (i = 0; i < MAX_LEDS; i++)
    {
-      cur->setup[i] = 0;
-      cur->map[i]   = settings->uints.led_map[i];
+      rpi_cur->setup[i] = 0;
+      rpi_cur->map[i]   = settings->uints.led_map[i];
    }
 }
 
 static void rpi_free(void)
 {
+   int i;
+
+   for (i = 0; i < MAX_LEDS; i++)
+   {
+      rpi_cur->setup[i] = 0;
+      rpi_cur->map[i]   = 0;
+   }
 }
 
 static int set_gpio(int gpio, int value)
@@ -53,10 +61,9 @@ static int set_gpio(int gpio, int value)
    FILE *fp;
    char buf[256];
    snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%d/value", gpio);
-   fp = fopen(buf, "w");
 
    /* Failed to set GPIO? */
-   if (!fp)
+   if (!(fp = fopen(buf, "w")))
       return -1;
 
    fprintf(fp, "%d\n", value ? 1 : 0);
@@ -69,15 +76,13 @@ static int setup_gpio(int gpio)
    FILE *fp;
    char buf[256];
    snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%d/direction", gpio);
-   fp = fopen(buf, "w");
-
-   if(!fp)
+   
+   if (!(fp = fopen(buf, "w")))
    {
-      snprintf(buf, sizeof(buf), "/sys/class/gpio/export");
-      fp = fopen(buf, "w");
+      strlcpy(buf, "/sys/class/gpio/export", sizeof(buf));
 
       /* Failed to export GPIO? */
-      if (!fp)
+      if (!(fp = fopen(buf, "w")))
          return -1;
 
       fprintf(fp,"%d\n", gpio);
@@ -101,16 +106,16 @@ static void rpi_set(int led, int state)
    int gpio = 0;
 
    /* Invalid LED? */
-   if((led < 0) || (led >= MAX_LEDS))
+   if ((led < 0) || (led >= MAX_LEDS))
       return;
 
-   gpio = cur->map[led];
-   if(gpio <= 0)
+   gpio = rpi_cur->map[led];
+   if (gpio <= 0)
       return;
 
-   if(cur->setup[led] == 0)
-      cur->setup[led] = setup_gpio(gpio);
-   if(cur->setup[led] > 0)
+   if (rpi_cur->setup[led] == 0)
+      rpi_cur->setup[led] = setup_gpio(gpio);
+   if (rpi_cur->setup[led] > 0)
       set_gpio(gpio, state);
 }
 

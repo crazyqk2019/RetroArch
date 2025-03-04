@@ -1,7 +1,6 @@
 /*  RetroArch - A frontend for libretro.
  *  Copyright (C) 2010-2014 - Hans-Kristian Arntzen
- *  Copyright (C) 2011-2016 - Daniel De Matteis
- *  Copyright (C) 2016-2019 - Brad Parker
+ *  Copyright (C) 2011-2020 - Daniel De Matteis
  *
  *  RetroArch is free software: you can redistribute it and/or modify it under the terms
  *  of the GNU General Public License as published by the Free Software Found-
@@ -22,7 +21,7 @@
 #include <boolean.h>
 #include <retro_common_api.h>
 
-#if defined(HAVE_DYNAMIC) && !defined(__WINRT__)
+#if defined(HAVE_DYLIB) && !defined(__WINRT__)
 static bool load_xinput_dll(void)
 {
    const char *version = "1.4";
@@ -32,7 +31,7 @@ static bool load_xinput_dll(void)
     * wrapper DLL (such as x360ce); support these by checking
     * the working directory first.
     *
-    * No need to check for existance as we will be checking dylib_load's
+    * No need to check for existence as we will be checking dylib_load's
     * success anyway.
     */
 
@@ -45,7 +44,7 @@ static bool load_xinput_dll(void)
 
    if (!g_xinput_dll)
    {
-      RARCH_ERR("[XInput]: Failed to load XInput, ensure DirectX and controller drivers are up to date.\n");
+      RARCH_ERR("[XInput]: Failed to load XInput. Ensure DirectX and controller drivers are up to date.\n");
       return false;
    }
 
@@ -54,7 +53,7 @@ static bool load_xinput_dll(void)
 }
 #endif
 
-static int16_t xinput_joypad_button_state(
+static int32_t xinput_joypad_button_state(
       unsigned xuser, uint16_t btn_word,
       unsigned port, uint16_t joykey)
 {

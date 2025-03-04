@@ -19,9 +19,9 @@
 #include <file/file_path.h>
 #include <streams/file_stream.h>
 #include <retro_miscellaneous.h>
+#include <string/stdstring.h>
 
 #include "../font_driver.h"
-#include "../../verbosity.h"
 
 #ifndef STB_TRUETYPE_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
@@ -36,9 +36,9 @@
 
 typedef struct
 {
-   struct font_line_metrics line_metrics;
-   struct font_atlas atlas;
-   struct font_glyph glyphs[256];
+   struct font_atlas atlas;               /* ptr   alignment */
+   struct font_glyph glyphs[256];         /* unsigned alignment */
+   struct font_line_metrics line_metrics; /* float alignment */
 } stb_font_renderer_t;
 
 static struct font_atlas *font_renderer_stb_get_atlas(void *data)
@@ -66,14 +66,11 @@ static bool font_renderer_stb_create_atlas(stb_font_renderer_t *self,
       uint8_t *font_data, float font_size, unsigned width, unsigned height)
 {
    int i;
-   stbtt_packedchar   chardata[256];
+   stbtt_packedchar chardata[256];
    stbtt_pack_context pc = {NULL};
 
    if (width > 2048 || height > 2048)
-   {
-      RARCH_WARN("[stb] Font atlas too big: %ux%u\n", width, height);
       goto error;
-   }
 
    if (self->atlas.buffer)
       free(self->atlas.buffer);
@@ -85,6 +82,9 @@ static bool font_renderer_stb_create_atlas(stb_font_renderer_t *self,
    if (!self->atlas.buffer)
       goto error;
 
+   /* Note: 1 pixel of padding is added to
+    * prevent texture bleed when drawing with
+    * linear filtering enabled */
    stbtt_PackBegin(&pc, self->atlas.buffer,
          self->atlas.width, self->atlas.height,
          self->atlas.width, 1, NULL);
@@ -108,7 +108,7 @@ static bool font_renderer_stb_create_atlas(stb_font_renderer_t *self,
       g->height            = c->y1 - c->y0;
 
       /* Make sure important characters fit */
-      if (isalnum(i) && (!g->width || !g->height))
+      if (ISALNUM(i) && (!g->width || !g->height))
       {
          int new_width  = width  * 1.2;
          int new_height = height * 1.2;
@@ -128,11 +128,11 @@ static bool font_renderer_stb_create_atlas(stb_font_renderer_t *self,
    return true;
 
 error:
-   self->atlas.width = self->atlas.height = 0;
-
    if (self->atlas.buffer)
       free(self->atlas.buffer);
 
+   self->atlas.width  = 0;
+   self->atlas.height = 0;
    self->atlas.buffer = NULL;
 
    return false;
@@ -140,17 +140,17 @@ error:
 
 static void *font_renderer_stb_init(const char *font_path, float font_size)
 {
-   int ascent, descent, line_gap;
    float scale_factor;
    stbtt_fontinfo info;
-   uint8_t *font_data = NULL;
+   int ascent, descent, line_gap;
+   uint8_t *font_data        = NULL;
    stb_font_renderer_t *self = (stb_font_renderer_t*) calloc(1, sizeof(*self));
 
    /* See https://github.com/nothings/stb/blob/master/stb_truetype.h#L539 */
    font_size = STBTT_POINT_SIZE(font_size);
 
    if (!self)
-      goto error;
+      return NULL;
 
    if (!path_is_valid(font_path) || !filestream_read_file(font_path, (void**)&font_data, NULL))
       goto error;
@@ -163,9 +163,9 @@ static void *font_renderer_stb_init(const char *font_path, float font_size)
 
    stbtt_GetFontVMetrics(&info, &ascent, &descent, &line_gap);
 
-   scale_factor = (font_size < 0) ?
-         stbtt_ScaleForMappingEmToPixels(&info, -font_size) :
-         stbtt_ScaleForPixelHeight(&info, font_size);
+   scale_factor = (font_size < 0)
+         ? stbtt_ScaleForMappingEmToPixels(&info, -font_size)
+         : stbtt_ScaleForPixelHeight(&info, font_size);
 
    /* Ascender, descender and line_gap values always
     * end up ~0.5 pixels too small when scaled...
@@ -232,14 +232,11 @@ static const char *font_renderer_stb_get_default_font(void)
    return NULL;
 }
 
-static bool font_renderer_stb_get_line_metrics(
+static void font_renderer_stb_get_line_metrics(
       void* data, struct font_line_metrics **metrics)
 {
    stb_font_renderer_t *handle = (stb_font_renderer_t*)data;
-   if (!handle)
-      return false;
    *metrics = &handle->line_metrics;
-   return true;
 }
 
 font_renderer_driver_t stb_font_renderer = {
@@ -248,6 +245,6 @@ font_renderer_driver_t stb_font_renderer = {
    font_renderer_stb_get_glyph,
    font_renderer_stb_free,
    font_renderer_stb_get_default_font,
-   "stb",
+   "font_renderer_stb",
    font_renderer_stb_get_line_metrics
 };

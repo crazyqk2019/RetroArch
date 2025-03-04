@@ -38,7 +38,6 @@ enum setting_type
    ST_DIR,
    ST_STRING,
    ST_STRING_OPTIONS,
-   ST_HEX,
    ST_BIND,
    ST_GROUP,
    ST_SUB_GROUP,
@@ -70,18 +69,23 @@ enum ui_setting_type
 
 enum setting_flags
 {
-   SD_FLAG_NONE           = 0,
-   SD_FLAG_PATH_DIR       = (1 << 0),
-   SD_FLAG_PATH_FILE      = (1 << 1),
-   SD_FLAG_ALLOW_EMPTY    = (1 << 2),
-   SD_FLAG_HAS_RANGE      = (1 << 3),
-   SD_FLAG_ALLOW_INPUT    = (1 << 4),
-   SD_FLAG_IS_DRIVER      = (1 << 5),
-   SD_FLAG_EXIT           = (1 << 6),
-   SD_FLAG_CMD_APPLY_AUTO = (1 << 7),
-   SD_FLAG_BROWSER_ACTION = (1 << 8),
-   SD_FLAG_ADVANCED       = (1 << 9),
-   SD_FLAG_LAKKA_ADVANCED = (1 << 10)
+   SD_FLAG_NONE             = 0,
+   SD_FLAG_PATH_DIR         = (1 << 0),
+   SD_FLAG_PATH_FILE        = (1 << 1),
+   SD_FLAG_ALLOW_EMPTY      = (1 << 2),
+   SD_FLAG_HAS_RANGE        = (1 << 3),
+   SD_FLAG_ALLOW_INPUT      = (1 << 4),
+   SD_FLAG_IS_DRIVER        = (1 << 5),
+   SD_FLAG_EXIT             = (1 << 6),
+   SD_FLAG_CMD_APPLY_AUTO   = (1 << 7),
+   SD_FLAG_BROWSER_ACTION   = (1 << 8),
+   SD_FLAG_ADVANCED         = (1 << 9),
+   SD_FLAG_LAKKA_ADVANCED   = (1 << 10),
+   SD_FLAG_ENFORCE_MINRANGE = (1 << 11),
+   SD_FLAG_ENFORCE_MAXRANGE = (1 << 12),
+   SD_FLAG_DONT_USE_ENUM_IDX_REPRESENTATION = (1 << 13),
+   SD_FLAG_CMD_TRIGGER_EVENT_TRIGGERED      = (1 << 14),
+   SD_FLAG_DEFAULT_VALUE    = (1 << 15)
 };
 
 enum settings_free_flags
@@ -92,7 +96,6 @@ enum settings_free_flags
 };
 
 typedef struct rarch_setting rarch_setting_t;
-typedef struct rarch_setting_info rarch_setting_info_t;
 typedef struct rarch_setting_group_info rarch_setting_group_info_t;
 
 typedef void (*change_handler_t               )(rarch_setting_t *setting);
@@ -104,7 +107,7 @@ typedef int  (*action_start_handler_t         )(rarch_setting_t *setting);
 typedef int  (*action_cancel_handler_t        )(rarch_setting_t *setting);
 typedef int  (*action_ok_handler_t            )(rarch_setting_t *setting, size_t idx, bool wraparound);
 typedef int  (*action_select_handler_t        )(rarch_setting_t *setting, size_t idx, bool wraparound);
-typedef void (*get_string_representation_t    )(rarch_setting_t *setting, char *s, size_t len);
+typedef size_t (*get_string_representation_t    )(rarch_setting_t *setting, char *s, size_t len);
 
 struct rarch_setting_group_info
 {
@@ -113,37 +116,13 @@ struct rarch_setting_group_info
 
 struct rarch_setting
 {
-   enum ui_setting_type ui_type;
-   enum setting_type    browser_selection_type;
-   enum msg_hash_enums  enum_idx;
-   enum msg_hash_enums  enum_value_idx;
-   enum setting_type    type;
 
-   bool                 dont_use_enum_idx_representation;
-   bool                 enforce_minrange;
-   bool                 enforce_maxrange;
-
-   uint8_t              index;
-   uint32_t             index_offset;
-   int16_t               offset_by;
-
-   unsigned             bind_type;
-   uint32_t             size;
-
-   float                step;
-
-   uint64_t             flags;
-   uint64_t             free_flags;
-
-   double               min;
-   /* TODO/FIXME - nasty hack needed for 'suspected' MSVC 2010 x64 Release -
-    * split min/max to work around MSVC 2010 x64 bug that 
-    * causes crashes due to stack misalignment in or near 
-    * setting_string_setting'
-    */
-   char placeholder;
-   double               max;
-
+   float               min;
+   float               max;
+   struct
+   {
+      const char     *empty_path;
+   } dir;
    const char           *rounding_fraction;
    const char           *name;
    const char           *short_description;
@@ -164,17 +143,6 @@ struct rarch_setting
    action_select_handler_t       action_select;
    get_string_representation_t   get_string_representation;
 
-   union
-   {
-      bool                       boolean;
-      const char                 *string;
-      int                        integer;
-      unsigned int               unsigned_integer;
-      float                      fraction;
-      const struct retro_keybind *keybind;
-      size_t                     sizet;
-   } default_value;
-
    struct
    {
       union
@@ -189,78 +157,36 @@ struct rarch_setting
       } target;
    } value;
 
+
    union
    {
-      bool           boolean;
-      int            integer;
-      unsigned int   unsigned_integer;
-      float          fraction;
-      size_t         sizet;
-   } original_value;
+      const char                 *string;
+      const struct retro_keybind *keybind;
+      size_t                     sizet;
+      int                        integer;
+      unsigned int               unsigned_integer;
+      float                      fraction;
+      bool                       boolean;
+   } default_value;
 
-   struct
-   {
-      const char     *empty_path;
-   } dir;
+   uint32_t             index_offset;
+   uint32_t             size;
+   unsigned             bind_type;
+   float                step;
 
-   struct
-   {
-      enum           event_command idx;
-      bool           triggered;
-   } cmd_trigger;
+   enum event_command   cmd_trigger_idx;
+   enum ui_setting_type ui_type;
+   enum setting_type    browser_selection_type;
+   enum msg_hash_enums  enum_idx;
+   enum msg_hash_enums  enum_value_idx;
+   enum setting_type    type;
 
-   struct
-   {
-      const char     *off_label;
-      const char     *on_label;
-   } boolean;
+   uint16_t             flags;
+
+   int16_t              offset_by;
+   uint8_t              free_flags;
+   uint8_t              index;
 };
-
-struct rarch_setting_info
-{
-   int index;
-   int size;
-};
-
-/**
- * setting_set_with_string_representation:
- * @setting            : pointer to setting
- * @value              : value for the setting (string)
- *
- * Set a settings' value with a string. It is assumed
- * that the string has been properly formatted.
- **/
-int setting_set_with_string_representation(
-      rarch_setting_t* setting, const char *value);
-
-unsigned setting_get_bind_type(rarch_setting_t *setting);
-
-int setting_string_action_start_generic(rarch_setting_t *setting);
-
-int setting_generic_action_ok_default(rarch_setting_t *setting, size_t idx, bool wraparound);
-
-int setting_generic_action_start_default(rarch_setting_t *setting);
-
-void settings_data_list_current_add_flags(
-      rarch_setting_t **list,
-      rarch_setting_info_t *list_info,
-      unsigned values);
-
-void settings_data_list_current_add_free_flags(
-      rarch_setting_t **list,
-      rarch_setting_info_t *list_info,
-      unsigned values);
-
-void setting_get_string_representation_size_in_mb(rarch_setting_t *setting,
-      char *s, size_t len);
-
-int setting_uint_action_left_with_refresh(rarch_setting_t *setting, size_t idx, bool wraparound);
-int setting_uint_action_right_with_refresh(rarch_setting_t *setting, size_t idx, bool wraparound);
-int setting_uint_action_left_default(rarch_setting_t *setting, size_t idx, bool wraparound);
-int setting_uint_action_right_default(rarch_setting_t *setting, size_t idx, bool wraparound);
-
-void setting_get_string_representation_uint(rarch_setting_t *setting, char *s, size_t len);
-void setting_get_string_representation_hex_and_uint(rarch_setting_t *setting, char *s, size_t len);
 
 RETRO_END_DECLS
 

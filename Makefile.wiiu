@@ -5,12 +5,15 @@ BUILD_RPX                  = 1
 DEBUG                      = 0
 GRIFFIN_BUILD              = 0
 SALAMANDER_BUILD           = 0
+HAVE_STATIC_DUMMY ?= 0
 WHOLE_ARCHIVE_LINK         = 0
 WIIU_HID                   = 1
+HAVE_HID                   = 1
 HAVE_RUNAHEAD              = 1
 WIIU_LOG_RPX               = 0
 BUILD_DIR                  = objs/wiiu
 PC_DEVELOPMENT_TCP_PORT    ?=
+LOAD_WITHOUT_CORE_INFO     ?= 0
 
 ifeq ($(SALAMANDER_BUILD),1)
    BUILD_DIR := $(BUILD_DIR)-salamander
@@ -63,12 +66,12 @@ ifeq ($(SALAMANDER_BUILD),1)
    OBJ += libretro-common/lists/dir_list.o
    OBJ += libretro-common/file/retro_dirent.o
    OBJ += libretro-common/compat/compat_strl.o
+   OBJ += libretro-common/compat/compat_strldup.o
    OBJ += libretro-common/file/config_file.o
    OBJ += libretro-common/streams/file_stream.o
    OBJ += libretro-common/vfs/vfs_implementation.o
-   OBJ += libretro-common/hash/rhash.o
+   OBJ += libretro-common/hash/lrc_hash.o
    OBJ += libretro-common/time/rtime.o
-   OBJ += file_path_str.o
    OBJ += verbosity.o
 
 # $(SALAMANDER_BUILD),0
@@ -79,12 +82,16 @@ else
    DEFINES += -DHAVE_ONLINE_UPDATER
    DEFINES += -DHAVE_UPDATE_ASSETS
    DEFINES += -DHAVE_UPDATE_CORES
+   DEFINES += -DHAVE_UPDATE_CORE_INFO
    DEFINES += -DHAVE_FILTERS_BUILTIN
    DEFINES += -DHAVE_SLANG
    DEFINES += -DHAVE_SHADERPIPELINE
 
 ifeq ($(HAVE_RUNAHEAD),1)
    DEFINES += -DHAVE_RUNAHEAD
+endif
+ifeq ($(LOAD_WITHOUT_CORE_INFO),1)
+   DEFINES += -DLOAD_WITHOUT_CORE_INFO
 endif
 
    OBJ += wiiu/shader_utils.o
@@ -103,7 +110,7 @@ endif
 
       INCDIRS += -Ilibretro-common/include/compat/zlib
       # for stb, libfat, iosuhax
-      INCDIRS += -Ideps -Ideps/libfat/include -Ideps/libiosuhax
+      INCDIRS += -Ideps -Ideps/libfat/include -Ideps/libiosuhax/include
       # pad_functions uses wiiu/input.h
       INCDIRS += -Iinput/include
       INCDIRS += -Ideps/SPIRV-Cross
@@ -114,12 +121,13 @@ endif
 		DEFINES += -DHAVE_REWIND
       DEFINES += -DHAVE_ZLIB -DHAVE_RPNG -DHAVE_RJPEG -DHAVE_RBMP -DHAVE_RTGA -DHAVE_CC_RESAMPLER
       DEFINES += -DHAVE_SPIRV_CROSS -DHAVE_SLANG
-      DEFINES += -DHAVE_STB_FONT -DHAVE_STB_VORBIS -DHAVE_LANGEXTRA -DHAVE_LIBRETRODB -DHAVE_NETWORKING -DHAVE_NETPLAYDISCOVERY
+      DEFINES += -DHAVE_STB_FONT -DHAVE_STB_VORBIS -DHAVE_LANGEXTRA -DHAVE_LIBRETRODB -DHAVE_NETWORKING -DHAVE_IFINFO -DHAVE_NETPLAYDISCOVERY
       #DEFINES += -DWANT_IFADDRS
       #DEFINES += -DHAVE_FREETYPE
       DEFINES += -DHAVE_XMB -DHAVE_MATERIALUI
       DEFINES += -DHAVE_HID
       DEFINES += -DWANT_LIBFAT -DHAVE_LIBFAT -DWANT_IOSUHAX -DHAVE_IOSUHAX
+      DEFINES += -DHAVE_CORE_INFO_CACHE
       DEFINES += -DSPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS
 
    # $(GRIFFIN_BUILD),0
@@ -135,6 +143,7 @@ endif
       HAVE_RBMP = 1
       HAVE_CONFIGFILE = 1
       HAVE_PATCH      = 1
+      HAVE_XDELTA     = 0 # disabled because <lzma.h> isn't available (or we haven't figured out how to install it)
       HAVE_REWIND     = 1
       HAVE_CHEATS     = 1
       HAVE_MENU = 1
@@ -150,19 +159,20 @@ endif
       HAVE_LANGEXTRA = 1
       HAVE_LIBRETRODB = 1
       HAVE_NETWORKING = 1
+      HAVE_IFINFO = 1
       HAVE_NETPLAYDISCOVERY = 1
       HAVE_CHEEVOS = 1
       #WANT_IFADDRS = 1
       HAVE_OVERLAY = 1
       HAVE_SPIRV_CROSS = 1
       HAVE_SLANG = 1
-      HAVE_VIDEO_LAYOUT = 0
       HAVE_DSP_FILTER = 1
       HAVE_VIDEO_FILTER = 1
       HAVE_STATIC_VIDEO_FILTERS = 1
       HAVE_STATIC_AUDIO_FILTERS = 1
       WANT_LIBFAT = 1
       WANT_IOSUHAX = 1
+      HAVE_CORE_INFO_CACHE = 1
 
       include Makefile.common
       DEFINES += $(DEF_FLAGS)
@@ -217,7 +227,16 @@ ifeq ($(WHOLE_ARCHIVE_LINK), 1)
    WHOLE_END := -Wl,--no-whole-archive
 endif
 
-LIBS := $(WHOLE_START) -lretro_wiiu $(WHOLE_END) -lm
+LIB_CORE :=
+
+ifeq ($(HAVE_STATIC_DUMMY),1)
+  DEFINES += -DHAVE_STATIC_DUMMY
+else
+  LIB_CORE += -lretro_wiiu
+endif
+
+
+LIBS := $(WHOLE_START) $(LIB_CORE) $(WHOLE_END) -lm
 
 # Use portlibs zlib if deps/ isn't being used
 ifeq ($(HAVE_ZLIB),1)
@@ -328,17 +347,23 @@ $(BUILD_DIR)/$(TARGET).rpx.elf: $(OBJ) $(RPX_OBJ) libretro_wiiu.a wiiu/link_elf.
 	@$(if $(Q), echo LD $@,)
 	$(Q)$(LD) $(OBJ) $(RPX_OBJ) $(LDFLAGS) $(RPX_LDFLAGS) $(LIBDIRS)  $(LIBS) -o $@
 
-$(BUILD_DIR)/$(TARGET).rpx: $(BUILD_DIR)/$(TARGET).rpx.elf $(ELF2RPL) .$(TARGET).rpx.last
+$(BUILD_DIR)/$(TARGET).large.rpx: $(BUILD_DIR)/$(TARGET).rpx.elf $(ELF2RPL) .$(TARGET).rpx.large.last
 	@$(if $(Q), echo ELF2RPL $@,)
-	@touch .$(TARGET).rpx.last
+	@touch .$(TARGET).rpx.large.last
 	$(Q)-$(ELF2RPL) $< $@
+
+$(BUILD_DIR)/$(TARGET).rpx: $(BUILD_DIR)/$(TARGET).large.rpx .$(TARGET).rpx.last
+	@$(if $(Q), echo COMPRESS $@,)
+	@touch .$(TARGET).rpx.large.last
+	$(Q)wiiurpxtool -c $< $@
 
 clean:
 	@$(if $(Q), echo $@,)
 	$(Q)rm -f $(OBJ) $(RPX_OBJ) $(HBL_ELF_OBJ) $(TARGET).elf $(TARGET).rpx.elf $(TARGET).rpx
-	$(Q)rm -f $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).rpx.elf $(BUILD_DIR)/$(TARGET).rpx
-	$(Q)rm -f .$(TARGET).elf.last .$(TARGET).rpx.elf.last .$(TARGET).rpx.last
+	$(Q)rm -f $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).rpx.elf $(BUILD_DIR)/$(TARGET).large.rpx $(BUILD_DIR)/$(TARGET).rpx
+	$(Q)rm -f .$(TARGET).elf.last .$(TARGET).rpx.elf.last .$(TARGET).rpx.large.last .$(TARGET).rpx.last
 	$(Q)rm -f $(OBJ:.o=.depend) $(RPX_OBJ:.o=.depend) $(HBL_ELF_OBJ:.o=.depend)
+	$(Q)$(MAKE) -C wiiu/wut/elf2rpl/ clean
 
 .PHONY: clean all
 .PRECIOUS: %.depend %.last

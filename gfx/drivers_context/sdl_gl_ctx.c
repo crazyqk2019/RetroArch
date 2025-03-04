@@ -23,8 +23,9 @@
 #endif
 
 #include "../../configuration.h"
+#include "../../gfx/video_defines.h"
+#include "../../gfx/video_driver.h"
 #include "../../verbosity.h"
-#include "../common/gl_common.h"
 
 #include "SDL.h"
 
@@ -32,8 +33,18 @@
 #include "../common/sdl2_common.h"
 #endif
 
+#if defined(WEBOS) && defined(HAVE_SDL2)
+#include <SDL_webOS.h>
+#endif
+
 typedef struct gfx_ctx_sdl_data
 {
+#ifdef HAVE_SDL2
+   SDL_Window    *win;
+   SDL_GLContext  ctx;
+#else
+   SDL_Surface *win;
+#endif
    int  width;
    int  height;
    int  new_width;
@@ -41,13 +52,7 @@ typedef struct gfx_ctx_sdl_data
 
    bool full;
    bool resized;
-
-#ifdef HAVE_SDL2
-   SDL_Window    *win;
-   SDL_GLContext  ctx;
-#else
-   SDL_Surface *win;
-#endif
+   bool subsystem_inited;
 } gfx_ctx_sdl_data_t;
 
 /* TODO/FIXME - static global */
@@ -71,45 +76,6 @@ static void sdl_ctx_destroy_resources(gfx_ctx_sdl_data_t *sdl)
       SDL_FreeSurface(sdl->win);
 #endif
    sdl->win = NULL;
-
-   SDL_QuitSubSystem(SDL_INIT_VIDEO);
-}
-
-static void *sdl_ctx_init(void *video_driver)
-{
-   gfx_ctx_sdl_data_t *sdl = (gfx_ctx_sdl_data_t*)
-      calloc(1, sizeof(gfx_ctx_sdl_data_t));
-
-   if (!sdl)
-      return NULL;
-
-#ifdef HAVE_X11
-   XInitThreads();
-#endif
-
-   if (SDL_WasInit(0) == 0)
-   {
-      if (SDL_Init(SDL_INIT_VIDEO) < 0)
-         goto error;
-   }
-   else if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
-      goto error;
-
-   RARCH_LOG("[SDL_GL] SDL %i.%i.%i gfx context driver initialized.\n",
-         SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
-
-   return sdl;
-
-error:
-   RARCH_WARN("[SDL_GL]: Failed to initialize SDL gfx context driver: %s\n",
-         SDL_GetError());
-
-   sdl_ctx_destroy_resources(sdl);
-
-   if (sdl)
-      free(sdl);
-
-   return NULL;
 }
 
 static void sdl_ctx_destroy(void *data)
@@ -120,8 +86,59 @@ static void sdl_ctx_destroy(void *data)
       return;
 
    sdl_ctx_destroy_resources(sdl);
+#ifndef WEBOS
+   if (sdl->subsystem_inited)
+#endif
+      SDL_QuitSubSystem(SDL_INIT_VIDEO);
    free(sdl);
 }
+
+static void *sdl_ctx_init(void *video_driver)
+{
+   gfx_ctx_sdl_data_t *sdl      = (gfx_ctx_sdl_data_t*)
+      calloc(1, sizeof(gfx_ctx_sdl_data_t));
+   uint32_t sdl_subsystem_flags = SDL_WasInit(0);
+
+   if (!sdl)
+      return NULL;
+
+#ifdef HAVE_X11
+   XInitThreads();
+#endif
+
+#ifdef WEBOS
+   SDL_SetHint(SDL_HINT_WEBOS_ACCESS_POLICY_KEYS_BACK, "true");
+   SDL_SetHint(SDL_HINT_WEBOS_ACCESS_POLICY_KEYS_EXIT, "true");
+   SDL_SetHint(SDL_HINT_WEBOS_CURSOR_SLEEP_TIME, "1000");
+#endif
+
+   /* Initialise graphics subsystem, if required */
+   if (sdl_subsystem_flags == 0)
+   {
+      if (SDL_Init(SDL_INIT_VIDEO) < 0)
+         goto error;
+   }
+   else if ((sdl_subsystem_flags & SDL_INIT_VIDEO) == 0)
+   {
+      if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
+         goto error;
+      sdl->subsystem_inited = true;
+   }
+
+   RARCH_LOG("[SDL_GL] SDL %i.%i.%i gfx context driver initialized.\n",
+         SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL);
+
+   return sdl;
+
+error:
+   RARCH_WARN("[SDL_GL]: Failed to initialize SDL gfx context driver: %s\n",
+         SDL_GetError());
+
+   sdl_ctx_destroy(sdl);
+
+   return NULL;
+}
+
 
 static enum gfx_ctx_api sdl_ctx_get_api(void *data) { return sdl_api; }
 
@@ -182,9 +199,9 @@ static bool sdl_ctx_set_video_mode(void *data,
    if (fullscreen)
    {
       if (windowed_fullscreen)
-         fsflag = SDL_WINDOW_FULLSCREEN_DESKTOP;
+         fsflag                 = SDL_WINDOW_FULLSCREEN_DESKTOP;
       else
-         fsflag = SDL_WINDOW_FULLSCREEN;
+         fsflag                 = SDL_WINDOW_FULLSCREEN;
    }
 
    if (sdl->win)
@@ -196,17 +213,18 @@ static bool sdl_ctx_set_video_mode(void *data,
    }
    else
    {
-      unsigned display = video_monitor_index;
-
-      sdl->win = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED_DISPLAY(display),
-                               SDL_WINDOWPOS_UNDEFINED_DISPLAY(display),
-                               width, height, SDL_WINDOW_OPENGL | fsflag);
+      unsigned display          = video_monitor_index;
+      sdl->win                  = SDL_CreateWindow("RetroArch",
+            SDL_WINDOWPOS_UNDEFINED_DISPLAY(display),
+            SDL_WINDOWPOS_UNDEFINED_DISPLAY(display),
+            width, height,
+            SDL_WINDOW_OPENGL | fsflag);
    }
 #else
    if (fullscreen)
-      fsflag = SDL_FULLSCREEN;
+      fsflag                    = SDL_FULLSCREEN;
 
-   sdl->win = SDL_SetVideoMode(width, height, 0, SDL_OPENGL | fsflag);
+   sdl->win                     = SDL_SetVideoMode(width, height, 0, SDL_OPENGL | fsflag);
 #endif
 
    if (!sdl->win)
@@ -222,19 +240,20 @@ static bool sdl_ctx_set_video_mode(void *data,
 #endif
 
    if (sdl->ctx)
-      video_driver_set_video_cache_context_ack();
+   {
+      video_state_get_ptr()->flags |= VIDEO_FLAG_CACHE_CONTEXT_ACK;
+      RARCH_LOG("[SDL_GL]: Using cached GL context.\n");
+   }
    else
    {
-      sdl->ctx = SDL_GL_CreateContext(sdl->win);
-
-      if (!sdl->ctx)
+      if (!(sdl->ctx = SDL_GL_CreateContext(sdl->win)))
          goto error;
    }
 #endif
 
-   sdl->full   = fullscreen;
-   sdl->width  = width;
-   sdl->height = height;
+   sdl->full                    = fullscreen;
+   sdl->width                   = width;
+   sdl->height                  = height;
 
    return true;
 
@@ -252,31 +271,28 @@ static void sdl_ctx_get_video_size(void *data,
    if (!sdl)
       return;
 
-   *width  = sdl->width;
-   *height = sdl->height;
+   *width                  = sdl->width;
+   *height                 = sdl->height;
 
    if (!sdl->win)
    {
 #ifdef HAVE_SDL2
       SDL_DisplayMode mode = {0};
-      int i = settings->uints.video_monitor_index;
-
+      int i                = settings->uints.video_monitor_index;
       if (SDL_GetCurrentDisplayMode(i, &mode) < 0)
          RARCH_WARN("[SDL_GL]: Failed to get display #%i mode: %s\n", i,
                     SDL_GetError());
 #else
-      SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
-      SDL_Rect mode = {0};
-
+      SDL_Rect **modes     = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+      SDL_Rect mode        = {0};
       if (!modes)
          RARCH_WARN("[SDL_GL]: Failed to detect available video modes: %s\n",
                     SDL_GetError());
       else if (*modes)
-         mode = **modes;
+         mode              = **modes;
 #endif
-
-      *width  = mode.w;
-      *height = mode.h;
+      *width               = mode.w;
+      *height              = mode.h;
    }
 }
 
@@ -354,14 +370,17 @@ static void sdl_ctx_check_window(void *data, bool *quit,
 
 static bool sdl_ctx_has_focus(void *data)
 {
-   unsigned flags;
-
 #ifdef HAVE_SDL2
    gfx_ctx_sdl_data_t *sdl = (gfx_ctx_sdl_data_t*)data;
-   flags = (SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
+#ifdef WEBOS
+   /* We do not receive mouse focus when non-magic remote is used. */
+   unsigned flags          = (SDL_WINDOW_INPUT_FOCUS);
+#else
+   unsigned flags          = (SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
+#endif
    return (SDL_GetWindowFlags(sdl->win) & flags) == flags;
 #else
-   flags = (SDL_APPINPUTFOCUS | SDL_APPACTIVE);
+   unsigned flags          = (SDL_APPINPUTFOCUS | SDL_APPACTIVE);
    return (SDL_GetAppState() & flags) == flags;
 #endif
 }

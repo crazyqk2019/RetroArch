@@ -1,7 +1,6 @@
 /*  RetroArch - A frontend for libretro.
  *  Copyright (C) 2010-2014 - Hans-Kristian Arntzen
- *  Copyright (C) 2011-2016 - Daniel De Matteis
- *  Copyright (C) 2016-2019 - Brad Parker
+ *  Copyright (C) 2011-2020 - Daniel De Matteis
  *
  *  RetroArch is free software: you can redistribute it and/or modify it under the terms
  *  of the GNU General Public License as published by the Free Software Found-
@@ -78,10 +77,5 @@ typedef struct
 #ifndef ERROR_DEVICE_NOT_CONNECTED
 #define ERROR_DEVICE_NOT_CONNECTED 1167
 #endif
-
-
-RETRO_BEGIN_DECLS
-
-RETRO_END_DECLS
 
 #endif

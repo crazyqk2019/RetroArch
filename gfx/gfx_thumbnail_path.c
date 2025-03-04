@@ -35,22 +35,93 @@
 
 #include "gfx_thumbnail_path.h"
 
-/* Used fixed size char arrays here, just to avoid
- * the inconvenience of having to calloc()/free()
- * each individual entry by hand... */
-struct gfx_thumbnail_path_data
+/* Returns currently set thumbnail 'type' (Named_Snaps,
+ * Named_Titles, Named_Boxarts, Named_Logos) for specified thumbnail
+ * identifier (right, left) */
+static const char *gfx_thumbnail_get_type(
+      unsigned gfx_thumbnails,
+      unsigned left_thumbnails,
+      unsigned icon_thumbnails,
+      gfx_thumbnail_path_data_t *path_data,
+      enum gfx_thumbnail_id thumbnail_id)
 {
-   char system[PATH_MAX_LENGTH];
-   char content_path[PATH_MAX_LENGTH];
-   char content_label[PATH_MAX_LENGTH];
-   char content_core_name[PATH_MAX_LENGTH];
-   char content_db_name[PATH_MAX_LENGTH];
-   char content_img[PATH_MAX_LENGTH];
-   char right_path[PATH_MAX_LENGTH];
-   char left_path[PATH_MAX_LENGTH];
-   enum playlist_thumbnail_mode playlist_right_mode;
-   enum playlist_thumbnail_mode playlist_left_mode;
-};
+   if (path_data)
+   {
+      unsigned type                 = 0;
+      switch (thumbnail_id)
+      {
+         case GFX_THUMBNAIL_RIGHT:
+            if (path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+               type = (unsigned)path_data->playlist_right_mode - 1;
+            else
+               type = gfx_thumbnails;
+            break;
+         case GFX_THUMBNAIL_LEFT:
+            if (path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+               type = (unsigned)path_data->playlist_left_mode - 1;
+            else
+               type = left_thumbnails;
+            break;
+         case GFX_THUMBNAIL_ICON:
+            if (path_data->playlist_icon_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+               type = (unsigned)path_data->playlist_icon_mode - 1;
+            else
+               type = icon_thumbnails;
+            break;
+         default:
+            goto end;
+      }
+
+      switch (type)
+      {
+         case 1:
+            return "Named_Snaps";
+         case 2:
+            return "Named_Titles";
+         case 3:
+            return "Named_Boxarts";
+         case 4:
+            return "Named_Logos";
+         case 0:
+         default:
+            break;
+      }
+   }
+
+end:
+   return msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OFF);
+}
+
+/* Fills content_img field of path_data using existing
+ * content_label field (for internal use only) */
+void gfx_thumbnail_fill_content_img(char *s, size_t len, const char *src, bool shorten)
+{
+   char *scrub_char_ptr = NULL;
+   /* Copy source label string */
+   size_t _len          = strlcpy(s, src, len);
+
+   /* Shortening logic: up to first space + bracket */
+   if (shorten)
+   {
+      int bracketpos    = -1;
+      if ((bracketpos = string_find_index_substring_string(src, " (")) > 0)
+         _len = bracketpos;
+      /* Explicit zero if short name is same as standard name - saves some queries later. */
+      else
+      {
+         s[0] = '\0';
+         return;
+      }
+   }
+   /* Scrub characters that are not cross-platform and/or violate the
+    * No-Intro filename standard:
+    * https://datomatic.no-intro.org/stuff/The%20Official%20No-Intro%20Convention%20(20071030).pdf
+    * Replace these characters in the entry name with underscores */
+   while ((scrub_char_ptr = strpbrk(s, "&*/:`\"<>?\\|")))
+      *scrub_char_ptr = '_';
+   /* Add PNG extension */
+   strlcpy(s + _len, ".png", len - _len);
+}
 
 /* Resets thumbnail path data
  * (blanks all internal string containers) */
@@ -58,18 +129,24 @@ void gfx_thumbnail_path_reset(gfx_thumbnail_path_data_t *path_data)
 {
    if (!path_data)
       return;
-   
+
+   path_data->system_len           = 0;
    path_data->system[0]            = '\0';
    path_data->content_path[0]      = '\0';
+   path_data->content_label_len    = 0;
    path_data->content_label[0]     = '\0';
    path_data->content_core_name[0] = '\0';
    path_data->content_db_name[0]   = '\0';
    path_data->content_img[0]       = '\0';
+   path_data->content_img_full[0]  = '\0';
+   path_data->content_img_short[0] = '\0';
    path_data->right_path[0]        = '\0';
    path_data->left_path[0]         = '\0';
-   
+   path_data->icon_path[0]         = '\0';
+
    path_data->playlist_right_mode = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
    path_data->playlist_left_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
+   path_data->playlist_icon_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
 }
 
 /* Initialisation */
@@ -86,142 +163,47 @@ gfx_thumbnail_path_data_t *gfx_thumbnail_path_init(void)
       return NULL;
 
    gfx_thumbnail_path_reset(path_data);
-   
+
    return path_data;
 }
 
-
 /* Utility Functions */
-
-/* Fetches the thumbnail subdirectory (Named_Snaps,
- * Named_Titles, Named_Boxarts) corresponding to the
- * specified 'type index' (1, 2, 3).
- * Returns true if 'type index' is valid */
-bool gfx_thumbnail_get_sub_directory(
-      unsigned type_idx, const char **sub_directory)
-{
-   if (!sub_directory)
-      return false;
-   
-   switch (type_idx)
-   {
-      case 1:
-         *sub_directory = "Named_Snaps";
-         return true;
-      case 2:
-         *sub_directory = "Named_Titles";
-         return true;
-      case 3:
-         *sub_directory = "Named_Boxarts";
-         return true;
-      case 0:
-      default:
-         break;
-   }
-   
-   return false;
-}
-
-/* Returns currently set thumbnail 'type' (Named_Snaps,
- * Named_Titles, Named_Boxarts) for specified thumbnail
- * identifier (right, left) */
-const char *gfx_thumbnail_get_type(
-      gfx_thumbnail_path_data_t *path_data,
-      enum gfx_thumbnail_id thumbnail_id)
-{
-   unsigned        type          = 0;
-   settings_t *settings          = config_get_ptr();
-   unsigned gfx_thumbnails       = settings->uints.gfx_thumbnails;
-   unsigned menu_left_thumbnails = settings->uints.menu_left_thumbnails;
-   
-   if (!path_data)
-      return msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OFF);
-   
-   switch (thumbnail_id)
-   {
-      case GFX_THUMBNAIL_RIGHT:
-         if (path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
-            type = (unsigned)path_data->playlist_right_mode - 1;
-         else
-            type = gfx_thumbnails;
-         break;
-      case GFX_THUMBNAIL_LEFT:
-         if (path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
-            type = (unsigned)path_data->playlist_left_mode - 1;
-         else
-            type = menu_left_thumbnails;
-         break;
-      default:
-         return msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OFF);
-   }
-   
-   switch (type)
-   {
-      case 1:
-         return "Named_Snaps";
-      case 2:
-         return "Named_Titles";
-      case 3:
-         return "Named_Boxarts";
-      case 0:
-      default:
-         break;
-   }
-   
-   return msg_hash_to_str(MENU_ENUM_LABEL_VALUE_OFF);
-}
 
 /* Returns true if specified thumbnail is enabled
  * (i.e. if 'type' is not equal to MENU_ENUM_LABEL_VALUE_OFF) */
-bool gfx_thumbnail_is_enabled(gfx_thumbnail_path_data_t *path_data, enum gfx_thumbnail_id thumbnail_id)
+bool gfx_thumbnail_is_enabled(gfx_thumbnail_path_data_t *path_data,
+      enum gfx_thumbnail_id thumbnail_id)
 {
-   settings_t          *settings = config_get_ptr();
-   unsigned gfx_thumbnails       = settings->uints.gfx_thumbnails;
-   unsigned menu_left_thumbnails = settings->uints.menu_left_thumbnails;
-   
-   if (!path_data)
-      return false;
-   
-   switch (thumbnail_id)
+   if (path_data)
    {
-      case GFX_THUMBNAIL_RIGHT:
-         if (path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
-            return path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_OFF;
-         return gfx_thumbnails != 0;
-      case GFX_THUMBNAIL_LEFT:
-         if (path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
-            return path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_OFF;
-         return menu_left_thumbnails != 0;
-      default:
-         break;
+      settings_t          *settings = config_get_ptr();
+      unsigned gfx_thumbnails       = settings->uints.gfx_thumbnails;
+      unsigned menu_left_thumbnails = settings->uints.menu_left_thumbnails;
+      unsigned menu_icon_thumbnails = settings->uints.menu_icon_thumbnails;
+
+      switch (thumbnail_id)
+      {
+         case GFX_THUMBNAIL_RIGHT:
+            if (path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+               return path_data->playlist_right_mode != PLAYLIST_THUMBNAIL_MODE_OFF;
+            return gfx_thumbnails != 0;
+         case GFX_THUMBNAIL_LEFT:
+            if (path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+               return path_data->playlist_left_mode != PLAYLIST_THUMBNAIL_MODE_OFF;
+            return menu_left_thumbnails != 0;
+         case GFX_THUMBNAIL_ICON:
+            if (path_data->playlist_icon_mode != PLAYLIST_THUMBNAIL_MODE_DEFAULT)
+                return path_data->playlist_icon_mode != PLAYLIST_THUMBNAIL_MODE_OFF;
+            return menu_icon_thumbnails != 0;
+         default:
+            break;
+      }
    }
-   
+
    return false;
 }
 
 /* Setters */
-
-/* Fills content_img field of path_data using existing
- * content_label field (for internal use only) */
-static void fill_content_img(gfx_thumbnail_path_data_t *path_data)
-{
-   char *scrub_char_pointer = NULL;
-   
-   /* Copy source label string */
-   strlcpy(path_data->content_img,
-         path_data->content_label, sizeof(path_data->content_img));
-   
-   /* Scrub characters that are not cross-platform and/or violate the
-    * No-Intro filename standard:
-    * http://datomatic.no-intro.org/stuff/The%20Official%20No-Intro%20Convention%20(20071030).zip
-    * Replace these characters in the entry name with underscores */
-   while ((scrub_char_pointer = 
-            strpbrk(path_data->content_img, "&*/:`\"<>?\\|")))
-      *scrub_char_pointer = '_';
-   
-   /* Add PNG extension */
-   strlcat(path_data->content_img, ".png", sizeof(path_data->content_img));
-}
 
 /* Sets current 'system' (default database name).
  * Returns true if 'system' is valid.
@@ -235,84 +217,77 @@ bool gfx_thumbnail_set_system(gfx_thumbnail_path_data_t *path_data,
 {
    if (!path_data)
       return false;
-   
+
    /* When system is updated, must regenerate right/left
     * thumbnail paths */
-   path_data->right_path[0] = '\0';
-   path_data->left_path[0] = '\0';
-   
+   path_data->right_path[0]       = '\0';
+   path_data->left_path[0]        = '\0';
+
    /* 'Reset' path_data system string */
-   path_data->system[0] = '\0';
-   
+   path_data->system_len          = 0;
+   path_data->system[0]           = '\0';
+
    /* Must also reset playlist thumbnail display modes */
    path_data->playlist_right_mode = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
    path_data->playlist_left_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
-   
+
    if (string_is_empty(system))
       return false;
-   
+
    /* Hack: There is only one MAME thumbnail repo,
     * so filter any input starting with 'MAME...' */
    if (strncmp(system, "MAME", 4) == 0)
-      strlcpy(path_data->system, "MAME", sizeof(path_data->system));
+      path_data->system_len = strlcpy(path_data->system, "MAME", sizeof(path_data->system));
    else
-      strlcpy(path_data->system, system, sizeof(path_data->system));
-   
+      path_data->system_len = strlcpy(path_data->system, system, sizeof(path_data->system));
+
    /* Addendum: Now that we have per-playlist thumbnail display
     * modes, we must extract them here - otherwise
     * gfx_thumbnail_is_enabled() will go out of sync */
    if (playlist)
    {
-      const char *playlist_path = playlist_get_conf_path(playlist);
-      const char *playlist_file = NULL;
-      bool playlist_valid       = false;
-      
+      const char *playlist_path    = playlist_get_conf_path(playlist);
+
       /* Note: This is not considered an error
        * (just means that input playlist is ignored) */
-      if (string_is_empty(playlist_path))
-         return true;
-      
-      playlist_file = path_basename(playlist_path);
-      
-      /* Note: This is not considered an error
-       * (just means that input playlist is ignored) */
-      if (string_is_empty(playlist_file))
-         return true;
-      
-      /* Check for history/favourites playlists */
-      playlist_valid =
-            (string_is_equal(system, "history") &&
-             string_is_equal(playlist_file,
-                file_path_str(FILE_PATH_CONTENT_HISTORY))) ||
-            (string_is_equal(system, "favorites") &&
-             string_is_equal(playlist_file,
-                file_path_str(FILE_PATH_CONTENT_FAVORITES)));
-      
-      if (!playlist_valid)
+      if (!string_is_empty(playlist_path))
       {
-         /* This means we have to work a little harder
-          * i.e. check whether the cached playlist file
-          * matches the database name */
-         char *playlist_name = NULL;
-         char tmp[PATH_MAX_LENGTH];
-         
-         tmp[0] = '\0';
-         
-         strlcpy(tmp, playlist_file, sizeof(tmp));
-         playlist_name  = path_remove_extension(tmp);
-         playlist_valid = string_is_equal(playlist_name, system);
-      }
-      
-      /* If we have a valid playlist, extract thumbnail modes */
-      if (playlist_valid)
-      {
-         path_data->playlist_right_mode =
-               playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_RIGHT);
-         path_data->playlist_left_mode =
-               playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_LEFT);
+         const char *playlist_file = path_basename_nocompression(playlist_path);
+         /* Note: This is not considered an error
+          * (just means that input playlist is ignored) */
+         if (!string_is_empty(playlist_file))
+         {
+            /* Check for history/favourites playlists */
+            bool playlist_valid =
+               (string_is_equal(system, "history")
+                && string_is_equal(playlist_file,
+                   FILE_PATH_CONTENT_HISTORY))
+                || (string_is_equal(system, "favorites")
+                && string_is_equal(playlist_file,
+                   FILE_PATH_CONTENT_FAVORITES));
+
+            /* This means we have to work a little harder
+             * i.e. check whether the cached playlist file
+             * matches the database name */
+            if (!playlist_valid)
+            {
+               char playlist_name[NAME_MAX_LENGTH];
+               fill_pathname(playlist_name, playlist_file, "", sizeof(playlist_name));
+               playlist_valid = string_is_equal(playlist_name, system);
+            }
+
+            /* If we have a valid playlist, extract thumbnail modes */
+            if (playlist_valid)
+            {
+               path_data->playlist_right_mode =
+                  playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_RIGHT);
+               path_data->playlist_left_mode =
+                  playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_LEFT);
+            }
+         }
       }
    }
-   
+
    return true;
 }
 
@@ -322,41 +297,46 @@ bool gfx_thumbnail_set_content(gfx_thumbnail_path_data_t *path_data, const char 
 {
    if (!path_data)
       return false;
-   
+
    /* When content is updated, must regenerate right/left
     * thumbnail paths */
    path_data->right_path[0]        = '\0';
    path_data->left_path[0]         = '\0';
-   
+
    /* 'Reset' path_data content strings */
    path_data->content_path[0]      = '\0';
+   path_data->content_label_len    = 0;
    path_data->content_label[0]     = '\0';
    path_data->content_core_name[0] = '\0';
    path_data->content_db_name[0]   = '\0';
    path_data->content_img[0]       = '\0';
-   
+   path_data->content_img_full[0]  = '\0';
+   path_data->content_img_short[0] = '\0';
+
    /* Must also reset playlist thumbnail display modes */
    path_data->playlist_right_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
    path_data->playlist_left_mode   = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
-   
+   path_data->playlist_index       = 0;
+
    if (string_is_empty(label))
       return false;
-   
+
    /* Cache content label */
-   strlcpy(path_data->content_label, label, sizeof(path_data->content_label));
-   
+   path_data->content_label_len = strlcpy(path_data->content_label,
+         label, sizeof(path_data->content_label));
+
    /* Determine content image name */
-   fill_content_img(path_data);
-   
+   gfx_thumbnail_fill_content_img(path_data->content_img,
+         sizeof(path_data->content_img), path_data->content_label, false);
+   gfx_thumbnail_fill_content_img(path_data->content_img_short,
+         sizeof(path_data->content_img_short), path_data->content_label, true);
+
    /* Have to set content path to *something*...
     * Just use label value (it doesn't matter) */
    strlcpy(path_data->content_path, label, sizeof(path_data->content_path));
-   
+
    /* Redundant error check... */
-   if (string_is_empty(path_data->content_img))
-      return false;
-   
-   return true;
+   return !string_is_empty(path_data->content_img);
 }
 
 /* Sets current thumbnail content to the specified image.
@@ -365,69 +345,61 @@ bool gfx_thumbnail_set_content_image(
       gfx_thumbnail_path_data_t *path_data,
       const char *img_dir, const char *img_name)
 {
-   char *content_img_no_ext = NULL;
-   
    if (!path_data)
       return false;
-   
+
    /* When content is updated, must regenerate right/left
     * thumbnail paths */
    path_data->right_path[0]        = '\0';
    path_data->left_path[0]         = '\0';
-   
+
    /* 'Reset' path_data content strings */
    path_data->content_path[0]      = '\0';
+   path_data->content_label_len    = 0;
    path_data->content_label[0]     = '\0';
    path_data->content_core_name[0] = '\0';
    path_data->content_db_name[0]   = '\0';
    path_data->content_img[0]       = '\0';
-   
+   path_data->content_img_full[0]  = '\0';
+   path_data->content_img_short[0] = '\0';
+
    /* Must also reset playlist thumbnail display modes */
    path_data->playlist_right_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
    path_data->playlist_left_mode   = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
-   
-   if (string_is_empty(img_dir))
+   path_data->playlist_index       = 0;
+
+   if (string_is_empty(img_dir) || string_is_empty(img_name))
       return false;
-   
-   if (string_is_empty(img_name))
-      return false;
-   
+
    if (path_is_media_type(img_name) != RARCH_CONTENT_IMAGE)
       return false;
-   
+
    /* Cache content image name */
    strlcpy(path_data->content_img,
             img_name, sizeof(path_data->content_img));
-   
-   /* Get image label */
-   content_img_no_ext = path_remove_extension(path_data->content_img);
-   if (!string_is_empty(content_img_no_ext))
-      strlcpy(path_data->content_label,
-            content_img_no_ext, sizeof(path_data->content_label));
-   else
-      strlcpy(path_data->content_label,
-            path_data->content_img, sizeof(path_data->content_label));
-   
+
+   path_data->content_label_len = fill_pathname(
+         path_data->content_label,
+         path_data->content_img, "",
+         sizeof(path_data->content_label));
+
    /* Set file path */
-   fill_pathname_join(path_data->content_path,
+   fill_pathname_join_special(path_data->content_path,
       img_dir, img_name, sizeof(path_data->content_path));
-   
+
    /* Set core name to "imageviewer" */
-   strlcpy(
-         path_data->content_core_name,
-         "imageviewer", sizeof(path_data->content_core_name));
-   
+   strlcpy(path_data->content_core_name,
+         "imageviewer",
+         sizeof(path_data->content_core_name));
+
    /* Set database name (arbitrarily) to "_images_"
     * (required for compatibility with gfx_thumbnail_update_path(),
     * but not actually used...) */
    strlcpy(path_data->content_db_name,
          "_images_", sizeof(path_data->content_db_name));
-   
+
    /* Redundant error check */
-   if (string_is_empty(path_data->content_path))
-      return false;
-   
-   return true;
+   return !string_is_empty(path_data->content_path);
 }
 
 /* Sets current thumbnail content to the specified playlist entry.
@@ -440,37 +412,41 @@ bool gfx_thumbnail_set_content_image(
 bool gfx_thumbnail_set_content_playlist(
       gfx_thumbnail_path_data_t *path_data, playlist_t *playlist, size_t idx)
 {
-   const char *content_path  = NULL;
-   const char *content_label = NULL;
-   const char *core_name     = NULL;
-   const char *db_name       = NULL;
+   const char *content_path           = NULL;
+   const char *content_label          = NULL;
+   const char *core_name              = NULL;
+   const char *db_name                = NULL;
    const struct playlist_entry *entry = NULL;
-   
+
    if (!path_data)
       return false;
-   
+
    /* When content is updated, must regenerate right/left
     * thumbnail paths */
-   path_data->right_path[0]        = '\0';
-   path_data->left_path[0]         = '\0';
-   
+   path_data->right_path[0]           = '\0';
+   path_data->left_path[0]            = '\0';
+
    /* 'Reset' path_data content strings */
-   path_data->content_path[0]      = '\0';
-   path_data->content_label[0]     = '\0';
-   path_data->content_core_name[0] = '\0';
-   path_data->content_db_name[0]   = '\0';
-   path_data->content_img[0]       = '\0';
-   
+   path_data->content_path[0]         = '\0';
+   path_data->content_label_len       = 0;
+   path_data->content_label[0]        = '\0';
+   path_data->content_core_name[0]    = '\0';
+   path_data->content_db_name[0]      = '\0';
+   path_data->content_img[0]          = '\0';
+   path_data->content_img_full[0]     = '\0';
+   path_data->content_img_short[0]    = '\0';
+
    /* Must also reset playlist thumbnail display modes */
-   path_data->playlist_right_mode  = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
-   path_data->playlist_left_mode   = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
-   
+   path_data->playlist_right_mode     = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
+   path_data->playlist_left_mode      = PLAYLIST_THUMBNAIL_MODE_DEFAULT;
+   path_data->playlist_index          = 0;
+
    if (!playlist)
       return false;
-   
+
    if (idx >= playlist_get_size(playlist))
       return false;
-   
+
    /* Read playlist values */
    playlist_get_index(playlist, idx, &entry);
 
@@ -485,63 +461,85 @@ bool gfx_thumbnail_set_content_playlist(
    /* Content without a path is invalid by definition */
    if (string_is_empty(content_path))
       return false;
-   
+
    /* Cache content path
     * (This is required for imageviewer, history and favourites content) */
    strlcpy(path_data->content_path,
             content_path, sizeof(path_data->content_path));
-   
+
    /* Cache core name
     * (This is required for imageviewer content) */
    if (!string_is_empty(core_name))
       strlcpy(path_data->content_core_name,
             core_name, sizeof(path_data->content_core_name));
-   
+
    /* Get content label */
    if (!string_is_empty(content_label))
-      strlcpy(path_data->content_label,
+      path_data->content_label_len = strlcpy(path_data->content_label,
             content_label, sizeof(path_data->content_label));
    else
-      fill_short_pathname_representation(path_data->content_label,
-            content_path, sizeof(path_data->content_label));
-   
+      path_data->content_label_len = fill_pathname(path_data->content_label,
+            path_basename(content_path),
+            "", sizeof(path_data->content_label));
+
    /* Determine content image name */
-   fill_content_img(path_data);
-   
+   {
+      char tmp_buf[NAME_MAX_LENGTH];
+      fill_pathname(tmp_buf, path_basename(path_data->content_path),
+            "", sizeof(tmp_buf));
+
+      gfx_thumbnail_fill_content_img(path_data->content_img_full,
+         sizeof(path_data->content_img_full), tmp_buf, false);
+      gfx_thumbnail_fill_content_img(path_data->content_img,
+         sizeof(path_data->content_img), path_data->content_label, false);
+
+      /* Explicit zero if full name is same as standard name - saves some queries later. */
+      if (string_is_equal(path_data->content_img, path_data->content_img_full))
+         path_data->content_img_full[0] = '\0';
+
+      gfx_thumbnail_fill_content_img(path_data->content_img_short,
+         sizeof(path_data->content_img_short), path_data->content_label, true);
+   }
+
+   /* Store playlist index */
+   path_data->playlist_index = idx;
+
    /* Redundant error check... */
    if (string_is_empty(path_data->content_img))
       return false;
-   
+
    /* Thumbnail image name is done -> now check if
     * per-content database name is defined */
+   if (string_is_empty(db_name))
+      playlist_get_db_name(playlist, idx, &db_name);
    if (!string_is_empty(db_name))
    {
       /* Hack: There is only one MAME thumbnail repo,
        * so filter any input starting with 'MAME...' */
       if (strncmp(db_name, "MAME", 4) == 0)
-         strlcpy(path_data->content_db_name, "MAME",
-               sizeof(path_data->content_db_name));
+      {
+         path_data->content_db_name[0] = path_data->content_db_name[2] = 'M';
+         path_data->content_db_name[1] = 'A';
+         path_data->content_db_name[3] = 'E';
+         path_data->content_db_name[4] = '\0';
+      }
       else
       {
-         char *db_name_no_ext = NULL;
-         char tmp_buf[PATH_MAX_LENGTH];
-         tmp_buf[0] = '\0';
-         
-         /* Remove .lpl extension
-          * > path_remove_extension() requires a char * (not const)
-          *   so have to use a temporary buffer... */
-         strlcpy(tmp_buf, db_name, sizeof(tmp_buf));
-         db_name_no_ext = path_remove_extension(tmp_buf);
-         
-         if (!string_is_empty(db_name_no_ext))
-            strlcpy(path_data->content_db_name,
-                  db_name_no_ext, sizeof(path_data->content_db_name));
+         char tmp_buf[NAME_MAX_LENGTH];
+         const char *pos      = strchr(db_name, '|');
+         /* If db_name comes from core info, and there are multiple
+          * databases mentioned separated by |, use only first one */
+         if (pos && (size_t) (pos - db_name) + 1 < sizeof(tmp_buf))
+            strlcpy(tmp_buf, db_name, (size_t)(pos - db_name) + 1);
          else
-            strlcpy(path_data->content_db_name,
-                  tmp_buf, sizeof(path_data->content_db_name));
+            strlcpy(tmp_buf, db_name, sizeof(tmp_buf));
+
+         fill_pathname(path_data->content_db_name,
+               tmp_buf, "",
+               sizeof(path_data->content_db_name));
       }
    }
-   
+
    /* Playlist entry is valid -> it is now 'safe' to
     * extract any remaining playlist metadata
     * (i.e. thumbnail display modes) */
@@ -549,7 +547,7 @@ bool gfx_thumbnail_set_content_playlist(
          playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_RIGHT);
    path_data->playlist_left_mode =
          playlist_get_thumbnail_mode(playlist, PLAYLIST_THUMBNAIL_LEFT);
-   
+
    return true;
 }
 
@@ -566,16 +564,22 @@ bool gfx_thumbnail_update_path(
       gfx_thumbnail_path_data_t *path_data,
       enum gfx_thumbnail_id thumbnail_id)
 {
-   char content_dir[PATH_MAX_LENGTH];
-   settings_t *settings       = config_get_ptr();
-   const char *type           = gfx_thumbnail_get_type(path_data, thumbnail_id);
-   const char *system_name    = NULL;
-   char *thumbnail_path       = NULL;
-   const char *dir_thumbnails = settings ? settings->paths.directory_thumbnails : NULL;
-   
+   char content_dir[DIR_MAX_LENGTH];
+   settings_t *settings          = config_get_ptr();
+   const char *system_name       = NULL;
+   char *thumbnail_path          = NULL;
+   const char *dir_thumbnails    = settings->paths.directory_thumbnails;
+   bool playlist_allow_non_png   = settings->bools.playlist_allow_non_png;
+   unsigned gfx_thumbnails       = settings->uints.gfx_thumbnails;
+   unsigned menu_left_thumbnails = settings->uints.menu_left_thumbnails;
+   unsigned menu_icon_thumbnails = settings->uints.menu_icon_thumbnails;
+   /* Thumbnail extension order. The default (i.e. png) is always the first. */
+   #define MAX_SUPPORTED_THUMBNAIL_EXTENSIONS 5
+   const char* const SUPPORTED_THUMBNAIL_EXTENSIONS[] = { ".png", ".jpg", ".jpeg", ".bmp", ".tga", 0 };
+
    if (!path_data)
       return false;
-   
+
    /* Determine which path we are updating... */
    switch (thumbnail_id)
    {
@@ -585,29 +589,31 @@ bool gfx_thumbnail_update_path(
       case GFX_THUMBNAIL_LEFT:
          thumbnail_path = path_data->left_path;
          break;
+      case GFX_THUMBNAIL_ICON:
+         thumbnail_path = path_data->icon_path;
+         break;
       default:
          return false;
    }
-   
-   thumbnail_path[0] = '\0';
+
    content_dir[0]    = '\0';
-   
+
    /* Sundry error checking */
    if (string_is_empty(dir_thumbnails))
       return false;
-   
+
    if (!gfx_thumbnail_is_enabled(path_data, thumbnail_id))
       return false;
-   
+
    /* Generate new path */
-   
+
    /* > Check path_data for empty strings */
-   if (string_is_empty(path_data->content_path) ||
-       string_is_empty(path_data->content_img) ||
-         (string_is_empty(path_data->system) &&
-          string_is_empty(path_data->content_db_name)))
+   if (       string_is_empty(path_data->content_path)
+       ||     string_is_empty(path_data->content_img)
+       || (   string_is_empty(path_data->system)
+           && string_is_empty(path_data->content_db_name)))
       return false;
-   
+
    /* > Get current system */
    if (string_is_empty(path_data->content_db_name))
    {
@@ -615,13 +621,13 @@ bool gfx_thumbnail_update_path(
        * then the current 'path_data->system' string is
        * meaningless. In this case, we fall back to the
        * content directory name */
-      if (string_is_equal(path_data->system, "history") ||
-          string_is_equal(path_data->system, "favorites"))
+      if (   string_is_equal(path_data->system, "history")
+          || string_is_equal(path_data->system, "favorites"))
       {
-         if (!gfx_thumbnail_get_content_dir(
-                  path_data, content_dir, sizeof(content_dir)))
+         if (gfx_thumbnail_get_content_dir(
+                  path_data, content_dir, sizeof(content_dir)) == 0)
             return false;
-         
+
          system_name = content_dir;
       }
       else
@@ -629,11 +635,11 @@ bool gfx_thumbnail_update_path(
    }
    else
       system_name = path_data->content_db_name;
-   
+
    /* > Special case: thumbnail for imageviewer content
     *   is the image file itself */
-   if (string_is_equal(system_name, "images_history") ||
-       string_is_equal(path_data->content_core_name, "imageviewer"))
+   if (   string_is_equal(system_name, "images_history")
+       || string_is_equal(path_data->content_core_name, "imageviewer"))
    {
       /* imageviewer content is identical for left and right thumbnails */
       if (path_is_media_type(path_data->content_path) == RARCH_CONTENT_IMAGE)
@@ -642,213 +648,101 @@ bool gfx_thumbnail_update_path(
    }
    else
    {
-      char tmp_buf[PATH_MAX_LENGTH];
-      tmp_buf[0] = '\0';
-      
+      int  i;
+      char tmp_buf[DIR_MAX_LENGTH];
+      const char *type = gfx_thumbnail_get_type(gfx_thumbnails,
+            menu_left_thumbnails, menu_icon_thumbnails, path_data, thumbnail_id);
+      bool thumbnail_found = false;
       /* > Normal content: assemble path */
-      
+
       /* >> Base + system name */
-      fill_pathname_join(thumbnail_path, dir_thumbnails,
+      fill_pathname_join_special(thumbnail_path, dir_thumbnails,
             system_name, PATH_MAX_LENGTH * sizeof(char));
-      
+
       /* >> Add type */
-      fill_pathname_join(tmp_buf, thumbnail_path, type, sizeof(tmp_buf));
-      
-      /* >> Add content image */
+      fill_pathname_join_special(tmp_buf, thumbnail_path, type, sizeof(tmp_buf));
+
       thumbnail_path[0] = '\0';
-      fill_pathname_join(thumbnail_path, tmp_buf,
-            path_data->content_img, PATH_MAX_LENGTH * sizeof(char));
+      /* >> Add content image - first try with full file name */
+      if (path_data->content_img_full[0] != '\0')
+         fill_pathname_join_special(thumbnail_path, tmp_buf,
+               path_data->content_img_full, PATH_MAX_LENGTH * sizeof(char));
+      thumbnail_found = path_is_valid(thumbnail_path);
+
+      /* Try alternative file extensions in turn, if wanted */
+      for (i = 1;
+               playlist_allow_non_png
+           && !thumbnail_found
+           && thumbnail_path[0]!='\0'
+           && i < MAX_SUPPORTED_THUMBNAIL_EXTENSIONS; i++ )
+      {
+         strlcpy(path_get_extension_mutable(thumbnail_path),
+               SUPPORTED_THUMBNAIL_EXTENSIONS[i], 6);
+         thumbnail_found = path_is_valid(thumbnail_path);
+      }
+
+      /* >> Add content image - second try with label (database name) */
+      if (!thumbnail_found && path_data->content_img[0] != '\0')
+      {
+         thumbnail_path[0] = '\0';
+         fill_pathname_join_special(thumbnail_path, tmp_buf,
+               path_data->content_img, PATH_MAX_LENGTH * sizeof(char));
+         thumbnail_found = path_is_valid(thumbnail_path);
+      }
+
+      for (i = 1;
+               playlist_allow_non_png
+           && !thumbnail_found
+           && i < MAX_SUPPORTED_THUMBNAIL_EXTENSIONS ; i++ )
+      {
+         strlcpy(path_get_extension_mutable(thumbnail_path),
+               SUPPORTED_THUMBNAIL_EXTENSIONS[i], 6);
+         thumbnail_found = path_is_valid(thumbnail_path);
+      }
+
+      /* >> Add content image - third try with shortened name (title only) */
+      if (!thumbnail_found && path_data->content_img_short[0] != '\0')
+      {
+         thumbnail_path[0] = '\0';
+         fill_pathname_join_special(thumbnail_path, tmp_buf,
+               path_data->content_img_short, PATH_MAX_LENGTH * sizeof(char));
+         thumbnail_found = path_is_valid(thumbnail_path);
+      }
+
+      for( i = 1 ;
+               playlist_allow_non_png
+           && !thumbnail_found
+           && i < MAX_SUPPORTED_THUMBNAIL_EXTENSIONS ; i++ )
+      {
+         strlcpy(path_get_extension_mutable(thumbnail_path),
+               SUPPORTED_THUMBNAIL_EXTENSIONS[i], 6);
+         thumbnail_found = path_is_valid(thumbnail_path);
+      }
+      /* This logic is valid for locally stored thumbnails. For optional downloads,
+       * gfx_thumbnail_get_img_name() is used */
    }
-   
+
    /* Final error check - is cached path empty? */
-   if (string_is_empty(thumbnail_path))
-      return false;
-   
-   return true;
+   return !string_is_empty(thumbnail_path);
 }
 
 /* Getters */
 
-/* Fetches the current thumbnail file path of the
- * specified thumbnail 'type'.
- * Returns true if path is valid. */
-bool gfx_thumbnail_get_path(
-      gfx_thumbnail_path_data_t *path_data,
-      enum gfx_thumbnail_id thumbnail_id, const char **path)
-{
-   char *thumbnail_path = NULL;
-   
-   if (!path_data)
-      return false;
-   
-   if (!path)
-      return false;
-   
-   switch (thumbnail_id)
-   {
-      case GFX_THUMBNAIL_RIGHT:
-         thumbnail_path = path_data->right_path;
-         break;
-      case GFX_THUMBNAIL_LEFT:
-         thumbnail_path = path_data->left_path;
-         break;
-      default:
-         return false;
-   }
-   
-   if (string_is_empty(thumbnail_path))
-      return false;
-   
-   *path = thumbnail_path;
-   
-   return true;
-}
-
-/* Fetches current 'system' (default database name).
- * Returns true if 'system' is valid. */
-bool gfx_thumbnail_get_system(
-      gfx_thumbnail_path_data_t *path_data, const char **system)
-{
-   if (!path_data)
-      return false;
-   
-   if (!system)
-      return false;
-   
-   if (string_is_empty(path_data->system))
-      return false;
-   
-   *system = path_data->system;
-   
-   return true;
-}
-
-/* Fetches current content path.
- * Returns true if content path is valid. */
-bool gfx_thumbnail_get_content_path(
-      gfx_thumbnail_path_data_t *path_data, const char **content_path)
-{
-   if (!path_data)
-      return false;
-   
-   if (!content_path)
-      return false;
-   
-   if (string_is_empty(path_data->content_path))
-      return false;
-   
-   *content_path = path_data->content_path;
-   
-   return true;
-}
-
-/* Fetches current thumbnail label.
- * Returns true if label is valid. */
-bool gfx_thumbnail_get_label(
-      gfx_thumbnail_path_data_t *path_data, const char **label)
-{
-   if (!path_data)
-      return false;
-   
-   if (!label)
-      return false;
-   
-   if (string_is_empty(path_data->content_label))
-      return false;
-   
-   *label = path_data->content_label;
-   
-   return true;
-}
-
-/* Fetches current thumbnail core name.
- * Returns true if core name is valid. */
-bool gfx_thumbnail_get_core_name(
-      gfx_thumbnail_path_data_t *path_data, const char **core_name)
-{
-   if (!path_data)
-      return false;
-   
-   if (!core_name)
-      return false;
-   
-   if (string_is_empty(path_data->content_core_name))
-      return false;
-   
-   *core_name = path_data->content_core_name;
-   
-   return true;
-}
-
-/* Fetches current database name.
- * Returns true if database name is valid. */
-bool gfx_thumbnail_get_db_name(
-      gfx_thumbnail_path_data_t *path_data, const char **db_name)
-{
-   if (!path_data)
-      return false;
-   
-   if (!db_name)
-      return false;
-   
-   if (string_is_empty(path_data->content_db_name))
-      return false;
-   
-   *db_name = path_data->content_db_name;
-   
-   return true;
-}
-
-/* Fetches current thumbnail image name
- * (name is the same for all thumbnail types).
- * Returns true if image name is valid. */
-bool gfx_thumbnail_get_img_name(
-      gfx_thumbnail_path_data_t *path_data, const char **img_name)
-{
-   if (!path_data)
-      return false;
-   
-   if (!img_name)
-      return false;
-   
-   if (string_is_empty(path_data->content_img))
-      return false;
-   
-   *img_name = path_data->content_img;
-   
-   return true;
-}
-
 /* Fetches current content directory.
  * Returns true if content directory is valid. */
-bool gfx_thumbnail_get_content_dir(
-      gfx_thumbnail_path_data_t *path_data, char *content_dir, size_t len)
+size_t gfx_thumbnail_get_content_dir(gfx_thumbnail_path_data_t *path_data,
+      char *s, size_t len)
 {
-   const char *last_slash        = NULL;
-   char tmp_buf[PATH_MAX_LENGTH] = {0};
-   size_t path_length;
-   
-   if (!path_data)
-      return false;
-   
-   if (string_is_empty(path_data->content_path))
-      return false;
-   
-   last_slash = find_last_slash(path_data->content_path);
-   
-   if (!last_slash)
-      return false;
-   
-   path_length = last_slash + 1 - path_data->content_path;
-   
-   if (!((path_length > 1) && (path_length < PATH_MAX_LENGTH)))
-      return false;
-   
-   strlcpy(tmp_buf, path_data->content_path, path_length * sizeof(char));
-   strlcpy(content_dir, path_basename(tmp_buf), len);
-   
-   if (string_is_empty(content_dir))
-      return false;
-   
-   return true;
+   size_t _len;
+   char *last_slash;
+   char tmp_buf[NAME_MAX_LENGTH];
+   if (!path_data || string_is_empty(path_data->content_path))
+      return 0;
+   if (!(last_slash = find_last_slash(path_data->content_path)))
+      return 0;
+   _len = last_slash + 1 - path_data->content_path;
+   if (!((_len > 1) && (_len < PATH_MAX_LENGTH)))
+      return 0;
+   strlcpy(tmp_buf, path_data->content_path, _len * sizeof(char));
+   return strlcpy(s, path_basename_nocompression(tmp_buf), len);
 }

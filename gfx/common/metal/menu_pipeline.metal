@@ -1,13 +1,22 @@
-//
-//  pipeline_ribbon.metal
-//  RetroArch
-//
-//  Created by Stuart Carnie on 6/30/18.
-//
+/*  RetroArch - A frontend for libretro.
+ *  Copyright (C) 2018      - Stuart Carnie
+ *  copyright (c) 2011-2021 - Daniel De Matteis
+ *
+ *  RetroArch is free software: you can redistribute it and/or modify it under the terms
+ *  of the GNU General Public License as published by the Free Software Found-
+ *  ation, either version 3 of the License, or (at your option) any later version.
+ *
+ *  RetroArch is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *  PURPOSE.  See the GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along with RetroArch.
+ *  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <metal_stdlib>
 
-#import "ShaderTypes.h"
+#import "metal_shader_types.h"
 
 using namespace metal;
 
@@ -197,7 +206,7 @@ fragment float4 bokeh_fragment(FontFragmentIn        in         [[ stage_in ]],
         float  rad = 0.1 + 0.5 * siz + sin(pha + siz) / 4.0;
         float2 pos = float2(pox + sin(speed / 15. + pha + siz), - 1.0 - rad + (2.0 + 2.0 * rad) * fract(pha + 0.3 * (speed / 7.) * (0.2 + 0.8 * siz)));
         float  dis = length(uv - pos);
-        if(dis < rad)
+        if (dis < rad)
         {
             float3 col = mix(float3(0.194 * sin(speed / 6.0) + 0.3, 0.2, 0.3 * pha), float3(1.1 * sin(speed / 9.0) + 0.3, 0.2 * pha, 0.4), 0.5 + 0.5 * sin(float(i)));
             color +=  col.zyx * (1.0 - smoothstep(rad * 0.15, rad, dis));
@@ -216,22 +225,18 @@ float rand_float(float x)
 
 float snow(float3 pos, float2 uv, float o, float atime)
 {
-   float2 d = (pos.xy - uv);
-   float a = atan(d.y / d.x) + sin(atime*1.0 + o) * 10.0;
+   float2 d   = (pos.xy - uv);
+   float a    = atan(d.y / d.x) + sin(atime*1.0 + o) * 10.0;
 
    float dist = d.x*d.x + d.y*d.y;
 
-   if(dist < pos.z/400.0)
+   if (dist < pos.z/400.0)
    {
       float col = 0.0;
-      if(sin(a * 8.0) < 0.0)
-      {
-         col=1.0;
-      }
-      if(dist < pos.z/800.0)
-      {
-         col+=1.0;
-      }
+      if (sin(a * 8.0) < 0.0)
+         col = 1.0;
+      if (dist < pos.z/800.0)
+         col += 1.0;
       return col * pos.z;
    }
 

@@ -111,7 +111,7 @@ static int32_t wiiusb_hid_read_cb(int32_t size, void *data)
 
    if (hid && hid->connections && size > 0)
       pad_connection_packet(&hid->connections[adapter->slot],
-            adapter->slot, adapter->data-1, size+1);
+            adapter->slot, adapter->data, size);
 
   if (adapter)
       adapter->busy = false;
@@ -120,21 +120,21 @@ static int32_t wiiusb_hid_read_cb(int32_t size, void *data)
 }
 
 static void wiiusb_hid_device_send_control(void *data,
-      uint8_t* data_buf, size_t size)
+      uint8_t *s, size_t len)
 {
    uint8_t control_type;
    struct wiiusb_adapter *adapter = (struct wiiusb_adapter*)data;
-   if (!adapter || !data_buf || !adapter->send_control_buffer)
+   if (!adapter || !s || !adapter->send_control_buffer)
       return;
 
    /* first byte contains the type of control to use
     * which can be NONE, INT_MSG, CTRL_MSG, CTRL_MSG2 */
-   control_type = data_buf[0];
+   control_type               = s[0];
    /* decrement size by one as we are getting rid of first byte */
-   adapter->send_control_size = size - 1;
+   adapter->send_control_size = len - 1;
    /* increase the buffer address so we access the actual data */
-   data_buf++;
-   memcpy(adapter->send_control_buffer, data_buf,  adapter->send_control_size);
+   s++;
+   memcpy(adapter->send_control_buffer, s, adapter->send_control_size);
    /* Activate it so it can be processed in the adapter thread */
    adapter->send_control_type = control_type;
 }
@@ -143,20 +143,15 @@ static void wiiusb_hid_device_add_autodetect(unsigned idx,
       const char *device_name, const char *driver_name,
       uint16_t dev_vid, uint16_t dev_pid)
 {
-   input_autoconfigure_connect(
-         device_name,
-         NULL,
-         driver_name,
-         idx,
-         dev_vid,
-         dev_pid);
+   input_autoconfigure_connect(device_name, NULL, "hid",
+         idx, dev_vid, dev_pid);
 }
 
 static void wiiusb_get_description(usb_device_entry *device,
       struct wiiusb_adapter *adapter, usb_devdesc *devdesc)
 {
-   unsigned char c;
    unsigned i, k;
+   unsigned char c;
 
    for (c = 0; c < devdesc->bNumConfigurations; c++)
    {
@@ -270,28 +265,6 @@ static int wiiusb_hid_removal_cb(int result, void *usrdata)
    return 0;
 }
 
-static bool isRetrodeGamepad(usb_devdesc devdesc)
-{
-    if (devdesc.idVendor != VID_RETRODE || devdesc.idProduct != PID_RETRODE)
-        return false;
-    if (devdesc.configurations)
-        if (devdesc.configurations->interfaces)
-            if (devdesc.configurations->interfaces->endpoints)
-                return devdesc.configurations->interfaces->bInterfaceSubClass == 0;
-    return false;
-}
-
-static bool isRetrodeMouse(usb_devdesc devdesc)
-{
-    if (devdesc.idVendor != VID_RETRODE || devdesc.idProduct != PID_RETRODE)
-        return false;
-    if (devdesc.configurations)
-        if (devdesc.configurations->interfaces)
-            if (devdesc.configurations->interfaces->endpoints)
-                return devdesc.configurations->interfaces->bInterfaceSubClass == 1;
-    return false;
-}
-
 static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
 {
    usb_devdesc desc;
@@ -299,8 +272,6 @@ static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
    wiiusb_hid_t              *hid = (wiiusb_hid_t*)data;
    struct wiiusb_adapter *adapter = (struct wiiusb_adapter*)
       calloc(1, sizeof(struct wiiusb_adapter));
-   int i;
-   int32_t slot1;
 
    if (!adapter)
       return -1;
@@ -324,12 +295,6 @@ static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
 
    USB_GetDescriptors(adapter->handle, &desc);
 
-   if (isRetrodeMouse(desc))
-   {
-       RARCH_LOG("Retrode SNES mouse found (currently not supported)\n");
-       goto error;
-   }
-
    wiiusb_get_description(dev, adapter, &desc);
 
    if (adapter->endpoint_in == 0)
@@ -340,7 +305,7 @@ static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
 
    /* Allocate mem for the send control buffer, 32bit aligned */
    adapter->send_control_type   = WIIUSB_SC_NONE;
-   adapter->send_control_buffer = memalign(32, 128);
+   adapter->send_control_buffer = (uint8_t*)memalign(32, 128);
 
    if (!adapter->send_control_buffer)
    {
@@ -363,7 +328,7 @@ static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
       goto error;
    }
 
-   adapter->data      = memalign(32, 128);
+   adapter->data      = (uint8_t*)memalign(32, 128);
    adapter->hid       = hid;
    adapter->next      = hid->adapters_head;
    hid->adapters_head = adapter;
@@ -376,27 +341,8 @@ static int wiiusb_hid_add_adapter(void *data, usb_device_entry *dev)
    RARCH_LOG("Device 0x%p attached (VID/PID: %04x:%04x).\n",
          adapter->device_id, desc.idVendor, desc.idProduct);
 
-   if (isRetrodeGamepad(desc))
-   {
-       /* Retrode port #1 */
-       RARCH_LOG("Interface Retrode1 gamepad slot: %d\n", adapter->slot);
-       wiiusb_hid_device_add_autodetect(adapter->slot, device_name, wiiusb_hid.ident, desc.idVendor, desc.idProduct);
-       /* Retrode port #2, #3, #4 */
-       for (i = 2; i <= 4; i++)
-       {
-           slot1 = pad_connection_pad_init(hid->connections, "hid", desc.idVendor, desc.idProduct, adapter, &wiiusb_hid);
-           if (slot1 == -1)
-               RARCH_LOG("No slot free for Retrode%d gamepad\n", i);
-           else
-           {
-               RARCH_LOG("Interface Retrode%d gamepad slot: %d\n", i, slot1);
-               wiiusb_hid_device_add_autodetect(slot1, device_name, wiiusb_hid.ident, desc.idVendor, desc.idProduct);
-           }
-       }
-   }
-   else
-       wiiusb_hid_device_add_autodetect(adapter->slot,
-             device_name, wiiusb_hid.ident, desc.idVendor, desc.idProduct);
+   wiiusb_hid_device_add_autodetect(adapter->slot,
+         device_name, wiiusb_hid.ident, desc.idVendor, desc.idProduct);
 
    USB_FreeDescriptors(&desc);
    USB_DeviceRemovalNotifyAsync(adapter->handle, wiiusb_hid_removal_cb, adapter);
@@ -600,11 +546,11 @@ static int16_t wiiusb_hid_joypad_state(
       const uint32_t joyaxis = (binds[i].joyaxis != AXIS_NONE)
          ? binds[i].joyaxis : joypad_info->auto_binds[i].joyaxis;
       if (
-               (uint16_t)joykey != NO_BTN 
+               (uint16_t)joykey != NO_BTN
             && wiiusb_hid_joypad_button(data, port_idx, (uint16_t)joykey))
          ret |= ( 1 << i);
       else if (joyaxis != AXIS_NONE &&
-            ((float)abs(wiiusb_hid_joypad_axis(data, port_idx, joyaxis)) 
+            ((float)abs(wiiusb_hid_joypad_axis(data, port_idx, joyaxis))
              / 0x8000) > joypad_info->axis_threshold)
          ret |= (1 << i);
    }

@@ -18,6 +18,7 @@
 
 #include <file/file_path.h>
 #include <streams/file_stream.h>
+#include <string/stdstring.h>
 #include <retro_miscellaneous.h>
 
 #ifdef WIIU
@@ -25,7 +26,6 @@
 #endif
 
 #include "../font_driver.h"
-#include "../../verbosity.h"
 
 #ifndef STB_TRUETYPE_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
@@ -41,29 +41,31 @@
 #define STB_UNICODE_ATLAS_ROWS 16
 #define STB_UNICODE_ATLAS_COLS 16
 #define STB_UNICODE_ATLAS_SIZE (STB_UNICODE_ATLAS_ROWS * STB_UNICODE_ATLAS_COLS)
+/* Padding is required between each glyph in
+ * the atlas to prevent texture bleed when
+ * drawing with linear filtering enabled */
+#define STB_UNICODE_ATLAS_PADDING 1
 
 typedef struct stb_unicode_atlas_slot
 {
-   struct font_glyph glyph;
+   struct stb_unicode_atlas_slot* next;
+   struct font_glyph glyph;      /* unsigned alignment */
    unsigned charcode;
    unsigned last_used;
-   struct stb_unicode_atlas_slot* next;
-}stb_unicode_atlas_slot_t;
+} stb_unicode_atlas_slot_t;
 
 typedef struct
 {
    uint8_t *font_data;
-   stbtt_fontinfo info;
-
+   struct font_atlas atlas;               /* ptr alignment */
+   stb_unicode_atlas_slot_t* uc_map[0x100];
+   stb_unicode_atlas_slot_t atlas_slots[STB_UNICODE_ATLAS_SIZE];
+   stbtt_fontinfo info;                   /* ptr alignment */
    int max_glyph_width;
    int max_glyph_height;
-   float scale_factor;
-   struct font_line_metrics line_metrics;
-
-   struct font_atlas atlas;
-   stb_unicode_atlas_slot_t atlas_slots[STB_UNICODE_ATLAS_SIZE];
-   stb_unicode_atlas_slot_t* uc_map[0x100];
    unsigned usage_counter;
+   float scale_factor;
+   struct font_line_metrics line_metrics; /* float alignment */
 } stb_unicode_font_renderer_t;
 
 static struct font_atlas *font_renderer_stb_unicode_get_atlas(void *data)
@@ -148,11 +150,10 @@ static const struct font_glyph *font_renderer_stb_unicode_get_glyph(
          + atlas_slot->glyph.atlas_offset_y * self->atlas.width;
 
    stbtt_GetGlyphHMetrics(&self->info, glyph_index, &advance_width, &left_side_bearing);
+
    if (stbtt_GetGlyphBox(&self->info, glyph_index, &x0, NULL, NULL, &y1))
-   {
       stbtt_MakeGlyphBitmap(&self->info, dst, self->max_glyph_width, self->max_glyph_height,
             self->atlas.width, self->scale_factor, self->scale_factor, glyph_index);
-   }
    else
    {
       /* This means the glyph is empty. In this case, stbtt_MakeGlyphBitmap()
@@ -166,24 +167,29 @@ static const struct font_glyph *font_renderer_stb_unicode_get_glyph(
 
    atlas_slot->glyph.width          = self->max_glyph_width;
    atlas_slot->glyph.height         = self->max_glyph_height;
+
    /* advance_x must always be rounded to the
     * *nearest* integer */
-   glyph_advance_x = (float)advance_width * self->scale_factor;
-   atlas_slot->glyph.advance_x      = (int)((glyph_advance_x > 0.0f) ?
-         (glyph_advance_x + 0.5f) : (glyph_advance_x - 0.5f));
+   glyph_advance_x                  = (float)advance_width * self->scale_factor;
+   atlas_slot->glyph.advance_x      = (int)((glyph_advance_x > 0.0f)
+         ? (glyph_advance_x + 0.5f) 
+         : (glyph_advance_x - 0.5f));
    /* advance_y is always zero */
    atlas_slot->glyph.advance_y      = 0;
+
    /* draw_offset_x must always be rounded *down*
     * to the nearest integer */
    atlas_slot->glyph.draw_offset_x  = (int)((float)x0 * self->scale_factor);
+
    /* draw_offset_y must always be rounded *up*
     * to the nearest integer */
-   glyph_draw_offset_y = (float)(-y1) * self->scale_factor;
-   atlas_slot->glyph.draw_offset_y  = (int)((glyph_draw_offset_y < 0.0f) ?
-         floor((double)glyph_draw_offset_y) : ceil((double)glyph_draw_offset_y));
+   glyph_draw_offset_y              = (float)(-y1) * self->scale_factor;
+   atlas_slot->glyph.draw_offset_y  = (int)((glyph_draw_offset_y < 0.0f)
+         ? floor((double)glyph_draw_offset_y) 
+         : ceil((double)glyph_draw_offset_y));
 
-   self->atlas.dirty = true;
-   atlas_slot->last_used = self->usage_counter++;
+   self->atlas.dirty                = true;
+   atlas_slot->last_used            = self->usage_counter++;
    return &atlas_slot->glyph;
 }
 
@@ -192,15 +198,16 @@ static bool font_renderer_stb_unicode_create_atlas(
 {
    unsigned i, x, y;
    stb_unicode_atlas_slot_t* slot = NULL;
+   int max_glyph_size             = (font_size < 0) ? -font_size : font_size;
 
-   self->max_glyph_width  = font_size < 0 ? -font_size : font_size;
-   self->max_glyph_height = font_size < 0 ? -font_size : font_size;
+   self->max_glyph_width          = max_glyph_size;
+   self->max_glyph_height         = max_glyph_size;
 
-   self->atlas.width      = self->max_glyph_width  * STB_UNICODE_ATLAS_COLS;
-   self->atlas.height     = self->max_glyph_height * STB_UNICODE_ATLAS_ROWS;
+   self->atlas.width              = (self->max_glyph_width  + STB_UNICODE_ATLAS_PADDING) * STB_UNICODE_ATLAS_COLS;
+   self->atlas.height             = (self->max_glyph_height + STB_UNICODE_ATLAS_PADDING) * STB_UNICODE_ATLAS_ROWS;
 
-   self->atlas.buffer     = (uint8_t*)
-      calloc(self->atlas.width * self->atlas.height, sizeof(uint8_t));
+   self->atlas.buffer             = (uint8_t*)calloc(
+      self->atlas.width * self->atlas.height, sizeof(uint8_t));
 
    if (!self->atlas.buffer)
       return false;
@@ -211,8 +218,8 @@ static bool font_renderer_stb_unicode_create_atlas(
    {
       for (x = 0; x < STB_UNICODE_ATLAS_COLS; x++)
       {
-         slot->glyph.atlas_offset_x = x * self->max_glyph_width;
-         slot->glyph.atlas_offset_y = y * self->max_glyph_height;
+         slot->glyph.atlas_offset_x = x * (self->max_glyph_width  + STB_UNICODE_ATLAS_PADDING);
+         slot->glyph.atlas_offset_y = y * (self->max_glyph_height + STB_UNICODE_ATLAS_PADDING);
          slot++;
       }
    }
@@ -222,7 +229,7 @@ static bool font_renderer_stb_unicode_create_atlas(
 
    for (i = 0; i < 256; i++)
    {
-      if (isalnum(i))
+      if (ISALNUM(i))
          font_renderer_stb_unicode_get_glyph(self, i);
    }
 
@@ -309,6 +316,14 @@ static const char *font_renderer_stb_unicode_get_default_font(void)
       "vs0:data/external/font/pvf/k006004ds.ttf",
       "vs0:data/external/font/pvf/n023055ms.ttf",
       "vs0:data/external/font/pvf/n023055ts.ttf",
+#elif defined(ORBIS)
+      "/preinst/common/font/c041056ts.ttf",
+      "/preinst/common/font/d013013ds.ttf",
+      "/preinst/common/font/e046323ms.ttf",
+      "/preinst/common/font/e046323ts.ttf",
+      "/preinst/common/font/k006004ds.ttf",
+      "/preinst/common/font/n023055ms.ttf",
+      "/preinst/common/font/n023055ts.ttf",
 #elif !defined(__WINRT__)
       "/usr/share/fonts/TTF/DejaVuSansMono.ttf",
       "/usr/share/fonts/TTF/DejaVuSans.ttf",
@@ -331,14 +346,11 @@ static const char *font_renderer_stb_unicode_get_default_font(void)
 #endif
 }
 
-static bool font_renderer_stb_unicode_get_line_metrics(
+static void font_renderer_stb_unicode_get_line_metrics(
       void* data, struct font_line_metrics **metrics)
 {
    stb_unicode_font_renderer_t *handle = (stb_unicode_font_renderer_t*)data;
-   if (!handle)
-      return false;
    *metrics = &handle->line_metrics;
-   return true;
 }
 
 font_renderer_driver_t stb_unicode_font_renderer = {
@@ -347,6 +359,6 @@ font_renderer_driver_t stb_unicode_font_renderer = {
    font_renderer_stb_unicode_get_glyph,
    font_renderer_stb_unicode_free,
    font_renderer_stb_unicode_get_default_font,
-   "stb-unicode",
+   "font_renderer_stb_unicode",
    font_renderer_stb_unicode_get_line_metrics
 };

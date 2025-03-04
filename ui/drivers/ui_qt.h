@@ -43,7 +43,7 @@
 #include <QSortFilterProxyModel>
 #include <QDir>
 
-#include "qt/filedropwidget.h"
+#include "qt/qt_widgets.h"
 
 #ifndef CXX_BUILD
 extern "C" {
@@ -53,7 +53,6 @@ extern "C" {
 #include "../../config.h"
 #endif
 
-#include <retro_assert.h>
 #include <retro_common_api.h>
 #include <queues/task_queue.h>
 
@@ -69,6 +68,7 @@ extern "C" {
 #define THUMBNAIL_BOXART "Named_Boxarts"
 #define THUMBNAIL_SCREENSHOT "Named_Snaps"
 #define THUMBNAIL_TITLE "Named_Titles"
+#define THUMBNAIL_LOGO "Named_Logos"
 
 class QApplication;
 class QCloseEvent;
@@ -102,9 +102,7 @@ class MainWindow;
 class ThumbnailWidget;
 class ThumbnailLabel;
 class GridView;
-#if defined(HAVE_CG) || defined(HAVE_GLSL) || defined(HAVE_SLANG) || defined(HAVE_HLSL)
 class ShaderParamsDialog;
-#endif
 class CoreOptionsDialog;
 class CoreInfoDialog;
 class PlaylistEntryDialog;
@@ -120,7 +118,13 @@ enum ThumbnailType
    THUMBNAIL_TYPE_BOXART,
    THUMBNAIL_TYPE_SCREENSHOT,
    THUMBNAIL_TYPE_TITLE_SCREEN,
+   THUMBNAIL_TYPE_LOGO,
 };
+
+static inline double lerp(double x, double y, double a, double b, double d)
+{
+   return a + (b - a) * ((double)(d - x) / (double)(y - x));
+}
 
 class PlaylistModel : public QAbstractListModel
 {
@@ -179,7 +183,7 @@ class ThumbnailWidget : public QStackedWidget
 public:
    ThumbnailWidget(QWidget *parent = 0);
    ThumbnailWidget(ThumbnailType type, QWidget *parent = 0);
-   ThumbnailWidget(const ThumbnailWidget& other) { retro_assert(false && "DONT EVER USE THIS"); }
+   ThumbnailWidget(const ThumbnailWidget& other) { /* DONT EVER USE THIS */ }
 
    void setPixmap(const QPixmap &pixmap, bool acceptDrops);
 signals:
@@ -256,7 +260,6 @@ public:
    AppHandler(QObject *parent = 0);
    ~AppHandler();
    void exit();
-   bool isExiting() const;
 
 private slots:
    void onLastWindowClosed();
@@ -370,7 +373,7 @@ public:
    QToolButton* runPushButton();
    QToolButton* stopPushButton();
    QTabWidget* browserAndPlaylistTabWidget();
-   QString getPlaylistDefaultCore(QString dbName);
+   QString getPlaylistDefaultCore(QString plName);
    ViewOptionsDialog* viewOptionsDialog();
    QSettings* settings();
    QVector<QHash<QString, QString> > getCoreInfo();
@@ -400,7 +403,6 @@ public:
    QModelIndex getCurrentContentIndex();
    QHash<QString, QString> getCurrentContentHash();
    QHash<QString, QString> getFileContentHash(const QModelIndex &index);
-   static double lerp(double x, double y, double a, double b, double d);
    QString getSpecialPlaylistPath(SpecialPlaylist playlist);
    QVector<QPair<QString, QString> > getPlaylists();
    QString getScrubbedString(QString str);
@@ -411,6 +413,7 @@ signals:
    void thumbnailChanged(const QPixmap &pixmap);
    void thumbnail2Changed(const QPixmap &pixmap);
    void thumbnail3Changed(const QPixmap &pixmap);
+   void thumbnail4Changed(const QPixmap &pixmap);
    void gotLogMessage(const QString &msg);
    void gotStatusMessage(QString msg, unsigned priority, unsigned duration, bool flush);
    void gotReloadPlaylists();
@@ -443,6 +446,7 @@ public slots:
    void onResizeThumbnailOne(QPixmap &pixmap, bool acceptDrop);
    void onResizeThumbnailTwo(QPixmap &pixmap, bool acceptDrop);
    void onResizeThumbnailThree(QPixmap &pixmap, bool acceptDrop);
+   void onResizeThumbnailFour(QPixmap &pixmap, bool acceptDrop);
    void appendLogMessage(const QString &msg);
    void onGotLogMessage(const QString &msg);
    void onGotStatusMessage(QString msg, unsigned priority, unsigned duration, bool flush);
@@ -457,13 +461,12 @@ public slots:
    void onBoxartThumbnailClicked();
    void onScreenshotThumbnailClicked();
    void onTitleThumbnailClicked();
+   void onLogoThumbnailClicked();
    void onTabWidgetIndexChanged(int index);
    void deleteCurrentPlaylistItem();
    void onFileDropWidgetContextMenuRequested(const QPoint &pos);
    void showAbout();
    void showDocs();
-   void updateRetroArchNightly();
-   void onUpdateRetroArchFinished(bool success);
    void onThumbnailPackExtractFinished(bool success);
    void deferReloadShaderParams();
    void downloadThumbnail(QString system, QString title, QUrl url = QUrl());
@@ -509,13 +512,6 @@ private slots:
    void onDownloadScrollAgain(QString path);
    int onExtractArchive(QString path, QString extractionDir, QString tempExtension, retro_task_callback_t cb);
 
-   void onUpdateNetworkError(QNetworkReply::NetworkError code);
-   void onUpdateNetworkSslErrors(const QList<QSslError> &errors);
-   void onRetroArchUpdateDownloadFinished();
-   void onUpdateDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-   void onUpdateDownloadReadyRead();
-   void onUpdateDownloadCanceled();
-
    void onThumbnailDownloadNetworkError(QNetworkReply::NetworkError code);
    void onThumbnailDownloadNetworkSslErrors(const QList<QSslError> &errors);
    void onThumbnailDownloadFinished();
@@ -544,11 +540,7 @@ private slots:
 private:
    void setCurrentCoreLabel();
    void getPlaylistFiles();
-   bool isCoreLoaded();
-   bool isContentLessCore();
    bool updateCurrentPlaylistEntry(const QHash<QString, QString> &contentHash);
-   int extractArchive(QString path);
-   void removeUpdateTempFiles();
    bool addDirectoryFilesToList(QProgressDialog *dialog, QStringList &list, QDir &dir, QStringList &extensions);
    void renamePlaylistItem(QListWidgetItem *item, QString newName);
    bool currentPlaylistIsSpecial();
@@ -587,6 +579,7 @@ private:
    QPixmap *m_thumbnailPixmap;
    QPixmap *m_thumbnailPixmap2;
    QPixmap *m_thumbnailPixmap3;
+   QPixmap *m_thumbnailPixmap4;
    QSettings *m_settings;
    ViewOptionsDialog *m_viewOptionsDialog;
    CoreInfoDialog *m_coreInfoDialog;
@@ -618,9 +611,7 @@ private:
    int m_allPlaylistsGridMaxCount;
    PlaylistEntryDialog *m_playlistEntryDialog;
    QElapsedTimer m_statusMessageElapsedTimer;
-#if defined(HAVE_CG) || defined(HAVE_GLSL) || defined(HAVE_SLANG) || defined(HAVE_HLSL)
    QPointer<ShaderParamsDialog> m_shaderParamsDialog;
-#endif
    QPointer<CoreOptionsDialog> m_coreOptionsDialog;
    QNetworkAccessManager *m_networkManager;
 
@@ -649,7 +640,11 @@ private:
    QTimer *m_thumbnailTimer;
    GridItem m_gridItem;
    BrowserType m_currentBrowser;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+   QRegularExpression m_searchRegularExpression;
+#else
    QRegExp m_searchRegExp;
+#endif
    QByteArray m_fileTableHeaderState;
    QWidget *m_zoomWidget;
    QString m_itemsCountLiteral;
@@ -677,6 +672,8 @@ typedef struct ui_window_qt
 {
    MainWindow *qtWindow;
 } ui_window_qt_t;
+
+QStringList string_split_to_qt(QString str, char delim);
 
 RETRO_END_DECLS
 

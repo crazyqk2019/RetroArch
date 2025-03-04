@@ -22,68 +22,23 @@
 #include <string/stdstring.h>
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include "../../config.h"
 #endif
 
 #include "glslang_util.h"
 #include "../../verbosity.h"
 
-static const char *glslang_formats[] = {
-   "UNKNOWN",
-
-   "R8_UNORM",
-   "R8_UINT",
-   "R8_SINT",
-   "R8G8_UNORM",
-   "R8G8_UINT",
-   "R8G8_SINT",
-   "R8G8B8A8_UNORM",
-   "R8G8B8A8_UINT",
-   "R8G8B8A8_SINT",
-   "R8G8B8A8_SRGB",
-
-   "A2B10G10R10_UNORM_PACK32",
-   "A2B10G10R10_UINT_PACK32",
-
-   "R16_UINT",
-   "R16_SINT",
-   "R16_SFLOAT",
-   "R16G16_UINT",
-   "R16G16_SINT",
-   "R16G16_SFLOAT",
-   "R16G16B16A16_UINT",
-   "R16G16B16A16_SINT",
-   "R16G16B16A16_SFLOAT",
-
-   "R32_UINT",
-   "R32_SINT",
-   "R32_SFLOAT",
-   "R32G32_UINT",
-   "R32G32_SINT",
-   "R32G32_SFLOAT",
-   "R32G32B32A32_UINT",
-   "R32G32B32A32_SINT",
-   "R32G32B32A32_SFLOAT",
-};
-
-
-static void get_include_file(
-      const char *line, char *include_file, size_t len)
+static char *slang_get_include_file(const char *line)
 {
    char *end   = NULL;
    char *start = (char*)strchr(line, '\"');
-
    if (!start)
-      return;
-
+      return NULL;
    start++;
-   end = (char*)strchr(start, '\"');
-
-   if (!end)
-      return;
-
+   if (!(end = (char*)strchr(start, '\"')))
+      return NULL;
    *end = '\0';
-   strlcpy(include_file, start, len);
+   return start;
 }
 
 bool slang_texture_semantic_is_array(enum slang_texture_semantic sem)
@@ -137,15 +92,16 @@ enum slang_texture_semantic slang_name_to_texture_semantic_array(
 }
 
 bool glslang_read_shader_file(const char *path,
-      struct string_list *output, bool root_file)
+      struct string_list *output, bool root_file, bool is_optional)
 {
+   size_t i;
    char tmp[PATH_MAX_LENGTH];
    union string_list_elem_attr attr;
-   size_t i;
    const char *basename      = NULL;
    uint8_t *buf              = NULL;
    int64_t buf_len           = 0;
-   struct string_list *lines = NULL;
+   struct string_list lines  = {0};
+   bool    ret               = false;
 
    tmp[0] = '\0';
    attr.i = 0;
@@ -154,7 +110,7 @@ bool glslang_read_shader_file(const char *path,
    if (string_is_empty(path) || !output)
       return false;
 
-   basename      = path_basename(path);
+   basename = path_basename_nocompression(path);
 
    if (string_is_empty(basename))
       return false;
@@ -162,7 +118,8 @@ bool glslang_read_shader_file(const char *path,
    /* Read file contents */
    if (!filestream_read_file(path, (void**)&buf, &buf_len))
    {
-      RARCH_ERR("Failed to open shader file: \"%s\".\n", path);
+      if (!is_optional)
+         RARCH_ERR("[slang]: Failed to open shader file: \"%s\".\n", path);
       return false;
    }
 
@@ -173,7 +130,8 @@ bool glslang_read_shader_file(const char *path,
 
       /* Split into lines
        * (Blank lines must be included) */
-      lines = string_separate((char*)buf, "\n");
+      string_list_initialize(&lines);
+      ret = string_separate_noalloc(&lines, (char*)buf, "\n");
    }
 
    /* Buffer is no longer required - clean up */
@@ -181,34 +139,44 @@ bool glslang_read_shader_file(const char *path,
       free(buf);
 
    /* Sanity check */
-   if (!lines)
+   if (!ret)
       return false;
 
-   if (lines->size < 1)
+   if (lines.size < 1)
       goto error;
 
-   /* If this is the 'parent' shader file, ensure that first
-    * line is a 'VERSION' string */
-   if (root_file)
+    /* If this is the 'parent' shader file and a slang file,
+    * ensure that first line is a 'VERSION' string */
+   if (root_file && string_is_equal(path_get_extension(path), "slang"))
    {
-      const char *line = lines->elems[0].data;
+      const char *line = lines.elems[0].data;
 
       if (strncmp("#version ", line, STRLEN_CONST("#version ")))
       {
-         RARCH_ERR("First line of the shader must contain a valid #version string.\n");
+         RARCH_ERR("[slang]: First line of the shader must contain a valid "
+               "#version string.\n");
          goto error;
       }
 
       if (!string_list_append(output, line, attr))
          goto error;
 
-      /* Allows us to use #line to make dealing with shader errors easier.
-       * This is supported by glslang, but since we always use glslang statically,
-       * this is fine. */
-
-      if (!string_list_append(output, "#extension GL_GOOGLE_cpp_style_line_directive : require", attr))
+      /* Allows us to use #line to make dealing with shader
+       * errors easier.
+       * This is supported by glslang, but since we always
+       * use glslang statically, this is fine. */
+      if (!string_list_append(output,
+               "#extension GL_GOOGLE_cpp_style_line_directive : require",
+               attr))
          goto error;
    }
+
+   /* Add defines about supported retroarch features */
+   if (!string_list_append(output, "#define _HAS_ORIGINALASPECT_UNIFORMS", attr))
+      goto error;
+
+   if (!string_list_append(output, "#define _HAS_FRAMETIME_UNIFORMS", attr))
+      goto error;
 
    /* At least VIM treats the first line as line #1,
     * so offset everything by one. */
@@ -217,79 +185,111 @@ bool glslang_read_shader_file(const char *path,
       goto error;
 
    /* Loop through lines of file */
-   for (i = root_file ? 1 : 0; i < lines->size; i++)
+   for (i = root_file ? 1 : 0; i < lines.size; i++)
    {
-      unsigned push_line = 0;
-      const char *line   = lines->elems[i].data;
+      const char *line   = lines.elems[i].data;
 
       /* Check for 'include' statements */
-      if (!strncmp("#include ", line, STRLEN_CONST("#include ")))
+      bool include_optional = !strncmp("#pragma include_optional ", line, STRLEN_CONST("#pragma include_optional "));
+      if ( !strncmp("#include ", line, STRLEN_CONST("#include ")) || include_optional )
       {
-         char include_file[PATH_MAX_LENGTH];
          char include_path[PATH_MAX_LENGTH];
-
-         include_file[0] = '\0';
-         include_path[0] = '\0';
-
-         /* Build include file path */
-         get_include_file(line, include_file, sizeof(include_file));
+         char *include_file = slang_get_include_file(line);
 
          if (string_is_empty(include_file))
          {
-            RARCH_ERR("Invalid include statement \"%s\".\n", line);
+            RARCH_ERR("[slang]: Invalid include statement \"%s\".\n", line);
             goto error;
          }
 
+         include_path[0] = '\0';
          fill_pathname_resolve_relative(
                include_path, path, include_file, sizeof(include_path));
 
          /* Parse include file */
-         if (!glslang_read_shader_file(include_path, output, false))
-            goto error;
+         if (!glslang_read_shader_file(include_path, output, false, include_optional))
+         {
+            if (include_optional)
+               RARCH_LOG("[slang]: Optional include not found \"%s\".\n", include_path);
+            else
+               goto error;
+         }
 
          /* After including a file, use line directive
           * to pull it back to current file. */
-         push_line = 1;
+         snprintf(tmp, sizeof(tmp), "#line %u \"%s\"",
+               (unsigned)(i + 1), basename);
+         if (!string_list_append(output, tmp, attr))
+            goto error;
       }
-      else if (!strncmp("#endif", line, STRLEN_CONST("#endif")) ||
-               !strncmp("#pragma", line, STRLEN_CONST("#pragma")))
+      else if (   !strncmp("#endif",  line, STRLEN_CONST("#endif"))
+               || !strncmp("#pragma", line, STRLEN_CONST("#pragma")))
       {
          /* #line seems to be ignored if preprocessor tests fail,
           * so we should reapply #line after each #endif.
           * Add extra offset here since we're setting #line
           * for the line after this one.
           */
-         push_line = 2;
          if (!string_list_append(output, line, attr))
+            goto error;
+         snprintf(tmp, sizeof(tmp), "#line %u \"%s\"",
+               (unsigned)(i + 2), basename);
+         if (!string_list_append(output, tmp, attr))
             goto error;
       }
       else
          if (!string_list_append(output, line, attr))
             goto error;
-
-      if (push_line != 0)
-      {
-         snprintf(tmp, sizeof(tmp), "#line %u \"%s\"",
-               (unsigned)(i + push_line), basename);
-         if (!string_list_append(output, tmp, attr))
-            goto error;
-      }
    }
 
-   string_list_free(lines);
+   string_list_deinitialize(&lines);
 
    return true;
 
 error:
-
-   if (lines)
-      string_list_free(lines);
-
+   string_list_deinitialize(&lines);
    return false;
 }
 
 const char *glslang_format_to_string(enum glslang_format fmt)
 {
+   static const char *glslang_formats[] = {
+      "UNKNOWN",
+
+      "R8_UNORM",
+      "R8_UINT",
+      "R8_SINT",
+      "R8G8_UNORM",
+      "R8G8_UINT",
+      "R8G8_SINT",
+      "R8G8B8A8_UNORM",
+      "R8G8B8A8_UINT",
+      "R8G8B8A8_SINT",
+      "R8G8B8A8_SRGB",
+
+      "A2B10G10R10_UNORM_PACK32",
+      "A2B10G10R10_UINT_PACK32",
+
+      "R16_UINT",
+      "R16_SINT",
+      "R16_SFLOAT",
+      "R16G16_UINT",
+      "R16G16_SINT",
+      "R16G16_SFLOAT",
+      "R16G16B16A16_UINT",
+      "R16G16B16A16_SINT",
+      "R16G16B16A16_SFLOAT",
+
+      "R32_UINT",
+      "R32_SINT",
+      "R32_SFLOAT",
+      "R32G32_UINT",
+      "R32G32_SINT",
+      "R32G32_SFLOAT",
+      "R32G32B32A32_UINT",
+      "R32G32B32A32_SINT",
+      "R32G32B32A32_SFLOAT",
+   };
    return glslang_formats[fmt];
 }
 
@@ -332,14 +332,6 @@ enum glslang_format glslang_find_format(const char *fmt)
    FMT(R32G32B32A32_SFLOAT);
 
    return SLANG_FORMAT_UNKNOWN;
-}
-
-void glslang_build_vec4(float *data, unsigned width, unsigned height)
-{
-   data[0] = (float)(width);
-   data[1] = (float)(height);
-   data[2] = 1.0f / (float)(width);
-   data[3] = 1.0f / (float)(height);
 }
 
 unsigned glslang_num_miplevels(unsigned width, unsigned height)

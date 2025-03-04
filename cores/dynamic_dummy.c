@@ -34,13 +34,13 @@ static uint16_t *dummy_frame_buf;
 static uint16_t frame_buf_width;
 static uint16_t frame_buf_height;
 
-#if defined(HAVE_LIBNX) && defined(HAVE_STATIC_DUMMY)
+#if defined(HAVE_STATIC_DUMMY)
 void retro_init(void) { libretro_dummy_retro_init(); }
 void retro_deinit(void) { libretro_dummy_retro_deinit(); }
 unsigned retro_api_version(void) { return libretro_dummy_retro_api_version(); }
 void retro_set_controller_port_device(unsigned port, unsigned device) { libretro_dummy_retro_set_controller_port_device(port, device); }
 void retro_get_system_info(struct retro_system_info *info) { libretro_dummy_retro_get_system_info(info); }
-void retro_get_system_av_info(struct retro_system_av_info *info) { retro_get_system_av_info(info); }
+void retro_get_system_av_info(struct retro_system_av_info *info) { libretro_dummy_retro_get_system_av_info(info); }
 void retro_set_environment(retro_environment_t cb) { libretro_dummy_retro_set_environment(cb); }
 void retro_set_audio_sample(retro_audio_sample_t cb) { libretro_dummy_retro_set_audio_sample(cb); }
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb) { libretro_dummy_retro_set_audio_sample_batch(cb); }
@@ -54,8 +54,8 @@ void retro_unload_game(void) { libretro_dummy_retro_unload_game(); }
 unsigned retro_get_region(void) { return libretro_dummy_retro_get_region(); }
 bool retro_load_game_special(unsigned type, const struct retro_game_info *info, size_t num) { return libretro_dummy_retro_load_game_special(type, info, num); }
 size_t retro_serialize_size(void) { return libretro_dummy_retro_serialize_size(); }
-bool retro_serialize(void *data, size_t size) { return libretro_dummy_retro_serialize(data, size); }
-bool retro_unserialize(const void *data, size_t size) { return libretro_dummy_retro_unserialize(data, size); }
+bool retro_serialize(void *data, size_t len) { return libretro_dummy_retro_serialize(data, len); }
+bool retro_unserialize(const void *data, size_t len) { return libretro_dummy_retro_unserialize(data, len); }
 void *retro_get_memory_data(unsigned id) { return libretro_dummy_retro_get_memory_data(id); }
 size_t retro_get_memory_size(unsigned id) { return libretro_dummy_retro_get_memory_size(id); }
 void retro_cheat_reset(void) { libretro_dummy_retro_cheat_reset(); }
@@ -86,6 +86,10 @@ void libretro_dummy_retro_init(void)
          case RGUI_ASPECT_RATIO_16_10_CENTRE:
             frame_buf_width = 384;
             break;
+         case RGUI_ASPECT_RATIO_21_9:
+         case RGUI_ASPECT_RATIO_21_9_CENTRE:
+            frame_buf_width = 560;
+            break;
          default:
             /* 4:3 */
             frame_buf_width = 320;
@@ -95,8 +99,12 @@ void libretro_dummy_retro_init(void)
 #endif
 
    dummy_frame_buf = (uint16_t*)calloc(frame_buf_width * frame_buf_height, sizeof(uint16_t));
-   for (i = 0; i < (unsigned)(frame_buf_width * frame_buf_height); i++)
-      dummy_frame_buf[i] = 4 << 5;
+
+   if (dummy_frame_buf)
+   {
+      for (i = 0; i < (unsigned)(frame_buf_width * frame_buf_height); i++)
+         dummy_frame_buf[i] = 4 << 5;
+   }
 }
 
 void libretro_dummy_retro_deinit(void)
@@ -109,13 +117,6 @@ void libretro_dummy_retro_deinit(void)
 unsigned libretro_dummy_retro_api_version(void)
 {
    return RETRO_API_VERSION;
-}
-
-void libretro_dummy_retro_set_controller_port_device(
-      unsigned port, unsigned device)
-{
-   (void)port;
-   (void)device;
 }
 
 void libretro_dummy_retro_get_system_info(
@@ -189,9 +190,6 @@ void libretro_dummy_retro_set_video_refresh(retro_video_refresh_t cb)
    dummy_video_cb = cb;
 }
 
-void libretro_dummy_retro_reset(void)
-{}
-
 void libretro_dummy_retro_run(void)
 {
    dummy_input_poll_cb();
@@ -201,66 +199,22 @@ void libretro_dummy_retro_run(void)
 /* This should never be called, it's only used as a placeholder. */
 bool libretro_dummy_retro_load_game(const struct retro_game_info *info)
 {
-   (void)info;
    return false;
 }
 
-void libretro_dummy_retro_unload_game(void)
-{}
-
-unsigned libretro_dummy_retro_get_region(void)
-{
-   return RETRO_REGION_NTSC;
-}
-
+void libretro_dummy_retro_set_controller_port_device(
+      unsigned port, unsigned device) { }
+void libretro_dummy_retro_reset(void) { }
+unsigned libretro_dummy_retro_get_region(void) { return RETRO_REGION_NTSC; }
+void libretro_dummy_retro_unload_game(void) { }
 bool libretro_dummy_retro_load_game_special(unsigned type,
-      const struct retro_game_info *info, size_t num)
-{
-   (void)type;
-   (void)info;
-   (void)num;
-   return false;
-}
-
-size_t libretro_dummy_retro_serialize_size(void)
-{
-   return 0;
-}
-
-bool libretro_dummy_retro_serialize(void *data, size_t size)
-{
-   (void)data;
-   (void)size;
-   return false;
-}
-
+      const struct retro_game_info *info, size_t num) { return false; }
+size_t libretro_dummy_retro_serialize_size(void) { return 0; }
+bool libretro_dummy_retro_serialize(void *data, size_t len) { return false; }
 bool libretro_dummy_retro_unserialize(const void *data,
-      size_t size)
-{
-   (void)data;
-   (void)size;
-   return false;
-}
-
-void *libretro_dummy_retro_get_memory_data(unsigned id)
-{
-   (void)id;
-   return NULL;
-}
-
-size_t libretro_dummy_retro_get_memory_size(unsigned id)
-{
-   (void)id;
-   return 0;
-}
-
-void libretro_dummy_retro_cheat_reset(void)
-{}
-
+      size_t len) { return false; }
+void *libretro_dummy_retro_get_memory_data(unsigned id) { return NULL; }
+size_t libretro_dummy_retro_get_memory_size(unsigned id) { return 0; }
+void libretro_dummy_retro_cheat_reset(void) { }
 void libretro_dummy_retro_cheat_set(unsigned idx,
-      bool enabled, const char *code)
-{
-   (void)idx;
-   (void)enabled;
-   (void)code;
-}
+      bool enabled, const char *code) { }

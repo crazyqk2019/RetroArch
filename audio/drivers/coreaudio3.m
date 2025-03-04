@@ -22,7 +22,8 @@
 #include <stdlib.h>
 #include <memory.h>
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
+#include "../../verbosity.h"
 
 #pragma mark - ringbuffer
 
@@ -30,9 +31,9 @@ typedef struct ringbuffer
 {
    float *buffer;
    size_t cap;
-   atomic_int len;
    size_t write_ptr;
    size_t read_ptr;
+   atomic_int len;
 } ringbuffer_t;
 
 typedef ringbuffer_t * ringbuffer_h;
@@ -203,7 +204,7 @@ static bool g_interrupted;
          return nil;
 
       format = au.outputBusses[0].format;
-      if (format.channelCount != 2)
+      if (format.channelCount < 2)
          return nil;
 
       renderFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:rate channels:2];
@@ -306,12 +307,11 @@ static void *coreaudio3_init(const char *device,
    return (__bridge_retained void *)dev;
 }
 
-static ssize_t coreaudio3_write(void *data,
-      const void *buf_, size_t size)
+static ssize_t coreaudio3_write(void *data, const void *buf_, size_t len)
 {
    CoreAudio3 *dev = (__bridge CoreAudio3 *)data;
    return [dev writeFloat:(const float *)
-             buf_ samples:size/sizeof(float)] * sizeof(float);
+             buf_ samples:len / sizeof(float)] * sizeof(float);
 }
 
 static void coreaudio3_set_nonblock_state(void *data, bool state)

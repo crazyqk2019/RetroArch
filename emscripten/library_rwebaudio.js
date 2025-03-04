@@ -1,7 +1,7 @@
 //"use strict";
 
 var LibraryRWebAudio = {
-   $RA__deps: ['$Browser', 'usleep'],
+   $RA__deps: ['$Browser'],
    $RA: {
       BUFFER_SIZE: 2048,
 
@@ -35,6 +35,8 @@ var LibraryRWebAudio = {
                RA.buffers[RA.numBuffers - 1] = buf[0];
                i--;
                RA.bufIndex--;
+            } else if (!RA.startTime) {
+                RA.setStartTime();
             }
          }
       },

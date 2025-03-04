@@ -31,9 +31,14 @@ enum auto_shader_type
    SHADER_PRESET_GAME
 };
 
-struct video_shader *menu_shader_get(void);
+enum auto_shader_operation
+{
+   AUTO_SHADER_OP_SAVE = 0,
+   AUTO_SHADER_OP_REMOVE,
+   AUTO_SHADER_OP_EXISTS
+};
 
-void menu_shader_manager_free(void *data);
+struct video_shader *menu_shader_get(void);
 
 /**
  * menu_shader_manager_init:
@@ -44,7 +49,7 @@ bool menu_shader_manager_init(void);
 
 /**
  * menu_shader_manager_set_preset:
- * @shader                   : Shader handle.
+ * @menu_shader              : Shader handle to the menu shader.
  * @type                     : Type of shader.
  * @preset_path              : Preset path to load from.
  * @apply                    : Whether to apply the shader or just update shader information
@@ -52,8 +57,20 @@ bool menu_shader_manager_init(void);
  * Sets shader preset.
  **/
 bool menu_shader_manager_set_preset(
-      struct video_shader *shader,
-      enum rarch_shader_type type, const char *preset_path, bool apply);
+      struct video_shader *menu_shader,
+      enum rarch_shader_type type,
+      const char *preset_path,
+      bool apply);
+
+/**
+ * menu_shader_manager_append_preset:
+ * @shader                   : current shader
+ * @preset_path              : path to the preset to append
+ * @dir_video_shader         : temporary directory
+ *
+ * combine current shader with a shader preset on disk
+ **/
+bool menu_shader_manager_append_preset(struct video_shader *shader, const char* preset_path, const bool prepend);
 
 /**
  * menu_shader_manager_save_auto_preset:
@@ -89,17 +106,6 @@ bool menu_shader_manager_save_preset(const struct video_shader *shader,
       const char *dir_video_shader,
       const char *dir_menu_config,
       bool apply);
-
-/**
- * menu_shader_manager_get_type:
- * @shader                   : shader handle
- *
- * Gets type of shader.
- *
- * Returns: type of shader.
- **/
-enum rarch_shader_type menu_shader_manager_get_type(
-      const struct video_shader *shader);
 
 /**
  * menu_shader_manager_apply_changes:

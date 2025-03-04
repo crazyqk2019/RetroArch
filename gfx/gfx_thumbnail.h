@@ -28,6 +28,7 @@
 
 #include <boolean.h>
 
+#include "gfx_animation.h"
 #include "gfx_thumbnail_path.h"
 
 RETRO_BEGIN_DECLS
@@ -62,40 +63,58 @@ enum gfx_thumbnail_shadow_type
    GFX_THUMBNAIL_SHADOW_OUTLINE
 };
 
+enum gfx_thumbnail_flags
+{
+   GFX_THUMB_FLAG_FADE_ACTIVE = (1 << 0),
+   GFX_THUMB_FLAG_CORE_ASPECT = (1 << 1)
+};
+
 /* Holds all runtime parameters associated with
  * an entry thumbnail */
 typedef struct
 {
-   enum gfx_thumbnail_status status;
    uintptr_t texture;
    unsigned width;
    unsigned height;
    float alpha;
    float delay_timer;
-   bool fade_active;
+   enum gfx_thumbnail_status status;
+   uint8_t flags;
 } gfx_thumbnail_t;
 
 /* Holds all configuration parameters associated
  * with a thumbnail shadow effect */
 typedef struct
 {
-   enum gfx_thumbnail_shadow_type type;
+   struct
+   {
+      unsigned width;
+   } outline;
    float alpha;
    struct
    {
       float x_offset;
       float y_offset;
    } drop;
-   struct
-   {
-      unsigned width;
-   } outline;
+   enum gfx_thumbnail_shadow_type type;
 } gfx_thumbnail_shadow_t;
 
 /* Structure containing all gfx_thumbnail
- * global variables */
+ * variables */
 struct gfx_thumbnail_state
 {
+   /* Due to the asynchronous nature of thumbnail
+    * loading, it is quite possible to trigger a load
+    * then navigate to a different menu list before
+    * the load is complete/handled. As an additional
+    * safety check, we therefore tag the current menu
+    * list with counter value that is incremented whenever
+    * a list is cleared/set. This is sent as userdata when
+    * requesting a thumbnail, and the upload is only
+    * handled if the tag matches the most recent value
+    * at the time when the load completes */
+   uint64_t list_id;
+
    /* When streaming thumbnails, to minimise the processing
     * of unnecessary images (i.e. when scrolling rapidly through
     * playlists), we delay loading until an entry has been on screen
@@ -108,18 +127,6 @@ struct gfx_thumbnail_state
    /* When true, 'fade in' animation will also be
     * triggered for missing thumbnails */
    bool fade_missing;
-
-   /* Due to the asynchronous nature of thumbnail
-    * loading, it is quite possible to trigger a load
-    * then navigate to a different menu list before
-    * the load is complete/handled. As an additional
-    * safety check, we therefore tag the current menu
-    * list with counter value that is incremented whenever
-    * a list is cleared/set. This is sent as userdata when
-    * requesting a thumbnail, and the upload is only
-    * handled if the tag matches the most recent value
-    * at the time when the load completes */
-   uint64_t list_id;
 };
 
 typedef struct gfx_thumbnail_state gfx_thumbnail_state_t;
@@ -143,18 +150,6 @@ void gfx_thumbnail_set_fade_duration(float duration);
  * > When 'true', allows menu driver to animate
  *   any 'thumbnail unavailable' notifications */
 void gfx_thumbnail_set_fade_missing(bool fade_missing);
-
-/* Getters */
-
-/* Fetches current streaming thumbnails request delay */
-float gfx_thumbnail_get_stream_delay(void);
-
-/* Fetches current 'fade in' animation duration */
-float gfx_thumbnail_get_fade_duration(void);
-
-/* Fetches current enable state for missing
- * thumbnail 'fade in' animations */
-bool gfx_thumbnail_get_fade_missing(bool fade_missing);
 
 /* Core interface */
 
@@ -182,8 +177,7 @@ void gfx_thumbnail_request(
       gfx_thumbnail_path_data_t *path_data, enum gfx_thumbnail_id thumbnail_id,
       playlist_t *playlist, size_t idx, gfx_thumbnail_t *thumbnail,
       unsigned gfx_thumbnail_upscale_threshold,
-      bool network_on_demand_thumbnails
-      );
+      bool network_on_demand_thumbnails);
 
 /* Requests loading of a specific thumbnail image file
  * (may be used, for example, to load savestate images)
@@ -203,6 +197,66 @@ void gfx_thumbnail_reset(gfx_thumbnail_t *thumbnail);
 
 /* Stream processing */
 
+/* Requests loading of the specified thumbnail via
+ * the stream interface
+ * - Must be called on each frame for the duration
+ *   that specified thumbnail is on-screen
+ * - Actual load request is deferred by currently
+ *   set stream delay
+ * - Function becomes a no-op once load request is
+ *   made
+ * - Thumbnails loaded via this function must be
+ *   deleted manually via gfx_thumbnail_reset()
+ *   when they move off-screen
+ * NOTE 1: Must be called *after* gfx_thumbnail_set_system()
+ *         and gfx_thumbnail_set_content*()
+ * NOTE 2: 'playlist' and 'idx' are only required here for
+ *         on-demand thumbnail download support
+ *         (an annoyance...)
+ * NOTE 3: This function is intended for use in situations
+ *         where each menu entry has a *single* thumbnail.
+ *         If each entry has two thumbnails, use
+ *         gfx_thumbnail_request_streams() for improved
+ *         performance */
+void gfx_thumbnail_request_stream(
+      gfx_thumbnail_path_data_t *path_data,
+      gfx_animation_t *p_anim,
+      enum gfx_thumbnail_id thumbnail_id,
+      playlist_t *playlist, size_t idx,
+      gfx_thumbnail_t *thumbnail,
+      unsigned gfx_thumbnail_upscale_threshold,
+      bool network_on_demand_thumbnails);
+
+/* Requests loading of the specified thumbnails via
+ * the stream interface
+ * - Must be called on each frame for the duration
+ *   that specified thumbnails are on-screen
+ * - Actual load request is deferred by currently
+ *   set stream delay
+ * - Function becomes a no-op once load request is
+ *   made
+ * - Thumbnails loaded via this function must be
+ *   deleted manually via gfx_thumbnail_reset()
+ *   when they move off-screen
+ * NOTE 1: Must be called *after* gfx_thumbnail_set_system()
+ *         and gfx_thumbnail_set_content*()
+ * NOTE 2: 'playlist' and 'idx' are only required here for
+ *         on-demand thumbnail download support
+ *         (an annoyance...)
+ * NOTE 3: This function is intended for use in situations
+ *         where each menu entry has *two* thumbnails.
+ *         If each entry only has a single thumbnail, use
+ *         gfx_thumbnail_request_stream() for improved
+ *         performance */
+void gfx_thumbnail_request_streams(
+      gfx_thumbnail_path_data_t *path_data,
+      gfx_animation_t *p_anim,
+      playlist_t *playlist, size_t idx,
+      gfx_thumbnail_t *right_thumbnail,
+      gfx_thumbnail_t *left_thumbnail,
+      unsigned gfx_thumbnail_upscale_threshold,
+      bool network_on_demand_thumbnails);
+
 /* Handles streaming of the specified thumbnail as it moves
  * on/off screen
  * - Must be called each frame for every on-screen entry
@@ -216,11 +270,14 @@ void gfx_thumbnail_reset(gfx_thumbnail_t *thumbnail);
  *         gfx_thumbnail_process_streams() for improved
  *         performance */
 void gfx_thumbnail_process_stream(
-      gfx_thumbnail_path_data_t *path_data, enum gfx_thumbnail_id thumbnail_id,
-      playlist_t *playlist, size_t idx, gfx_thumbnail_t *thumbnail, bool on_screen,
+      gfx_thumbnail_path_data_t *path_data,
+      gfx_animation_t *p_anim,
+      enum gfx_thumbnail_id thumbnail_id,
+      playlist_t *playlist, size_t idx,
+      gfx_thumbnail_t *thumbnail,
+      bool on_screen,
       unsigned gfx_thumbnail_upscale_threshold,
-      bool network_on_demand_thumbnails
-      );
+      bool network_on_demand_thumbnails);
 
 /* Handles streaming of the specified thumbnails as they move
  * on/off screen
@@ -236,12 +293,13 @@ void gfx_thumbnail_process_stream(
  *         performance */
 void gfx_thumbnail_process_streams(
       gfx_thumbnail_path_data_t *path_data,
+      gfx_animation_t *p_anim,
       playlist_t *playlist, size_t idx,
-      gfx_thumbnail_t *right_thumbnail, gfx_thumbnail_t *left_thumbnail,
+      gfx_thumbnail_t *right_thumbnail,
+      gfx_thumbnail_t *left_thumbnail,
       bool on_screen,
       unsigned gfx_thumbnail_upscale_threshold,
-      bool network_on_demand_thumbnails
-      );
+      bool network_on_demand_thumbnails);
 
 /* Thumbnail rendering */
 

@@ -18,10 +18,12 @@
 
 #include <stdint.h>
 #include <retro_common_api.h>
+#include <retro_inline.h>
 
 #include <lists/string_list.h>
 
 #include "slang_reflection.h"
+#include "../video_shader_parse.h"
 
 typedef enum glslang_format
 {
@@ -66,24 +68,74 @@ typedef enum glslang_format
    SLANG_FORMAT_R32G32B32A32_SFLOAT,
 
    SLANG_FORMAT_MAX
-}glslang_format;
+} glslang_format;
+
+typedef enum glslang_filter_chain_filter
+{
+   GLSLANG_FILTER_CHAIN_LINEAR  = 0,
+   GLSLANG_FILTER_CHAIN_NEAREST = 1,
+   GLSLANG_FILTER_CHAIN_COUNT
+} glslang_filter_chain_filter;
+
+typedef enum glslang_filter_chain_address
+{
+   GLSLANG_FILTER_CHAIN_ADDRESS_REPEAT               = 0,
+   GLSLANG_FILTER_CHAIN_ADDRESS_MIRRORED_REPEAT      = 1,
+   GLSLANG_FILTER_CHAIN_ADDRESS_CLAMP_TO_EDGE        = 2,
+   GLSLANG_FILTER_CHAIN_ADDRESS_CLAMP_TO_BORDER      = 3,
+   GLSLANG_FILTER_CHAIN_ADDRESS_MIRROR_CLAMP_TO_EDGE = 4,
+   GLSLANG_FILTER_CHAIN_ADDRESS_COUNT
+} glslang_filter_chain_address;
+
+typedef enum glslang_filter_chain_scale
+{
+   GLSLANG_FILTER_CHAIN_SCALE_ORIGINAL,
+   GLSLANG_FILTER_CHAIN_SCALE_SOURCE,
+   GLSLANG_FILTER_CHAIN_SCALE_VIEWPORT,
+   GLSLANG_FILTER_CHAIN_SCALE_ABSOLUTE
+} glslang_filter_chain_scale;
 
 RETRO_BEGIN_DECLS
+
+static INLINE enum glslang_filter_chain_address rarch_wrap_to_address(
+      enum gfx_wrap_type type)
+{
+   switch (type)
+   {
+      case RARCH_WRAP_BORDER:
+         return GLSLANG_FILTER_CHAIN_ADDRESS_CLAMP_TO_BORDER;
+      case RARCH_WRAP_REPEAT:
+         return GLSLANG_FILTER_CHAIN_ADDRESS_REPEAT;
+      case RARCH_WRAP_MIRRORED_REPEAT:
+         return GLSLANG_FILTER_CHAIN_ADDRESS_MIRRORED_REPEAT;
+      case RARCH_WRAP_EDGE:
+      default:
+         break;
+   }
+
+   return GLSLANG_FILTER_CHAIN_ADDRESS_CLAMP_TO_EDGE;
+}
 
 const char *glslang_format_to_string(glslang_format fmt);
 
 enum glslang_format glslang_find_format(const char *fmt);
 
+/* Reads a shader file and outputs its contents as a string list.
+   Takes the path of the shader file and appends each line of the file
+   to the output string list.
+   If the root_file argument is set to true, it expects the first line of the file
+   to be a valid '#version' string
+   Handles '#include' statements by recursively parsing included files and appending their contents.
+   Returns a Bool indicating if parsing was successful.
+ */
 bool glslang_read_shader_file(const char *path,
-      struct string_list *output, bool root_file);
+      struct string_list *output, bool root_file, bool is_optional);
 
 bool slang_texture_semantic_is_array(enum slang_texture_semantic sem);
 
 enum slang_texture_semantic slang_name_to_texture_semantic_array(
       const char *name, const char **names,
       unsigned *index);
-
-void glslang_build_vec4(float *data, unsigned width, unsigned height);
 
 unsigned glslang_num_miplevels(unsigned width, unsigned height);
 

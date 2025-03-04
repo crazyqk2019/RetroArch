@@ -49,6 +49,9 @@ def replace_global_in(source):
         ('IN.output_size', 'OutputSize'),
         ('IN.frame_count', 'FrameCount'),
         ('IN.frame_direction', 'FrameDirection'),
+        ('IN.rotation', 'Rotation'),
+        ('IN.core_aspect', 'OriginalAspect'),
+        ('IN.core_aspect_rot', 'OriginalAspectRotated'),
     ]
 
     for line in source.splitlines():
@@ -107,6 +110,9 @@ def no_uniform(elem):
         '_output_dummy_size',
         '_frame_count',
         '_frame_direction',
+        '_rotation',
+        '_core_aspect',
+        '_core_aspect_rot',
         '_mvp_matrix',
         '_vertex_coord',
         'sampler2D'

@@ -33,27 +33,24 @@
 #include <retro_miscellaneous.h>
 #include <retro_timers.h>
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 #include "../../verbosity.h"
 
-#define BUFSIZE 1024
+#define OPENAL_BUFSIZE 1024
 
 typedef struct al
 {
    ALuint source;
    ALuint *buffers;
    ALuint *res_buf;
-   size_t res_ptr;
-   ALenum format;
-   size_t num_buffers;
-   int rate;
-
-   uint8_t tmpbuf[BUFSIZE];
-   size_t tmpbuf_ptr;
-
    ALCdevice *handle;
    ALCcontext *ctx;
-
+   size_t res_ptr;
+   ALsizei num_buffers;
+   size_t tmpbuf_ptr;
+   int rate;
+   ALenum format;
+   uint8_t tmpbuf[OPENAL_BUFSIZE];
    bool nonblock;
    bool is_paused;
 } al_t;
@@ -107,11 +104,11 @@ static void *al_init(const char *device, unsigned rate, unsigned latency,
    al->rate = rate;
 
    /* We already use one buffer for tmpbuf. */
-   al->num_buffers = (latency * rate * 2 * sizeof(int16_t)) / (1000 * BUFSIZE) - 1;
+   al->num_buffers = (latency * rate * 2 * sizeof(int16_t)) / (1000 * OPENAL_BUFSIZE) - 1;
    if (al->num_buffers < 2)
       al->num_buffers = 2;
 
-   RARCH_LOG("[OpenAL]: Using %u buffers of %u bytes.\n", (unsigned)al->num_buffers, BUFSIZE);
+   RARCH_LOG("[OpenAL]: Using %u buffers of %u bytes.\n", (unsigned)al->num_buffers, OPENAL_BUFSIZE);
 
    al->buffers = (ALuint*)calloc(al->num_buffers, sizeof(ALuint));
    al->res_buf = (ALuint*)calloc(al->num_buffers, sizeof(ALuint));
@@ -166,37 +163,37 @@ static bool al_get_buffer(al_t *al, ALuint *buffer)
    return true;
 }
 
-static size_t al_fill_internal_buf(al_t *al, const void *buf, size_t size)
+static size_t al_fill_internal_buf(al_t *al, const void *s, size_t len)
 {
-   size_t read_size = MIN(BUFSIZE - al->tmpbuf_ptr, size);
-   memcpy(al->tmpbuf + al->tmpbuf_ptr, buf, read_size);
+   size_t read_size = MIN(OPENAL_BUFSIZE - al->tmpbuf_ptr, len);
+   memcpy(al->tmpbuf + al->tmpbuf_ptr, s, read_size);
    al->tmpbuf_ptr += read_size;
    return read_size;
 }
 
-static ssize_t al_write(void *data, const void *buf_, size_t size)
+static ssize_t al_write(void *data, const void *s, size_t len)
 {
    al_t           *al = (al_t*)data;
-   const uint8_t *buf = (const uint8_t*)buf_;
+   const uint8_t *buf = (const uint8_t*)s;
    size_t     written = 0;
 
-   while (size)
+   while (len)
    {
       ALint val;
       ALuint buffer;
-      size_t rc = al_fill_internal_buf(al, buf, size);
+      size_t rc = al_fill_internal_buf(al, buf, len);
 
       written += rc;
       buf     += rc;
-      size    -= rc;
+      len     -= rc;
 
-      if (al->tmpbuf_ptr != BUFSIZE)
+      if (al->tmpbuf_ptr != OPENAL_BUFSIZE)
          break;
 
       if (!al_get_buffer(al, &buffer))
          break;
 
-      alBufferData(buffer, AL_FORMAT_STEREO16, al->tmpbuf, BUFSIZE, al->rate);
+      alBufferData(buffer, AL_FORMAT_STEREO16, al->tmpbuf, OPENAL_BUFSIZE, al->rate);
       al->tmpbuf_ptr = 0;
       alSourceQueueBuffers(al->source, 1, &buffer);
       if (alGetError() != AL_NO_ERROR)
@@ -248,20 +245,16 @@ static size_t al_write_avail(void *data)
 {
    al_t *al = (al_t*)data;
    al_unqueue_buffers(al);
-   return al->res_ptr * BUFSIZE + (BUFSIZE - al->tmpbuf_ptr);
+   return al->res_ptr * OPENAL_BUFSIZE + (OPENAL_BUFSIZE - al->tmpbuf_ptr);
 }
 
 static size_t al_buffer_size(void *data)
 {
    al_t *al = (al_t*)data;
-   return (al->num_buffers + 1) * BUFSIZE; /* Also got tmpbuf. */
+   return (al->num_buffers + 1) * OPENAL_BUFSIZE; /* Also got tmpbuf. */
 }
 
-static bool al_use_float(void *data)
-{
-   (void)data;
-   return false;
-}
+static bool al_use_float(void *data) { return false; }
 
 audio_driver_t audio_openal = {
    al_init,

@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <string/stdstring.h>
 
 using namespace peg;
 using namespace std;
@@ -28,8 +29,8 @@ AstBase<Annotation> AstBase<Annotation>::empty = AstBase<Annotation>("", 0, 0, "
 //bool use_typedefs = false;
 bool use_typedefs = true;
 
-//const char* prefix_seperator = "_";
-const char* prefix_seperator = "";
+//const char* prefix_separator = "_";
+const char* prefix_separator = "";
 
 vector<string> ignored_fn_prefixes_list =
 {
@@ -172,7 +173,7 @@ vector<string> derived_types_list =
    "IDXGIFactory1",
    "IDXGIAdapter1",
    "IDXGISurface1",
-   "IDXGISwapChain3",
+   "IDXGISwapChain4",
    "IDXGIOutput",
    "IDXGIDevice",
 };
@@ -198,7 +199,7 @@ string insert_name(const string& fname, const string& name)
       {
          if(name.length() == 2 && name[1] == 'S')
          {
-             if(!strncmp(fname.c_str() + action.length(), "Shader", strlen("Shader")))
+             if(!strncmp(fname.c_str() + action.length(), "Shader", STRLEN_CONST("Shader")))
                return action + name[0] + (fname.c_str() + action.length());
             else
                return action + name[0] + "Shader" + (fname.c_str() + action.length());
@@ -451,7 +452,7 @@ public:
 
       }
 
-      name = prefix + prefix_seperator;
+      name = prefix + prefix_separator;
 
       if(overloaded && !this_.base)
       {
@@ -588,7 +589,8 @@ public:
             char* str = line;
             while (*str && ::isspace(*str))
                str++;
-            if (*str && !strncmp(str, "typedef struct ", strlen("typedef struct ")))
+            if (*str && !strncmp(str, "typedef struct ",
+                     STRLEN_CONST("typedef struct ")))
             {
                if(*str && strstr(str, "Vtbl"))
                {
@@ -674,7 +676,7 @@ public:
             break;
          else
          {
-//           cout << "Unexcpected node " << node->name << endl;
+//           cout << "Unexpected node " << node->name << endl;
          }
       }
 

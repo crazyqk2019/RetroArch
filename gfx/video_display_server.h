@@ -39,6 +39,9 @@ typedef struct video_display_config
    unsigned refreshrate;
    unsigned idx;
    bool current;
+   bool interlaced;
+   bool dblscan;
+   float refreshrate_float;
 } video_display_config_t;
 
 typedef struct video_display_server
@@ -53,8 +56,8 @@ typedef struct video_display_server
    void *(*get_resolution_list)(void *data,
          unsigned *size);
    const char *(*get_output_options)(void *data);
-   void (*set_screen_orientation)(enum rotation rotation);
-   enum rotation (*get_screen_orientation)(void);
+   void (*set_screen_orientation)(void *data, enum rotation rotation);
+   enum rotation (*get_screen_orientation)(void *data);
    uint32_t (*get_flags)(void *data);
    const char *ident;
 } video_display_server_t;
@@ -87,11 +90,21 @@ bool video_display_server_can_set_screen_orientation(void);
 
 bool video_display_server_has_resolution_list(void);
 
+void video_switch_refresh_rate_maybe(float *refresh_rate, bool *video_switch_refresh_rate);
+
+bool video_display_server_set_refresh_rate(float hz);
+
+bool video_display_server_has_refresh_rate(float hz);
+
+void video_display_server_restore_refresh_rate(void);
+
 enum rotation video_display_server_get_screen_orientation(void);
 
 extern const video_display_server_t dispserv_win32;
 extern const video_display_server_t dispserv_x11;
+extern const video_display_server_t dispserv_kms;
 extern const video_display_server_t dispserv_android;
+extern const video_display_server_t dispserv_apple;
 
 RETRO_END_DECLS
 

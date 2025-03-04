@@ -24,18 +24,17 @@
 #include "../../wiiu/wiiu_dbg.h"
 #include "../../wiiu/system/memory.h"
 
-#include "../../retroarch.h"
+#include "../audio_driver.h"
 
 typedef struct
 {
    AXMVoice* mvoice;
    uint16_t* buffer_l;
    uint16_t* buffer_r;
-   bool nonblock;
-
+   OSSpinLock spinlock;
    uint32_t pos;
    uint32_t written;
-   OSSpinLock spinlock;
+   bool nonblock;
 } ax_audio_t;
 
 /* 3072 samples main buffer, 64ms total */
@@ -195,23 +194,23 @@ static bool ax_audio_start(void* data, bool is_shutdown)
    return true;
 }
 
-static ssize_t ax_audio_write(void* data, const void* buf, size_t size)
+static ssize_t ax_audio_write(void* data, const void* buf, size_t len)
 {
    uint32_t i;
    size_t count_avail  = 0;
    ax_audio_t* ax      = (ax_audio_t*)data;
    const uint16_t* src = buf;
-   size_t count        = size >> 2;
+   size_t count        = len >> 2;
 
-   if (!size || (size & 0x3))
+   if (!len || (len & 0x3))
       return 0;
 
    if (count > AX_AUDIO_MAX_FREE)
       count            = AX_AUDIO_MAX_FREE;
 
    count_avail         = (
-         (ax->written > AX_AUDIO_MAX_FREE) 
-         ? 0 
+         (ax->written > AX_AUDIO_MAX_FREE)
+         ? 0
          : (AX_AUDIO_MAX_FREE - ax->written));
 
    if (ax->nonblock)

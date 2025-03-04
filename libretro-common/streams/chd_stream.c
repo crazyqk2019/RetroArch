@@ -38,16 +38,8 @@
 struct chdstream
 {
    chd_file *chd;
-   /* Should we swap bytes? */
-   bool swab;
-   /* Size of frame taken from each hunk */
-   uint32_t frame_size;
-   /* Offset of data within frame */
-   uint32_t frame_offset;
-   /* Number of frames per hunk */
-   uint32_t frames_per_hunk;
-   /* First frame of track in chd */
-   uint32_t track_frame;
+   /* Loaded hunk */
+   uint8_t *hunkmem;
    /* Byte offset where track data starts (after pregap) */
    size_t track_start;
    /* Byte offset where track data ends */
@@ -56,16 +48,20 @@ struct chdstream
    size_t offset;
    /* Loaded hunk number */
    int32_t hunknum;
-   /* Loaded hunk */
-   uint8_t *hunkmem;
+   /* Size of frame taken from each hunk */
+   uint32_t frame_size;
+   /* Offset of data within frame */
+   uint32_t frame_offset;
+   /* Number of frames per hunk */
+   uint32_t frames_per_hunk;
+   /* First frame of track in chd */
+   uint32_t track_frame;
+   /* Should we swap bytes? */
+   bool swab;
 };
 
 typedef struct metadata
 {
-   char type[64];
-   char subtype[32];
-   char pgtype[32];
-   char pgsub[32];
    uint32_t frame_offset;
    uint32_t frames;
    uint32_t pad;
@@ -73,6 +69,10 @@ typedef struct metadata
    uint32_t pregap;
    uint32_t postgap;
    uint32_t track;
+   char type[64];
+   char subtype[32];
+   char pgtype[32];
+   char pgsub[32];
 } metadata_t;
 
 static uint32_t padding_frames(uint32_t frames)
@@ -86,6 +86,8 @@ chdstream_get_meta(chd_file *chd, int idx, metadata_t *md)
    char meta[256];
    uint32_t meta_size = 0;
    chd_error err;
+
+   meta[0] = '\0';
 
    memset(md, 0, sizeof(*md));
 
@@ -140,7 +142,7 @@ chdstream_find_track_number(chd_file *fd, int32_t track, metadata_t *meta)
       if (!chdstream_get_meta(fd, i, meta))
          return false;
 
-      if (track == meta->track)
+      if (track == (int)meta->track)
       {
          meta->frame_offset = frame_offset;
          return true;
@@ -163,10 +165,7 @@ chdstream_find_special_track(chd_file *fd, int32_t track, metadata_t *meta)
       if (!chdstream_find_track_number(fd, i, &iter))
       {
          if (track == CHDSTREAM_TRACK_LAST && i > 1)
-         {
-            *meta = iter;
-            return true;
-         }
+            return chdstream_find_track_number(fd, i - 1, meta);
 
          if (track == CHDSTREAM_TRACK_PRIMARY && largest_track != 0)
             return chdstream_find_track_number(fd, largest_track, meta);
@@ -295,7 +294,7 @@ chdstream_load_hunk(chdstream_t *stream, uint32_t hunknum)
 {
    uint16_t *array;
 
-   if (hunknum == stream->hunknum)
+   if ((int)hunknum == stream->hunknum)
       return true;
 
    if (chd_read(stream->chd, hunknum, stream->hunkmem) != CHDERR_NONE)
@@ -417,7 +416,7 @@ int64_t chdstream_seek(chdstream_t *stream, int64_t offset, int whence)
    if (new_offset < 0)
       return -1;
 
-   if (new_offset > stream->track_end)
+   if ((size_t)new_offset > stream->track_end)
       new_offset = stream->track_end;
 
    stream->offset = new_offset;
@@ -449,4 +448,23 @@ uint32_t chdstream_get_track_start(chdstream_t *stream)
 uint32_t chdstream_get_frame_size(chdstream_t *stream)
 {
    return stream->frame_size;
+}
+
+uint32_t chdstream_get_first_track_sector(chdstream_t* stream)
+{
+   uint32_t i;
+   metadata_t meta;
+   uint32_t frame_offset = 0;
+   uint32_t sector_offset = 0;
+
+   for (i = 0; chdstream_get_meta(stream->chd, i, &meta); ++i)
+   {
+      if (stream->track_frame == frame_offset)
+         return sector_offset;
+
+      sector_offset += meta.frames;
+      frame_offset += meta.frames + meta.extra;
+   }
+
+   return 0;
 }

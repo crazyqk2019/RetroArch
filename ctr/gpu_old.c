@@ -219,19 +219,19 @@ void GPU_SetAttributeBuffers(
 	param[0x1] = attributeFormats & 0xFFFFFFFF;
 	param[0x2] = ((totalAttributes-1) << 28) | ((attributeMask & 0xFFF) << 16) | ((attributeFormats >> 32) & 0xFFFF);
 
-	for(i = 0; i < totalAttributes; i++)
+	for (i = 0; i < totalAttributes; i++)
 	{
 		u8 v               = attributeFormats & 0xF;
 		sizeTable[i]       = GPU_FORMATSIZE[v & 3]*((v>>2)+1);
 		attributeFormats >>= 4;
 	}
 
-	for(i=0;i<numBuffers;i++)
+	for (i = 0; i < numBuffers; i++)
 	{
 		u16 stride       = 0;
 		param[3*(i+1)+0] = bufferOffsets[i];
 		param[3*(i+1)+1] = bufferPermutations[i] & 0xFFFFFFFF;
-		for(j = 0; j < bufferNumAttributes[i]; j++)
+		for (j = 0; j < bufferNumAttributes[i]; j++)
          stride += sizeTable[(bufferPermutations[i]>>(4*j)) & 0xF];
 
 		param[3*(i+1)+2] = (bufferNumAttributes[i] << 28) | ((stride & 0xFFF)<< 16) | ((bufferPermutations[i] >> 32) & 0xFFFF);
@@ -264,17 +264,17 @@ const u8 GPU_TEVID[]={0xC0,0xC8,0xD0,0xD8,0xF0,0xF8};
 
 void GPU_SetTexEnv(u8 id, u16 rgbSources, u16 alphaSources, u16 rgbOperands, u16 alphaOperands, GPU_COMBINEFUNC rgbCombine, GPU_COMBINEFUNC alphaCombine, u32 constantColor)
 {
-	u32 param[0x5];
-	if(id > 6)
+   u32 param[0x5];
+   if (id > 6)
       return;
 
-	param[0x0] = (alphaSources  << 16) | (rgbSources);
-	param[0x1] = (alphaOperands << 12) | (rgbOperands);
-	param[0x2] = (alphaCombine  << 16) | (rgbCombine);
-	param[0x3] = constantColor;
-	param[0x4] = 0x00000000; /* ? */
+   param[0x0] = (alphaSources  << 16) | (rgbSources);
+   param[0x1] = (alphaOperands << 12) | (rgbOperands);
+   param[0x2] = (alphaCombine  << 16) | (rgbCombine);
+   param[0x3] = constantColor;
+   param[0x4] = 0x00000000; /* ? */
 
-	GPUCMD_AddIncrementalWrites(GPUREG_0000|GPU_TEVID[id], param, 0x00000005);
+   GPUCMD_AddIncrementalWrites(GPUREG_0000|GPU_TEVID[id], param, 0x00000005);
 }
 
 void GPU_DrawArray(GPU_Primitive_t primitive, u32 first, u32 count)
