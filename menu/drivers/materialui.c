@@ -2405,7 +2405,6 @@ static void materialui_update_fullscreen_thumbnail_label(
 {
    struct menu_state *menu_st  = menu_state_get_ptr();
    size_t selection            = menu_st->selection_ptr;
-   const char *thumbnail_label = NULL;
    menu_entry_t selected_entry;
 
    /* Cache selected entry label
@@ -2425,7 +2424,7 @@ static void materialui_update_fullscreen_thumbnail_label(
          NULL);
 }
 
-static void materialui_update_savestate_thumbnail_path(void *data, unsigned i)
+static void materialui_update_savestate_thumbnail_path(void *data, size_t i)
 {
    settings_t *settings     = config_get_ptr();
    materialui_handle_t *mui = (materialui_handle_t*)data;
@@ -3348,7 +3347,7 @@ static float materialui_get_scroll(materialui_handle_t *mui,
 
 /* Returns true if specified entry is currently
  * displayed on screen */
-static bool INLINE materialui_entry_onscreen(
+static INLINE bool materialui_entry_onscreen(
       materialui_handle_t *mui, size_t idx)
 {
    return   (idx >= mui->first_onscreen_entry)
@@ -7158,7 +7157,6 @@ static void materialui_show_fullscreen_thumbnails(
       materialui_handle_t *mui, struct menu_state *menu_st,
       size_t selection)
 {
-   menu_entry_t selected_entry;
    gfx_animation_ctx_entry_t animation_entry;
    gfx_thumbnail_t *primary_thumbnail   = NULL;
    gfx_thumbnail_t *secondary_thumbnail = NULL;
@@ -11713,9 +11711,9 @@ static void materialui_list_insert(void *userdata,
                node->icon_texture_index = MUI_TEXTURE_HALT_REPLAY;
                node->icon_type          = MUI_ICON_TYPE_INTERNAL;
             }
-            else if (
-                     string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DISK_TRAY_EJECT))
+            else if (string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DISK_TRAY_EJECT))
                   || string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_DISK_TRAY_INSERT))
+                  || string_is_equal(label, msg_hash_to_str(MENU_ENUM_LABEL_CORE_LIST_UNLOAD))
                   )
             {
                node->icon_texture_index = MUI_TEXTURE_EJECT;

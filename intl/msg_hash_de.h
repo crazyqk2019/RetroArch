@@ -68,6 +68,14 @@ MSG_HASH(
    "Den zu verwendenden Core wählen."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Core entladen"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "Den geladenen Core freigeben."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Nach einer Libretro-Core-Implementierung suchen. In welchem Verzeichnis der Browser beginnt, hängt von dem Core-Verzeichnispfad ab.\nIst als Core-Verzeichnis ein Ordner ausgewählt, wird dieser als Startverzeichnis genutzt. Ist das Core-Verzeichnis ein vollständiger Pfad, wird in dem Ordner begonnen, in dem sich die Datei befindet."
    )
@@ -2571,6 +2579,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_Y,
    "Ansichtsfenster-Ankerpunkt-Ausrichtung Y"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_X,
+   "Horizontale Position des Inhalts, wenn das Ansichtsfenster breiter als die Inhaltsbreite ist. 0.0 ist ganz links, 0.5 ist Mitte, 1.0 ist ganz rechts."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_Y,
+   "Vertikale Position des Inhalts, wenn das Ansichtsfenster höher als die Inhaltshöhe ist. 0.0 ist oben, 0.5 ist Mitte, 1.0 ist unten."
+   )
 #if defined(RARCH_MOBILE)
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
@@ -2587,6 +2603,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
    "Ansichtsfenster-Ankerpunkt-Ausrichtung Y (Hochformat)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "Horizontale Position des Inhalts, wenn das Ansichtsfenster breiter als die Inhaltsbreite ist. 0.0 ist ganz links, 0.5 ist Mitte, 1.0 ist ganz rechts. (Hochformat)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "Vertikale Position des Inhalts, wenn das Ansichtsfenster höher als die Inhaltshöhe ist. 0.0 ist oben, 0.5 ist Mitte, 1.0 ist unten. (Hochformat)"
    )
 #endif
 MSG_HASH(
@@ -9144,11 +9168,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Einstellungen zurücksetzen"
+   "Core-Optionen zurücksetzen"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Alle Core-Einstellungen auf Standardwerte zurücksetzen."
+   "Setzt alle Optionen des aktuellen Cores auf deren Standardwerte."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,

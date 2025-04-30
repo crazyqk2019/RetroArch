@@ -72,6 +72,14 @@ MSG_HASH(
    "Вибрати ядро для використання."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Відвантажити Ядро"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "Відпустіть завантажене ядро."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Знайдіть основну реалізацію libretro. Де браузер запускається в залежності від вашого базового шляху каталогу. Якщо цього немає, то він запуститься в root.\nЯкщо Core Directory це каталог, меню буде використовувати це як верхню теку. Якщо Core Directory є повним шляхом, то він почнеться в папці[...]"
    )
@@ -2663,6 +2671,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_Y,
    "Зсув прив’язки вікна перегляду Y"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_X,
+   "Горизонтальне положення вмісту, якщо вікно перегляду ширше, ніж ширина контенту. 0.0 знаходиться далеко, 0.5 - центр, 1.0 знаходиться набагато вірно."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_Y,
+   "Вертикальне положення вмісту, коли вікно перегляду перевищує висоту. 0.0 знаходиться зверху, 0.5 - центр, 1.0 знизу."
+   )
 #if defined(RARCH_MOBILE)
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
@@ -2679,6 +2695,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
    "Перегляд упередженості якоря Y (портретна орієнтація)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "Горизонтальне положення вмісту, коли вікно перегляду ширше, ніж ширина контенту. 0,0 далеко зліва, 0,5 - центр, 1.0 - набагато правильніше. (портретний орієнтація)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "Вертикальне положення вмісту, коли вікно перегляду є вищим, ніж висота контенту. 0,0 зверху, 0.5 знаходиться в центрі, 1.0 знаходиться внизу. (портретна орієнтація)"
    )
 #endif
 MSG_HASH(
@@ -9296,11 +9320,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Скинути параметри"
+   "Скинути параметри ядра"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Встановити всі параметри ядра для значень за замовчуванням."
+   "Встановити всі параметри поточного ядра для значень за замовчуванням."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,

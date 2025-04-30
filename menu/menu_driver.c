@@ -49,6 +49,7 @@
 #include "../driver.h"
 #include "../list_special.h"
 #include "../paths.h"
+#include "../tasks/task_content.h"
 #include "../tasks/task_powerstate.h"
 #include "../tasks/tasks_internal.h"
 #include "../verbosity.h"
@@ -3498,25 +3499,25 @@ static int menu_dialog_iterate(
                   s2, sizeof(s2));
 
             snprintf(s, len,
-                  "%s"
+                  "%.250s"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n"
+                  "%-20.20s\n"
                   "[%s]: "
-                  "%-20s\n",
+                  "%-20.20s\n",
 
                   s2,
 
@@ -5166,7 +5167,7 @@ unsigned menu_event(
    static unsigned ok_old                          = 0;
    unsigned ret                                    = MENU_ACTION_NOOP;
    bool set_scroll                                 = false;
-   size_t new_scroll_accel                         = 0;
+   unsigned new_scroll_accel                       = 0;
    struct menu_state *menu_st                      = &menu_driver_state;
    menu_input_t *menu_input                        = &menu_st->input_state;
    input_driver_state_t *input_st                  = input_state_get_ptr();
@@ -5379,7 +5380,7 @@ unsigned menu_event(
          p_trigger_input->data[0]  |= p_input->data[0] & input_repeat;
          set_scroll                 = true;
          hold_reset                 = true;
-         new_scroll_accel           = MIN(menu_st->scroll.acceleration + 1, (menu_scroll_fast) ? 25 : 5);
+         new_scroll_accel           = MIN(menu_st->scroll.acceleration + 1, menu_scroll_fast ? 25U : 5U);
       }
    }
    else
@@ -5391,7 +5392,7 @@ unsigned menu_event(
    }
 
    if (set_scroll)
-      menu_st->scroll.acceleration  = (unsigned)(new_scroll_accel);
+      menu_st->scroll.acceleration  = new_scroll_accel;
 
    if (display_kb)
    {
@@ -6417,6 +6418,7 @@ void retroarch_menu_running(void)
    struct menu_state *menu_st      = &menu_driver_state;
    menu_handle_t *menu             = menu_st->driver_data;
    menu_input_t *menu_input        = &menu_st->input_state;
+
    if (menu)
    {
       if (menu->driver_ctx && menu->driver_ctx->toggle)
@@ -6485,6 +6487,11 @@ void retroarch_menu_running_finished(bool quit)
    struct menu_state *menu_st      = &menu_driver_state;
    menu_handle_t *menu             = menu_st->driver_data;
    menu_input_t *menu_input        = &menu_st->input_state;
+
+   /* Only allow toggling menu off with a proper core */
+   if (runloop_st->current_core_type == CORE_TYPE_DUMMY && !quit)
+      return;
+
    if (menu)
    {
       if (menu->driver_ctx && menu->driver_ctx->toggle)
@@ -7838,6 +7845,25 @@ int generic_menu_entry_action(
       menu_st->flags &= ~(MENU_ST_FLAG_PENDING_CLOSE_CONTENT
                         | MENU_ST_FLAG_PENDING_ENV_SHUTDOWN_FLUSH);
       menu_st->pending_env_shutdown_content_path[0] = '\0';
+   }
+   else if (menu_st->flags & MENU_ST_FLAG_PENDING_RELOAD_CORE)
+   {
+      menu_st->flags &= ~MENU_ST_FLAG_PENDING_RELOAD_CORE;
+
+      if (!string_is_empty(path_get(RARCH_PATH_CORE_LAST)))
+      {
+         content_ctx_info_t content_info = {0};
+         if (task_push_load_new_core(
+                     path_get(RARCH_PATH_CORE_LAST),
+                     NULL,
+                     &content_info,
+                     CORE_TYPE_PLAIN,
+                     NULL, NULL))
+         {
+            menu_st->flags |=  MENU_ST_FLAG_ENTRIES_NEED_REFRESH
+                            |  MENU_ST_FLAG_PREVENT_POPULATE;
+         }
+      }
    }
 
    return ret;

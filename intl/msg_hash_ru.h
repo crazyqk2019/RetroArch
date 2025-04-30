@@ -72,6 +72,14 @@ MSG_HASH(
    "Выберите ядро для запуска."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Выгрузить ядро"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "Выгружает загруженное ядро."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Выбор ядра libretro. Браузер открывает путь, заданный для каталога 'Ядра'. Если он пуст, обзор начинается в корне.\nЕсли каталог ядер является директорией, она исп. как папка верхнего уровня. Если каталог ядер это абсолютный путь, то браузер открывает папку расположения файла."
    )
@@ -1458,11 +1466,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_SETTINGS,
-   "AI-сервис"
+   "ИИ-сервис"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AI_SERVICE_SETTINGS,
-   "Настройки AI-сервиса (перевод, синтез речи и т.д.)."
+   "Настройки ИИ-сервиса (перевод, синтез речи и др.)."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCESSIBILITY_SETTINGS,
@@ -4193,11 +4201,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_AI_SERVICE,
-   "AI-сервис"
+   "ИИ-сервис"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_AI_SERVICE,
-   "Захватывает изображение текущего контента для перевода и/или озвучивает любой текст на экране. 'AI-сервис' должен быть включен и настроен."
+   "Захватывает изображение запущенного контента для перевода и/или озвучивает текст на экране. ИИ-сервис должен быть включен и настроен."
    )
 
 MSG_HASH(
@@ -6996,11 +7004,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SETTINGS_SHOW_AI_SERVICE,
-   "Показывать 'AI-сервис'"
+   "Показывать 'ИИ-сервис'"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SETTINGS_SHOW_AI_SERVICE,
-   "Показывать настройки 'AI-сервиса'."
+   "Показывать настройки 'ИИ-сервиса'."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SETTINGS_SHOW_ACCESSIBILITY,
@@ -7175,7 +7183,7 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_MODE,
-   "Режим вывода для AI-сервиса"
+   "Режим вывода ИИ-сервиса"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AI_SERVICE_MODE,
@@ -7183,7 +7191,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_URL,
-   "Сетевой адрес AI-сервиса"
+   "Сетевой адрес ИИ-сервиса"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AI_SERVICE_URL,
@@ -7191,11 +7199,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_ENABLE,
-   "Вкл. AI-сервис"
+   "Вкл. ИИ-сервис"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AI_SERVICE_ENABLE,
-   "Запуск AI-сервиса при нажатии горячей клавиши."
+   "Включает запуск ИИ-сервиса при нажатии горячей клавиши."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AI_SERVICE_PAUSE,
@@ -7453,7 +7461,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CHEEVOS_VISIBILITY_LBOARD_SUBMIT,
-   "Показывать значение, отправленное при успешной попытке войти в таблицу лидеров."
+   "Показывает значение, отправляемое при успешном занесении в таблицу лидеров."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_VISIBILITY_LBOARD_CANCEL,
@@ -8116,11 +8124,11 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PRIVACY_SETTINGS,
-   "Конфиденциальность"
+   "Приватность"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PRIVACY_SETTINGS,
-   "Настройки конфиденциальности."
+   "Настройки приватности."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ACCOUNTS_LIST,
@@ -9376,11 +9384,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Сбросить опции"
+   "Сбросить опции ядра"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Возврат опций ядра к стандартным значениям."
+   "Сброс всех опций текущего ядра к значениям по умолчанию."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,
@@ -10241,11 +10249,11 @@ MSG_HASH(
 )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ACHIEVEMENT_SERVER_UNREACHABLE,
-   "Одно или несколько открытых достижений не были обработаны сервером. Попытки будут продолжаться до выхода из приложения."
+   "Одно или более открытых достижений не были переданы на сервер. Попытки будут продолжены до выхода из приложения."
 )
 MSG_HASH(
    MENU_ENUM_LABEL_CHEEVOS_SERVER_DISCONNECTED,
-   "Нет связи с сервером RetroAchievements. Попытки будут продолжаться до выхода из приложения."
+   "Сервер RetroAchievements недоступен. Попытки будут продолжены до успешной отправки или до закрытия приложения."
 )
 MSG_HASH(
    MENU_ENUM_LABEL_CHEEVOS_SERVER_RECONNECTED,
@@ -13375,7 +13383,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_NETPLAY_NOT_RETROARCH,
-   "Попытка соединения не удалась, т.к. у пользователя не запущен RetroArch или используется устаревшая версия RetroArch."
+   "Попытка соединения не удалась, т.к. на стороне peer'а не запущен RetroArch или используется устаревшая версия."
    )
 MSG_HASH(
    MSG_NETPLAY_OUT_OF_DATE,

@@ -68,6 +68,14 @@ MSG_HASH(
    "A használni kívánt mag."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Mag bezárása"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "A betöltött mag eltávolítása a memóriából."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Libretro magok tallózása. A böngésző a magok könyvtárából indul, ha az üres, akkor a gyökérkönyvtárból. Ha a magok könyvtára egy könyvtár, akkor a menüben ennél feljebb nem lehet lépni. Ha a magok könyvtára egy fájlra mutat, a menü az ezt tartalmazó könyvtárban indul."
    )
@@ -2635,6 +2643,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_Y,
    "Nézőablak függőleges eltolása"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_X,
+   "A tartalom vízszintes helyzete, amikor a nézőablak szélesebb annál. 0.0 a balra igazítás, 0.5 a középre helyezés, 1.0 a jobbra igazítás."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_Y,
+   "A tartalom függőleges helyzete, amikor a nézőablak magasabb annál. 0.0 a fentre igazítás, 0.5 a középre helyezés, 1.0 a lentre igazítás."
+   )
 #if defined(RARCH_MOBILE)
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
@@ -2651,6 +2667,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
    "Nézőablak függőleges eltolása (álló nézetben)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "A tartalom vízszintes helyzete, amikor a nézőablak szélesebb annál. 0.0 a balra igazítás, 0.5 a középre helyezés, 1.0 a jobbra igazítás. (Álló nézetben)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "A tartalom függőleges helyzete, amikor a nézőablak magasabb annál. 0.0 a fentre igazítás, 0.5 a középre helyezés, 1.0 a lentre igazítás. (Álló nézetben)"
    )
 #endif
 MSG_HASH(
@@ -3471,8 +3495,28 @@ MSG_HASH(
    "Turbó mód"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_ENABLE,
+   "Kikapcsolva minden turbó funkció leáll."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_PERIOD,
    "Turbó periódus"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_PERIOD,
+   "Turbó gomb lenyomásakor ez lesz az ismétlés gyakorisága (képkockában)."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_DUTY_CYCLE,
+   "Turbó kitöltési tényező"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_DUTY_CYCLE,
+   "A turbó periódusból ennyi képkockáig lesznek lenyomva a gombok. Ha ugyanannyi vagy nagyobb, mint a Turbó periódus, a gomb sosem lesz felengedve."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TURBO_DUTY_CYCLE_HALF,
+   "Fél periódus"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_MODE,
@@ -3499,8 +3543,52 @@ MSG_HASH(
    "Egygombos (nyomva tartás)"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_CLASSIC,
+   "Klasszikus mód, kétgombos működés. Egy gombot nyomva tartva és a Turbo gombot megnyomva aktiválódik a megnyomás-elengedés szekvencia.\nA Turbo gomb a Beállítások / Bemenet / X. csatlakozó beállításai alatt adható meg."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_CLASSIC_TOGGLE,
+   "Klasszikus váltókapcsoló mód, kétgombos működés. Egy gombot nyomva tartva és a Turbo gombot megnyomva aktiválódik a megnyomás-elengedés szekvencia. Kikapcsoláshoz nyomva kell tartani a gombot és ismét megnyomni a Turbo gombot.\nA Turbo gomb a Beállítások / Bemenet / X. csatlakozó beállításai alatt adható meg."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_SINGLEBUTTON,
+   "Átkapcsoló mód. A Turbo gombot egyszer megnyomva a kiválasztott alapértelmezett gombra aktiválódik a megnyomás-elengedés szekvencia, még egyszer megnyomva kikapcsol.\nA Turbo gomb a Beállítások / Bemenet / X. csatlakozó beállításai alatt adható meg."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_SINGLEBUTTON_HOLD,
+   "Nyomva tartó mód. A kiválasztott alapértelmezett gomb megnyomás-elengedés szekvenciája addig aktív, amíg a Turbo gomb le van nyomva.\nA Turbo gomb a Beállítások / Bemenet / X. csatlakozó beállításai alatt adható meg.\nA házi számítógépek korszakának autofire funkciójának emulálásához a Turbo és az alapértelmezett gomb legyen ugyanaz, mint a joystick tűzgombja."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BIND,
+   "Turbó párosítás"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_BIND,
+   "A turbó funkciót aktiváló RetroPad párosítás. Üres érték esetén a csatlakozónál megadott párosítás lesz érvényes."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BUTTON,
+   "Turbó gomb"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_BUTTON,
+   "A turbó funkció által aktivált gomb egygombos módban."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_ALLOW_DPAD,
+   "Turbó funkció engedélyezése az irányválasztóra"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_ALLOW_DPAD,
+   "Bekapcsolva a digitális iránybemenetek (d-pad, hatswitch) is használhatóak turbó módban."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_FIRE_SETTINGS,
    "Turbó mód"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_FIRE_SETTINGS,
+   "A turbó tüzelés beállításai."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_HAPTIC_FEEDBACK_SETTINGS,
@@ -3986,6 +4074,14 @@ MSG_HASH(
    "Eggyel csökkenti a visszajátszás rekeszének sorszámát."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_TURBO_FIRE_TOGGLE,
+   "Turbó tűz (átkapcsolás)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_TURBO_FIRE_TOGGLE,
+   "A turbó tűz be- és kikapcsolása."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_GRAB_MOUSE_TOGGLE,
    "Egér megragadása (váltógomb)"
    )
@@ -4371,6 +4467,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_RIGHT,
    "Pisztoly irányválasztó jobb"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO,
+   "Turbó"
    )
 
 /* Settings > Latency */
@@ -9240,11 +9340,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Beállítások visszaállítása"
+   "Magbeállítások visszaállítása"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Az összes magbeállítás visszaállítása alapértékre."
+   "A jelenlegi mag összes beállításának visszaállítása alapértékre."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,
@@ -15532,6 +15632,14 @@ MSG_HASH(
    "leállítva."
    )
 #ifdef HAVE_GAME_AI
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_GAME_AI_MENU_OPTION,
+   "MI játékos felülírás"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_GAME_AI_MENU_OPTION,
+   "MI játékos felülírás alcím"
+   )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_GAME_AI_OPTIONS,

@@ -72,6 +72,14 @@ MSG_HASH(
    "Выбраць ядро на выкарыстанне."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Выгрузіць ядро"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "Выгружае загружанае ядро."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Выбар ядра libretro. Пры праглядзе браўзэр адчыняе шлях, паказаны для каталога захоўвання ядраў. Калі шлях не зададзены, прагляд пачынаецца з каранёвага каталога.\nКалі каталог захоўвання ядраў з'яўляецца тэчкай, меню будзе выкарыстоўваць яе ў якасці тэчкі верхняга ўзроўня. Ка[...]"
    )
@@ -1446,7 +1454,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONSCREEN_DISPLAY_SETTINGS,
-   "Змяніць накладку на дысплэй і клавіятуру, а таксама налады апавяшчэнняў на экране."
+   "Змяніць накладку дысплэя і клавіятуры ды налады экранных апавяшчэнняў."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USER_INTERFACE_SETTINGS,
@@ -1969,6 +1977,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION,
    "Устаўка чорнага кадра"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_BLACK_FRAME_INSERTION,
+   "УВАГА: хуткае мігаценне на некаторых дысплэях можа прыводзіць да астаткавай выявы. Выкарыстайце з асцярожнасцю // Устаўляе паміж кадрамі кадр(ы) чорнага колеру. Можа істотна паменшыць размыццё, эмулюючы разгортку ЭПТ, але зніжае яркасць."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_BLACK_FRAME_INSERTION,
@@ -3167,7 +3179,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_RATE_CONTROL_DELTA,
-   "Ўстаноўка на 0 адключае кіраванне частатой. Іншыя значэнні ўплываюць на адхіленне частаты гуку.\nВызначае межы змены зыходнай частаты пры дынамічнай падладцы. Разлічваецца наступным чынам:\\зыходная частата * (1.0 +/- (адхіленне кіравання частатой))"
+   "Ўстаноўка на 0 адключае кіраванне частатой. Іншыя значэнні ўплываюць на адхіленне частаты гуку.\nВызначае межы змены зыходнай частаты пры дынамічнай падладцы. Разлічваецца наступным чынам:\nзыходная частата * (1.0 +/- (адхіленне кіравання частатой))"
    )
 
 /* Settings > Audio > MIDI */
@@ -3491,6 +3503,14 @@ MSG_HASH(
    "Перыяд турба"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_DUTY_CYCLE,
+   "Цыкл дзеяння турба"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TURBO_DUTY_CYCLE_HALF,
+   "Палова перыяду"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_MODE,
    "Рэжым турба"
    )
@@ -3513,6 +3533,22 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TURBO_MODE_SINGLEBUTTON_HOLD,
    "Адна кнопка (Утрымліванне)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BIND,
+   "Актыватар турба"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BUTTON,
+   "Турба-кнопка"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_ALLOW_DPAD,
+   "Дазвол турба на кірункі D-Pad"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_ALLOW_DPAD,
+   "Калі ўключана, уводы лічбавых кірункаў (таксама вядомыя як d-pad ці 'hatswitch') могуць быць турба."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_FIRE_SETTINGS,
@@ -4031,7 +4067,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_UI_COMPANION_TOGGLE,
-   "Выклікае дапаможны інтэрфейс WIMP (Windows, Icons, Menus, Pointer)."
+   "Выклікае дапаможны карыстальніцкі інтэрфейс WIMP (Windows, Icons, Menus, Pointer)."
    )
 
 MSG_HASH(
@@ -4097,7 +4133,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_AI_SERVICE,
-   "Захапляе выяву бягучага кантэнту для перакладу і/або агучвае любы тэкст на экране. 'AI-сэрвіс' павінен быць уключаны і наладжаны."
+   "Захапляе выяву бягучага змесціва на пераклад ды/або агучвае любы тэкст на экране. 'ШІ-сэрвіс' павінен быць уключаны і наладжаны."
    )
 
 MSG_HASH(
@@ -5676,7 +5712,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FONT_ENABLE,
-   "Вывад паведамленняў на экран."
+   "Паказваць экранныя паведамленні."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_WIDGETS_ENABLE,
@@ -5779,12 +5815,16 @@ MSG_HASH(
    "Апавяшчэнне пра злучэнне прылады ўводу (аўтаканфігурацыя)"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_AUTOCONFIG_FAILS,
+   "Апавяшчэнні пра памылкі прылад увода (аўтаканфігурацыя)"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_CHEATS_APPLIED,
    "Апавяшчэнні пра чыт-коды"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_CHEATS_APPLIED,
-   "Адлюстроўваць паведамленне пры загрузцы чыт-кодаў."
+   "Адлюстроўваць экраннае паведамленне пры загрузцы чыт-кодаў."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_PATCH_APPLIED,
@@ -5792,11 +5832,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_PATCH_APPLIED,
-   "Адлюстроўваць паведамленне, калі да ROM ужыты софт-патч."
+   "Адлюстроўваць экраннае паведамленне, калі да ROM ужыты софт-патч."
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_AUTOCONFIG,
-   "Адлюстроўваць паведамленне пры злучэнне/адлучэнне прылад уводу."
+   "Адлюстроўваць экраннае паведамленне пры злучэнне/адлучэнне прылад уводу."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_REMAP_LOAD,
@@ -5804,7 +5844,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_REMAP_LOAD,
-   "Адлюстроўваць паведамленне пры загрузцы файлаў раскладак кіравання."
+   "Адлюстроўваць экраннае паведамленне пры загрузцы файлаў раскладак кіравання."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_CONFIG_OVERRIDE_LOAD,
@@ -5812,7 +5852,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_CONFIG_OVERRIDE_LOAD,
-   "Паказваць паведамленне пры загрузцы перавызначэння канфігурацыі."
+   "Паказваць экраннае паведамленне пры загрузцы перавызначэння канфігурацыі."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_SET_INITIAL_DISK,
@@ -5820,7 +5860,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_SET_INITIAL_DISK,
-   "Адлюстроўваць паведамленне пры аўтаматычным запуску апошняга выкарыстанага дыска з дапамогай M3U-плэйліста для мультыдыскавага кантэнту."
+   "Адлюстроўваць экраннае паведамленне пры аўтаматычным запуску апошняга выкарыстанага дыска з дапамогай M3U-плэйліста для шматдыскавага змесціва."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_DISK_CONTROL,
@@ -5828,7 +5868,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_DISK_CONTROL,
-   "Адлюстроўваць паведамленне пры ўстаўцы і выманні дыска."
+   "Адлюстроўваць экраннае паведамленне пры ўстаўцы і выманні дыска."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_SAVE_STATE,
@@ -5836,7 +5876,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_SAVE_STATE,
-   "Адлюстроўваць на экране паведамленне пры захаванні ды загрузцы станаў."
+   "Адлюстроўваць экраннае паведамленне пры захаванні ды загрузцы станаў."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_FAST_FORWARD,
@@ -5852,7 +5892,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_SCREENSHOT,
-   "Адлюстроўваць паведамленне пры захаванні скрыншота."
+   "Адлюстроўваць экраннае паведамленне пры захаванні здымка экрана."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_SCREENSHOT_DURATION,
@@ -5884,7 +5924,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_SCREENSHOT_FLASH,
-   "Адлюстраванне на экране эфекту ўспышкі з зададзенай працягласцю пры стварэнні скрыншота."
+   "Адлюстраванне на экране эфекту ўспышкі з зададзенай працягласцю пры стварэнні здымка экрана."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_SCREENSHOT_FLASH_NORMAL,
@@ -5900,7 +5940,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NOTIFICATION_SHOW_REFRESH_RATE,
-   "Адлюстроўваць паведамленне пры змене частаты абнаўлення."
+   "Адлюстроўваць экраннае паведамленне пры змене частаты абнаўлення."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NOTIFICATION_SHOW_NETPLAY_EXTRA,
@@ -6209,15 +6249,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UI_COMPANION_ENABLE,
-   "Дадатковы інтэрфейс"
+   "Дапаможны інтэрфейс"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UI_COMPANION_START_ON_BOOT,
-   "Запуск дадатковага інтэрфейсу пры загрузцы"
+   "Запуск дапаможнага інтэрфейсу пры загрузцы"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_UI_COMPANION_START_ON_BOOT,
-   "Запускаць дадатковы драйвер карыстальніцкага інтэрфейсу пры загрузцы (калі даступна)."
+   "Запускаць драйвер дапаможнага карыстальніцкага інтэрфейсу пры загрузцы (калі даступна)."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DESKTOP_MENU_ENABLE,
@@ -6649,11 +6689,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_OVERLAYS,
-   "Паказваць 'Аверлэі'"
+   "Паказ 'Экранныя накладкі'"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_SHOW_OVERLAYS,
-   "Паказваць опцыю 'Аверлэі'."
+   "Паказваць опцыю 'Экранныя накладкі'."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_VIDEO_LAYOUT,
@@ -7210,7 +7250,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CHEEVOS_APPEARANCE_SETTINGS,
-   "Настройка размяшчэння і зрушэнняў для наэкранных апавяшчэнняў аб дасягненнях."
+   "Змяніць размяшчэнне і зрухі экранных апавяшчэнняў пра дасягненні."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CHEEVOS_APPEARANCE_ANCHOR,
@@ -9264,11 +9304,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Скінуць опцыі"
+   "Скід опцый ядра"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Задаць усім опцыям ядра прадвызначаныя значэнні."
+   "Скінуць усе значэнні опцый бягучага ядра да прадвызначаных."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,
@@ -15857,8 +15897,28 @@ MSG_HASH(
    )
 #ifdef HAVE_GAME_AI
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_GAME_AI_OPTIONS,
+   "Гульнявы ШІ"
+   )
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_GAME_AI_OVERRIDE_P1,
+   "Перавызначыць гульца 1"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_GAME_AI_OVERRIDE_P1,
+   "Перавызначыць гульца 1"
+   )
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_GAME_AI_OVERRIDE_P2,
+   "Перавызначыць гульца 2"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_GAME_AI_OVERRIDE_P2,
+   "Перавызначыць гульца 2"
+   )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GAME_AI_SHOW_DEBUG,
@@ -15869,4 +15929,8 @@ MSG_HASH(
    "Паказваць адладку"
    )
 
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_QUICK_MENU_SHOW_GAME_AI,
+   "Паказваць 'Гульнявы ШІ'"
+   )
 #endif

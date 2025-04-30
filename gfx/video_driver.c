@@ -1006,7 +1006,7 @@ video_pixel_scaler_t *video_driver_pixel_converter_init(
    if (!scaler_ctx_gen_filter(scalr_ctx))
       goto error;
 
-   if (!(scalr_out = calloc(sizeof(uint16_t), size * size)))
+   if (!(scalr_out = calloc(size * size, sizeof(uint16_t))))
       goto error;
 
    scalr->scaler_out                        = scalr_out;
@@ -3645,7 +3645,7 @@ void video_driver_frame(const void *data, unsigned width,
    static retro_time_t curr_time;
    static retro_time_t fps_time;
    static float last_fps, frame_time;
-   static uint16_t frame_time_accumulator;
+   static int32_t frame_time_accumulator;
    /* Mark the start of nonblock state for
     * ignoring initial previous frame time */
    static int8_t nonblock_active;
@@ -3729,7 +3729,7 @@ void video_driver_frame(const void *data, unsigned width,
             || (last_frame_duped && !!data))
       )
    {
-      uint16_t frame_time_accumulator_prev = frame_time_accumulator;
+      int32_t frame_time_accumulator_prev  = frame_time_accumulator;
       uint16_t frame_time_delta            = new_time - last_time;
       uint16_t frame_time_target           = video_info.frame_time_target;
 

@@ -418,7 +418,7 @@ static void task_cloud_sync_build_current_manifest(task_cloud_sync_state_t *sync
 
    file_list_sort_on_alt(sync_state->current_manifest);
    sync_state->phase = CLOUD_SYNC_PHASE_DIFF;
-   RARCH_LOG(CSPFX "created in-memory manifest of current disk state\n");
+   RARCH_LOG(CSPFX "created in-memory manifest of current disk state with %d files\n", sync_state->current_manifest->size);
 }
 
 /**
@@ -869,6 +869,49 @@ static void task_cloud_sync_delete_server_file(task_cloud_sync_state_t *sync_sta
    }
 }
 
+static void task_cloud_sync_maybe_ignore(task_cloud_sync_state_t *sync_state)
+{
+   struct string_list *dirlist = task_cloud_sync_directory_map();
+   size_t i;
+   bool found;
+
+   if (sync_state->local_manifest)
+   {
+      for (found = false; !found && sync_state->local_idx < sync_state->local_manifest->size; )
+      {
+         struct item_file *local_file  = &sync_state->local_manifest->list[sync_state->local_idx];
+         const char *key = CS_FILE_KEY(local_file);
+         for (i = 0; !found && i < dirlist->size; i++)
+            found = string_starts_with(key, dirlist->elems[i].data);
+         /* we have a record of doing a sync for this file but now no longer
+          * wish to sync it. keep the record? might as well, in case the option
+          * gets turned back on later. */
+         if (!found)
+         {
+            task_cloud_sync_add_to_updated_manifest(sync_state, key, CS_FILE_HASH(local_file), false);
+            sync_state->local_idx++;
+         }
+      }
+   }
+
+   if (sync_state->server_manifest)
+   {
+      for (found = false; !found && sync_state->server_idx < sync_state->server_manifest->size; )
+      {
+         struct item_file *server_file  = &sync_state->server_manifest->list[sync_state->server_idx];
+         const char *key = CS_FILE_KEY(server_file);
+         for (i = 0; !found && i < dirlist->size; i++)
+            found = string_starts_with(key, dirlist->elems[i].data);
+         /* must keep the server's manifest complete */
+         if (!found)
+         {
+            task_cloud_sync_add_to_updated_manifest(sync_state, key, CS_FILE_HASH(server_file), true);
+            sync_state->server_idx++;
+         }
+      }
+   }
+}
+
 static void task_cloud_sync_diff_next(task_cloud_sync_state_t *sync_state)
 {
    int server_local_key_cmp;
@@ -877,6 +920,12 @@ static void task_cloud_sync_diff_next(task_cloud_sync_state_t *sync_state)
    struct item_file *server_file  = NULL;
    struct item_file *local_file   = NULL;
    struct item_file *current_file = NULL;
+
+   /* Move past files that are deliberately not being sync'd. There would not be
+    * any in the current state, but there may be in the server or local state.
+    * If there are in the server state, make sure to leave them in the server's
+    * manifest. */
+   task_cloud_sync_maybe_ignore(sync_state);
 
    if (   sync_state->server_manifest
        && sync_state->server_idx < sync_state->server_manifest->size)
@@ -1150,7 +1199,7 @@ static void task_cloud_sync_task_handler(retro_task_t *task)
 
    slock_lock(tcs_running_lock);
    /* we can transfer more than one file at a time */
-   if (sync_state->waiting > ((sync_state->phase == CLOUD_SYNC_PHASE_DIFF) ? 4 : 0))
+   if (sync_state->waiting > ((sync_state->phase == CLOUD_SYNC_PHASE_DIFF) ? 4U : 0U))
    {
       task->when = cpu_features_get_time_usec() + 17 * 1000; /* 17ms */
       slock_unlock(tcs_running_lock);

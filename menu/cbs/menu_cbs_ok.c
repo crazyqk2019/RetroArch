@@ -707,10 +707,7 @@ int generic_action_ok_displaylist_push(
    recording_state_t *recording_st         = recording_state_get_ptr();
 
    if (!menu || string_is_equal(menu_ident, "null"))
-   {
-      menu_displaylist_info_free(&info);
       return -1;
-   }
 
 #ifdef HAVE_AUDIOMIXER
    if (audio_enable_menu && audio_enable_menu_ok)
@@ -4673,7 +4670,6 @@ static int action_ok_cheat_delete(const char *path,
    char msg[128];
    size_t new_selection_ptr   = 0;
    struct menu_state *menu_st = menu_state_get_ptr();
-   size_t selection           = menu_st->selection_ptr;
    unsigned int new_size      = cheat_manager_get_size() - 1;
 
    if (new_size >0)
@@ -5659,7 +5655,7 @@ static int action_ok_folder_specific_core_options_remove(const char *path,
 static int action_ok_core_options_reset(const char *path,
       const char *label, unsigned type, size_t idx, size_t entry_idx)
 {
-   core_options_reset();
+   core_options_reset(label);
    return 0;
 }
 
@@ -5716,6 +5712,9 @@ int action_ok_close_content(const char *path, const char *label, unsigned type, 
        * MENU_ST_FLAG_PREVENT_POPULATE */
       menu_st->flags &= ~MENU_ST_FLAG_PREVENT_POPULATE;
    }
+
+   /* Try to reload last core if loaded manually */
+   menu_state_get_ptr()->flags |= MENU_ST_FLAG_PENDING_RELOAD_CORE;
 
    return ret;
 }
@@ -6546,6 +6545,7 @@ STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_overlay_preset, ACTION_OK_DL_OVERLAY_PRE
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_osk_overlay_preset, ACTION_OK_DL_OSK_OVERLAY_PRESET)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_video_font, ACTION_OK_DL_VIDEO_FONT)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_rpl_entry, ACTION_OK_DL_RPL_ENTRY)
+STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_open_archive, ACTION_OK_DL_OPEN_ARCHIVE)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_open_archive_detect_core, ACTION_OK_DL_OPEN_ARCHIVE_DETECT_CORE)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_file_load_music, ACTION_OK_DL_MUSIC)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_push_accounts_list, ACTION_OK_DL_ACCOUNTS_LIST)
@@ -6593,7 +6593,6 @@ STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_push_dump_disc_list, ACTION_OK_DL_DUMP_D
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_push_eject_disc, ACTION_OK_DL_EJECT_DISC)
 #endif
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_push_load_disc_list, ACTION_OK_DL_LOAD_DISC_LIST)
-STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_open_archive, ACTION_OK_DL_OPEN_ARCHIVE)
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_rgui_menu_theme_preset, ACTION_OK_DL_RGUI_MENU_THEME_PRESET)
 #ifdef HAVE_NETWORKING
 STATIC_DEFAULT_ACTION_OK_FUNC(action_ok_pl_thumbnails_updater_list, ACTION_OK_DL_PL_THUMBNAILS_UPDATER_LIST)
@@ -7504,9 +7503,6 @@ static int action_ok_push_dropdown_item_input_retropad_bind(const char *path,
 {
    rarch_setting_t *setting;
    enum msg_hash_enums enum_idx;
-   retro_ctx_controller_info_t pad;
-   unsigned port                = 0;
-   unsigned device              = 0;
 
    const char *menu_path        = NULL;
    menu_entries_get_last_stack(&menu_path, NULL, NULL, NULL, NULL);
@@ -7588,14 +7584,14 @@ static int action_ok_push_dropdown_item_input_select_reserved_device(const char 
                                     ? input_config_get_device_display_name(i)
                                     : input_config_get_device_name(i);
 
-          if (string_is_equal(device_name, reserved_device_name))
+          if (string_starts_with(reserved_device_name, device_name))
           {
              uint16_t vendor_id = input_config_get_device_vid(i);
              uint16_t product_id = input_config_get_device_pid(i);
              snprintf(settings->arrays.input_reserved_devices[user],
                    sizeof(settings->arrays.input_reserved_devices[user]),
                    "%04x:%04x %s",
-                   vendor_id, product_id, reserved_device_name);
+                   vendor_id, product_id, device_name);
              break;
           }
        }
@@ -9683,14 +9679,11 @@ static int menu_cbs_init_bind_ok_compare_type(menu_file_list_cbs_t *cbs,
             }
             else
             {
-               if (string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_FAVORITES)))
-               {
+               if (     string_is_equal(menu_label, msg_hash_to_str(MENU_ENUM_LABEL_FAVORITES))
+                     && path_is_empty(RARCH_PATH_CORE))
                   BIND_ACTION_OK(cbs, action_ok_compressed_archive_push_detect_core);
-               }
                else
-               {
                   BIND_ACTION_OK(cbs, action_ok_compressed_archive_push);
-               }
             }
             break;
          case FILE_TYPE_CORE:

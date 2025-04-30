@@ -68,6 +68,14 @@ MSG_HASH(
    "Seleziona il core da utilizzare."
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
+   "Scollega Core"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
+   "Rilascia il Core caricato."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
    "Sfoglia l'implementazione di un core libretro. Quando il browser si avvia dipende dal percorso della directory principale. Se vuoto, verrà avviato in root.\nSe la directory principale è una directory, il menu la userà come cartella in alto. Se Core Directory è un percorso completo, verrà avviato nella cartella in cui si trova il file."
    )
@@ -2603,6 +2611,14 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_Y,
    "Bias Di Ancoraggio Di Viewport Y"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_X,
+   "Posizione orizzontale del contenuto quando la vista è più larga della larghezza del contenuto. 0.0 è lontano a sinistra, 0.5 è al centro, 1.0 è lontano a destra."
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_Y,
+   "Posizione verticale del contenuto quando la vista è più alta dell'altezza del contenuto. 0.0 è in alto, 0.5 è al centro, 1.0 è in basso."
+   )
 #if defined(RARCH_MOBILE)
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
@@ -2619,6 +2635,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
    "Bias Di Ancoraggio Di Viewport Y (Orientamento Verticale)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "Posizione orizzontale del contenuto quando la vista è più larga della larghezza del contenuto. 0.0 è lontano a sinistra, 0.5 è al centro, 1.0 è molto a destra. (Orientamento verticale)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "Posizione verticale del contenuto quando la vista è più alta dell'altezza del contenuto. 0.0 è in alto, 0.5 è al centro, 1.0 è in basso. (Orientamento verticale)"
    )
 #endif
 MSG_HASH(
@@ -3700,6 +3724,10 @@ MSG_HASH(
    "Attiva/Disattiva Menu"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_MENU_TOGGLE,
+   "Cambia la visualizzazione attuale tra il menu e il contenuto in esecuzione."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_QUIT_GAMEPAD_COMBO,
    "Esci (Controller Combo)"
    )
@@ -3774,6 +3802,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_PAUSE_TOGGLE,
    "Pausa"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_PAUSE_TOGGLE,
+   "Alterna lo stato del contenuto tra in pausa e non in pausa."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FRAMEADVANCE,
@@ -6064,6 +6096,10 @@ MSG_HASH(
    "Pausa il contenuto quando il menu è attivo"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_PAUSE_LIBRETRO,
+   "Metti in pausa il contenuto se il menu è attivo."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SAVESTATE_RESUME,
    "Riprendi il contenuto dopo aver utilizzato i salvataggi di stato"
    )
@@ -6419,6 +6455,18 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_PLAYLISTS,
    "Mostra 'Playlists'"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CONTENT_SHOW_PLAYLISTS,
+   "Mostra le playlist nel menu principale. Ignorato in GLUI se le schede della playlist e della barra di navigazione sono abilitate."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_PLAYLIST_TABS,
+   "Mostra le schede delle Playlist"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CONTENT_SHOW_PLAYLIST_TABS,
+   "Mostra le schede della playlist. Non influisce su RGUI. La barra della navigazione deve essere abilitata in GLUI. (Riavvio richiesto su Ozone/XMB)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_SHOW_EXPLORE,
@@ -8344,6 +8392,10 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STEAM_RICH_PRESENCE_FORMAT,
    "Formato Del Contenuto Rich Presence"
    )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_STEAM_RICH_PRESENCE_FORMAT,
+   "Scegli quali informazioni relative al contenuto in esecuzione saranno condivise."
+   )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STEAM_RICH_PRESENCE_FORMAT_CONTENT,
@@ -8929,6 +8981,10 @@ MSG_HASH(
    "Riprendi"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_RESUME_CONTENT,
+   "Riprendi il contenuto corrente e chiude il Menu Rapido."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESTART_CONTENT,
    "Riavvia"
    )
@@ -8939,6 +8995,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOSE_CONTENT,
    "Chiudi contenuto"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CLOSE_CONTENT,
+   "Chiude il contenuto corrente. Eventuali modifiche non salvate potrebbero andare perse."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TAKE_SCREENSHOT,
@@ -9073,8 +9133,16 @@ MSG_HASH(
    "Opzioni Core"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_OPTIONS,
+   "Cambia le opzioni per il contenuto."
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INPUT_REMAPPING_OPTIONS,
    "Controlli"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_INPUT_REMAPPING_OPTIONS,
+   "Cambia le opzioni degli input per il contenuto."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_CHEAT_OPTIONS,
@@ -9168,11 +9236,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET,
-   "Ripristina Opzioni"
+   "Ripristina Opzioni Core"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTIONS_RESET,
-   "Imposta tutte le opzioni dei nuclei ai valori predefiniti."
+   "Imposta tutte le opzioni del core attuale ai valori predefiniti."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_FLUSH,
@@ -9697,6 +9765,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SHADER_WATCH_FOR_CHANGES,
    "Applicare automaticamente le modifiche apportate ai file shader sul disco."
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_SHADER_WATCH_FOR_CHANGES,
+   "Monitora i file shader per le nuove modifiche. Dopo aver salvato le modifiche a uno shader sul disco, verrà automaticamente ricompilato e applicato al contenuto in esecuzione."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_REMEMBER_LAST_DIR,
@@ -10362,11 +10434,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_HOLD_SELECT,
-   "Mantieni Seelect (2 secondi)"
+   "Mantieni Select (2 secondi)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DOWN_SELECT,
-   "Giù + Seleziona"
+   "Giù + Select"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_RUMBLE_TYPE_DISABLED,
@@ -10858,6 +10930,10 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_RGUI_TRANSPARENCY,
    "Trasparenza"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_MENU_RGUI_TRANSPARENCY,
+   "Abilita la visualizzazione dello sfondo dei contenuti in esecuzione mentre il Menu Rapido è attivo. La disabilitazione della trasparenza può alterare i colori dei temi."
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_RGUI_SHADOWS,
