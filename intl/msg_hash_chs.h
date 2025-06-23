@@ -10,7 +10,7 @@
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MAIN_MENU,
-   "菜单"
+   "主菜单"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SETTINGS_TAB,
@@ -18,7 +18,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FAVORITES_TAB,
-   "收藏"
+   "收藏夹"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_HISTORY_TAB,
@@ -61,7 +61,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_SETTINGS,
-   "快速配置游戏内设置。"
+   "快速访问游戏内相关设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_LIST,
@@ -69,7 +69,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_LIST,
-   "选择使用的模拟器核心。"
+   "选择要使用的核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_LIST_UNLOAD,
@@ -77,23 +77,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_LIST_UNLOAD,
-   "释放已加载核心。"
+   "释放已加载的核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_CORE_LIST,
-   "浏览 libretro 核心实现。浏览器的起始位置取决于你的「核心目录」路径。若空，则从根目录开始。\n如果「核心目录」是一个目录，菜单会将其作为顶级文件夹使用。如果「核心目录」是一个完整路径，它将从路径所指文件所在的文件夹开始。"
+   "浏览 libretro 核心。浏览的起始位置取决于你的「核心目录」路径设置。若为空，则从根目录开始。\n如果「核心目录」是一个目录，则会将其作为顶级目录使用；如果「核心目录」是一个全路径文件名，则将从该文件所在的目录开始。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_CONTENT_LIST,
-   "加载游戏"
+   "加载内容"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_CONTENT_LIST,
-   "选择要加载的游戏 ROM。"
+   "选择要运行的内容。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_LOAD_CONTENT_LIST,
-   "浏览内容。要加载内容，你需要使用一个“核心”，和一个内容文件。\n要控制菜单开始浏览内容的位置，请设置「文件浏览器目录」。若未设置，它将从根目录开始。\n浏览器将依最后从「加载核心」中设置的核心过滤扩展名，并在内容加载时使用该核心。"
+   "浏览内容。要加载内容，你需要使用一个“核心”，和一个内容文件。\n要控制开始浏览内容的位置，请设置「文件浏览器目录」。若未设置，将从根目录开始。\n浏览器将使用从「加载核心」中加载的核心来过滤文件扩展名，并使用该核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOAD_DISC,
@@ -101,15 +101,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOAD_DISC,
-   "加载物理光盘。请先「加载核心」选择光盘相对应的核心。"
+   "加载物理光盘。请先使用「加载核心」选择要用于此光盘的核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DUMP_DISC,
-   "转储光盘"
+   "复制光盘"
    )
 MSG_HASH( /* FIXME Is a specific image format used? Is it determined automatically? User choice? */
    MENU_ENUM_SUBLABEL_DUMP_DISC,
-   "将物理光盘转储到内置存储。它将被保存为光盘镜像文件。"
+   "将物理光盘复制到内置存储，保存为光盘镜像文件。"
    )
 #ifdef HAVE_LAKKA
 MSG_HASH(
@@ -118,7 +118,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_EJECT_DISC,
-   "从实体 CD/DVD 光驱弹出光盘。"
+   "从物理 CD/DVD 光驱弹出光盘。"
    )
 #endif
 MSG_HASH(
@@ -127,27 +127,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLISTS_TAB,
-   "扫描到的匹配数据库的游戏 ROM 将在此处显示。"
+   "已扫描到的和数据库匹配的内容将在此处显示。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ADD_CONTENT_LIST,
-   "导入"
+   "导入内容"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ADD_CONTENT_LIST,
-   "扫描游戏并创建或更新游戏列表。"
+   "通过扫描内容来创建或更新列表。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHOW_WIMP,
-   "桌面菜单"
+   "显示桌面菜单"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SHOW_WIMP,
-   "打开传统桌面菜单。"
+   "打开传统的桌面菜单。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_DISABLE_KIOSK_MODE,
-   "禁用游戏厅模式 (需要重启)"
+   "禁用展台模式 (需要重启)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_DISABLE_KIOSK_MODE,
@@ -159,7 +159,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONLINE_UPDATER,
-   "下载核心，游戏，资源，金手指和数据库等。"
+   "下载核心、游戏、资源、金手指和数据库等。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY,
@@ -199,7 +199,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_HELP_LIST,
-   "了解这个程序应该如何使用。"
+   "了解应该如何使用这个程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RESTART_RETROARCH,
@@ -215,15 +215,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_RETROARCH,
-   "退出RetroArch应用。[退出时配置保存] 已启用。"
+   "退出RetroArch。[退出时保存配置] 已启用。"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_RETROARCH_NOSAVE,
-   "退出RetroArch应用。[退出时配置保存] 已禁用。"
+   "退出RetroArch。[退出时保存配置] 已禁用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_QUIT_RETROARCH,
-   "退出RetroArch。在任何情况下以硬性方式终止程序 (SIGKILL等) 将不会在任何情况下保存配置而终止RetroArch。 在 Unix-likes, SIGINT/SIGTERM 允许清理去除, 如果启用, 包括配置保存."
+   "退出RetroArch。以任何硬性方式终止程序 (例如SIGKILL信号等) 将不会保存配置。在类Unix系统中，SIGINT/SIGTERM信号允许程序平滑退出，配置可以被保存。"
    )
 
 /* Main Menu > Load Core */
@@ -234,7 +234,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DOWNLOAD_CORE,
-   "从在线更新下载并安装核心。"
+   "使用在线更新下载和安装核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SIDELOAD_CORE_LIST,
@@ -246,7 +246,7 @@ MSG_HASH(
    )
 MSG_HASH( /* FIXME Maybe add a description? */
    MENU_ENUM_LABEL_VALUE_START_VIDEO_PROCESSOR,
-   "启动视频处理"
+   "启动视频处理器"
    )
 MSG_HASH( /* FIXME Maybe add a description? */
    MENU_ENUM_LABEL_VALUE_START_NET_RETROPAD,
@@ -257,7 +257,7 @@ MSG_HASH( /* FIXME Maybe add a description? */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FAVORITES,
-   "开始文件夹"
+   "启动文件夹"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DOWNLOADED_FILE_DETECT_CORE_LIST,
@@ -276,11 +276,11 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_FAVORITES,
-   "收藏"
+   "收藏夹"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_FAVORITES,
-   "添加到「收藏」的游戏将出现在这里。"
+   "添加到「收藏夹」的游戏将出现在这里。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_MUSIC,
@@ -288,7 +288,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_MUSIC,
-   "以前播放过的音乐将出现在这里。"
+   "之前播放过的音乐将出现在这里。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_IMAGES,
@@ -296,7 +296,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_IMAGES,
-   "以前查看过的图像将出现在这里。"
+   "之前查看过的图像将出现在这里。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_VIDEO,
@@ -304,7 +304,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_VIDEO,
-   "以前观看过的视频将出现在这里。"
+   "之前观看过的视频将出现在这里。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_EXPLORE,
@@ -312,7 +312,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_EXPLORE,
-   "通过分类搜索界面浏览所有匹配数据库的游戏。"
+   "通过一个分类搜索界面浏览所有和数据库匹配的内容。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GOTO_CONTENTLESS_CORES,
@@ -320,7 +320,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GOTO_CONTENTLESS_CORES,
-   "已安装的不需要加载游戏 ROM 的核心将在此处显示。"
+   "已安装的不需要加载内容的核心将在此处显示。"
    )
 
 /* Main Menu > Online Updater */
@@ -335,7 +335,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_UPDATE_INSTALLED_CORES,
-   "更新所有已安装的核心到可用的最新版本。"
+   "更新所有已安装的核心到最新版本。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SWITCH_INSTALLED_CORES_PFD,
@@ -343,7 +343,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SWITCH_INSTALLED_CORES_PFD,
-   "如果可用的话，用 Play 商店中的最新版本核心替换所有旧版手动安装核心。"
+   "如果可用的话，用 Play 商店中的最新版本核心替换所有旧版和手动安装的核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_THUMBNAILS_UPDATER_LIST,
@@ -359,11 +359,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PL_THUMBNAILS_UPDATER_LIST,
-   "下载选中播放列表中游戏的缩略图。"
+   "根据选择的列表中下载游戏缩略图。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_CONTENT,
-   "游戏下载"
+   "内容下载"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DOWNLOAD_CORE_CONTENT,
@@ -371,11 +371,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DOWNLOAD_CORE_SYSTEM_FILES,
-   "核心系统 BIOS 文件下载器"
+   "核心系统文件下载"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DOWNLOAD_CORE_SYSTEM_FILES,
-   "下载核心所需的系统 BIOS 和辅助文件以修正/优化运行效果。"
+   "下载核心所需的辅助系统文件，以使之正确运行/优化运行。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UPDATE_CORE_INFO_FILES,
@@ -422,7 +422,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_INFORMATION,
-   "查看与应用、核心相关的信息。"
+   "查看与应用/核心相关的信息。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DISC_INFORMATION,
@@ -438,7 +438,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETWORK_INFORMATION,
-   "查看网络接口和绑定 IP 地址的信息。"
+   "查看网络接口和关联的 IP 地址。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFORMATION,
@@ -446,7 +446,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SYSTEM_INFORMATION,
-   "查看此设备的信息参数。"
+   "查看此设备的信息。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DATABASE_MANAGER,
@@ -454,15 +454,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DATABASE_MANAGER,
-   "查看游戏数据库。"
+   "查看数据库。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CURSOR_MANAGER,
-   "指针管理器"
+   "游标管理器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CURSOR_MANAGER,
-   "查看以前的搜索记录。"
+   "查看之前的搜索记录。"
    )
 
 /* Main Menu > Information > Core Information */
@@ -517,7 +517,7 @@ MSG_HASH(
 )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_SUPPORT_LEVEL,
-   "状态存储支持"
+   "存档支持"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_DISABLED,
@@ -529,11 +529,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_SERIALIZED,
-   "序列化 (保存/加载/回溯)"
+   "可序列化 (保存/加载/回溯)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_DETERMINISTIC,
-   "确定性 (保存/加载/回溯/超前运行/联机)"
+   "完整 (保存/加载/回溯/超前运行/联机)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_FIRMWARE,
@@ -541,7 +541,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_FIRMWARE_IN_CONTENT_DIRECTORY,
-   "- 注意：'系统文件在内容目录中'当前已启用。"
+   "- 注意：[系统文件位于内容目录中] 当前已启用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_FIRMWARE_PATH,
@@ -561,7 +561,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PRESENT_OPTIONAL,
-   "存在但非必须的："
+   "存在但非必需的："
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_LOCK,
@@ -569,7 +569,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_LOCK,
-   "防止修改当前安装的核心。当内容需要特定核心版本时可能会被用来避免不必要的更新 (例如街机的 ROM 集只适用于特定版本的核心)。"
+   "防止修改当前安装的核心。当内容需要特定版本的核心时，可用来避免不想要的更新 (例如街机的 ROM 集)。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_SET_STANDALONE_EXEMPT,
@@ -593,7 +593,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_CREATE_BACKUP,
-   "创建当前安装核心的归档备份。"
+   "创建当前已安装核心的归档备份。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_RESTORE_BACKUP_LIST,
@@ -672,11 +672,11 @@ MSG_HASH( /* FIXME Maybe add a description? */
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_POWER_SOURCE,
-   "能源"
+   "电源"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_VIDEO_CONTEXT_DRIVER,
-   "视频场景驱动"
+   "视频驱动"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_DISPLAY_METRIC_MM_WIDTH,
@@ -1038,7 +1038,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_FRANCHISE,
-   "专营"
+   "系列"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_TGDB_RATING,
@@ -1106,7 +1106,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RDB_ENTRY_COOP,
-   "支持多人游戏"
+   "支持合作模式"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_CRC32,
+   "CRC32"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_SHA1,
+   "SHA1"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RDB_ENTRY_MD5,
+   "MD5"
    )
 
 /* Main Menu > Configuration File */
@@ -1266,7 +1278,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CLOUD_SYNC_ENABLE,
-   "尝试同步配置、sram 和状态到云存储提供商。"
+   "尝试同步配置、sram 和存档到云存储提供商。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_DESTRUCTIVE,
@@ -1274,7 +1286,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_SAVES,
-   "同步：保存/状态"
+   "同步：存档/即时存档"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_SYNC_CONFIGS,
@@ -1298,15 +1310,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_THUMBS,
-   "启用时，缩略图图像将同步到云端。 除了大量自定义缩略图图像收藏以外，一般不推荐使用；否则缩略图下载器是一个更好的选择。"
+   "启用时，缩略图图像将同步到云端。除非有大量自定义缩略图需要处理，否则通常不建议使用此功能；对于一般情况，缩略图下载器是更优选择。"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CLOUD_SYNC_SYNC_SYSTEM,
-   "启用后，系统文件将同步到云端。这会大大增加同步所需的时间；请谨慎使用。"
+   "启用后，系统文件将同步到云端。这会大大增加同步所需的时间，请谨慎使用。"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CLOUD_SYNC_DESTRUCTIVE,
-   "禁用后，文件会在被覆盖或删除之前移至备份文件夹。"
+   "禁用后，文件在被覆盖或删除之前会被移至备份文件夹。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_DRIVER,
@@ -1322,7 +1334,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CLOUD_SYNC_URL,
-   "云存储服务的 API 入口点的 URL。"
+   "云存储服务的 API 入口点 URL。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CLOUD_SYNC_USERNAME,
@@ -1370,7 +1382,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_CURSOR,
-   "数据库光标文件。"
+   "数据库游标文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_CONFIG,
@@ -1386,7 +1398,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_REMAP,
-   "重映射控制文件。"
+   "手柄映射文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_CHEAT,
@@ -1406,15 +1418,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_PLAIN_FILE,
-   "纯文件。"
+   "一般文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_MOVIE_OPEN,
-   "视频，选择使用视频播放器打开此文件。"
+   "视频。选择此项使用视频播放器打开该文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_MUSIC_OPEN,
-   "音乐，选择使用音乐播放器打开此文件。"
+   "音乐。选择此项使用音乐播放器打开该文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_IMAGE,
@@ -1422,27 +1434,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_IMAGE_OPEN_WITH_VIEWER,
-   "图像，选择使用图像查看器打开此文件。"
+   "图像。选择此项使用图像查看器打开该文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_CORE_SELECT_FROM_COLLECTION,
-   "Libretro 核心。选择后此核心与游戏关联。"
+   "Libretro 核心。选择此项将该核心与游戏关联。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_CORE,
-   "Libretro 核心。选择后 RetroArch 将加载此核心。"
+   "Libretro 核心。选择此项使 RetroArch 加载该核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FILE_BROWSER_DIRECTORY,
-   "目录，选择打开此目录。"
+   "目录。选择此项打开该目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_THROTTLE_SETTINGS,
-   "限帧"
+   "帧率限制"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_THROTTLE_SETTINGS,
-   "更改回滚、快进和慢动作设置。"
+   "更改回溯、快进和慢动作设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RECORDING_SETTINGS,
@@ -1482,7 +1494,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ACCESSIBILITY_SETTINGS,
-   "更改无障碍阅读器设置。"
+   "更改无障碍阅读设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_POWER_MANAGEMENT_SETTINGS,
@@ -1510,11 +1522,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SETTINGS,
-   "列表"
+   "游戏列表"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SETTINGS,
-   "更改列表设置。"
+   "更改游戏列表设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USER_SETTINGS,
@@ -1526,11 +1538,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DIRECTORY_SETTINGS,
-   "文件夹"
+   "目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DIRECTORY_SETTINGS,
-   "更改文件所在的默认文件夹。"
+   "更改文件的缺省目录。"
    )
 
 /* Core option category placeholders for icons */
@@ -1573,6 +1585,10 @@ MSG_HASH(
 
 #ifdef HAVE_MIST
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_STEAM_SETTINGS,
+   "Steam"
+   )
+MSG_HASH(
    MENU_ENUM_SUBLABEL_STEAM_SETTINGS,
    "更改与 Steam 相关的设置。"
    )
@@ -1586,43 +1602,43 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DRIVER,
-   "使用的输入驱动。某些视频驱动强制使用不同的输入驱动。"
+   "要使用的输入驱动。某些视频驱动强制使用特定的输入驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_DRIVER_UDEV,
-   "Udev 驱动程序读取支持键盘的 evdev 事件，还支持键盘回调、鼠标和触控板。\n大多数发行版预设情况下, /dev/input节点仅限root权限使用（mode 600），可以设定一个(udev) 规则，用于非root权限时使用。"
+   "Udev 驱动程序通过读取 evdev 事件实现对键盘的支持，同时还支持键盘回调函数、鼠标和触控板。\n大多数 Linux 发行版在默认情况下, /dev/input 节点仅限 root 权限访问（mode 600），你可以设定一个 udev  规则，使之能在非 root 权限下访问。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_DRIVER_LINUXRAW,
-   "Linuxraw 输入驱动程序需要一个活动的 TTY。 键盘事件直接从 TTY 读取，从而使其更简单，但不像udev那样灵活。 Mice 等根本不支持。此驱动程序使用旧的游戏杆API(/dev/input/js*)。"
+   "Linuxraw 输入驱动程序需要一个活动的 TTY 终端。 键盘事件直接从 TTY 读取，从而使其更简单，但不像 udev 那样灵活，不支持鼠标等设备。此驱动程序使用旧的摇杆 API(/dev/input/js*)。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_DRIVER_NO_DETAILS,
-   "使用的输入驱动。某些视频驱动可能会强制使用不同的输入驱动。"
+   "输入驱动。某些视频驱动可能会强制使用特定的输入驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_JOYPAD_DRIVER,
-   "手柄"
+   "游戏控制器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_JOYPAD_DRIVER,
-   "要使用的控制器驱动程序。(需要重启)"
+   "要使用的游戏控制器驱动（需要重启）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_DINPUT,
-   "DirectInput 控制器驱动程序。"
+   "DirectInput 控制器驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_HID,
-   "低级别HID驱动程序。"
+   "底层人机交互驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_LINUXRAW,
-   "Raw Linux 驱动程序，使用旧版游戏杆API。如果可能，请使用udev。"
+   "Raw Linux 驱动程序，使用旧版摇杆 API。请尽量使用 udev 驱动替代此驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_PARPORT,
-   "控制器的Linux驱动程序通过特殊适配器连接到平行端口。"
+   "过特殊适的配器连接到并口的控制器的 Linux 驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_SDL,
@@ -1630,11 +1646,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_UDEV,
-   "一般推荐具备Udev接口的控制器驱动，使用最近的evdev joypad API支持游戏杆，此驱动程序支持热插拔和力反馈。\n大多数发行版预设情况下, /dev/input节点仅限root权限使用（mode 600），可以设定一个(udev) 规则，用于非root权限时使用。"
+   "通常推荐具备 udev 接口的控制器驱动。它使用最新的的 evdev 摇杆 API，支持热插拔和力反馈。\n大多数 Linux 发行版在默认情况下, /dev/input 节点仅限 root 权限访问（mode 600），你可以设定一个 udev  规则，使之能在非 root 权限下访问。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_JOYPAD_DRIVER_XINPUT,
-   "XInput 控制器驱动。适用大多数XBox 控制器。"
+   "XInput 控制器驱动，适用大多数 XBox 控制器。"
    )
 
 MSG_HASH(
@@ -1643,23 +1659,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_DRIVER,
-   "使用的视频驱动。"
+   "要使用的视频驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_GL1,
-   "OpenGL 1.x 驱动程序。最低版本要求：OpenGL 1.1。不支持着色器。如果可能，请改用更高版本的 OpenGL 驱动程序。"
+   "OpenGL 1.x 驱动程序。最低版本要求：OpenGL 1.1。不支持着色器。可能的情况下尽可能改用最新版本的 OpenGL 驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_GL,
-   "OpenGL 2.x 驱动程序。除了软件渲染核心之外，该驱动程序还允许使用 libretro GL 核心。所需的最低版本：OpenGL 2.0 或 OpenGLES 2.0。支持 GLSL 着色器格式。如果可能的话，请改用 glcore 驱动程序。"
+   "OpenGL 2.x 驱动程序。此驱动程序同时支持使用软件渲染和 GL 硬件加速渲染的核心。最低版本要求：OpenGL 2.0 或 OpenGLES 2.0。支持 GLSL 着色器格式。可能的情况下尽可能改用 glcore 驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_GL_CORE,
-   "OpenGL 3.x 驱动程序。除了软件渲染核心之外，该驱动程序还允许使用 libretro GL 核心。所需的最低版本：OpenGL 3.2 或 OpenGLES 3.0+。支持 Slang 着色器格式。"
+   "OpenGL 3.x 驱动程序。此此驱动程序同时支持使用软件渲染和 GL 硬件加速渲染的核心。最低版本要求：OpenGL 3.2 或 OpenGLES 3.0+。支持 Slang 着色器格式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_VULKAN,
-   "Vulkan 驱动程序。除了软件渲染核心之外，该驱动程序还允许使用 libretro Vulkan 核心。所需的最低版本：Vulkan 1.0。支持 HDR 和 Slang 着色器。"
+   "Vulkan 驱动程序。此驱动程序同时支持使用软件渲染和 GL 硬件加速渲染的核心。最低版本要求：Vulkan 1.0。支持 HDR 和 Slang 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_SDL1,
@@ -1667,11 +1683,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_SDL2,
-   "SDL 2 软件渲染驱动程序。软件渲染的 libretro 核心实现的性能取决于您的平台 SDL 实现。"
+   "SDL 2 软件渲染驱动程序。软件渲染的核心的性能取决于您的平台 SDL 实现。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_METAL,
-   "Apple 平台的 Metal 驱动程序。支持 Slang 着色器格式。"
+   "Apple 平台的 Metal 驱动程序。支持 Slang 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D8,
@@ -1679,27 +1695,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D9_CG,
-   "Direct3D 9 驱动程序，支持旧的 Cg 着色器格式。"
+   "Direct3D 9 驱动程序，支持旧的 Cg 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D9_HLSL,
-   "Direct3D 9 驱动程序，支持 HLSL 着色器格式。"
+   "Direct3D 9 驱动程序，支持 HLSL 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D10,
-   "Direct3D 10 驱动程序，支持 Slang 着色器格式。"
+   "Direct3D 10 驱动程序，支持 Slang 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D11,
-   "Direct3D 11 驱动程序，支持 HDR 和 Slang 着色器格式。"
+   "Direct3D 11 驱动程序，支持 HDR 和 Slang 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_D3D12,
-   "Direct3D 12 驱动程序，支持 HDR 和 Slang 着色器格式。"
+   "Direct3D 12 驱动程序，支持 HDR 和 Slang 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_DISPMANX,
-   "DispmanX 驱动程序。 在 Raspberry Pi 0..3 中使用适用于 Videocore IV GPU 的 DispmanX API。不支持遮罩和着色器。"
+   "DispmanX 驱动程序。使用树莓派 0-3 的 Videocore IV GPU 的 DispmanX API。不支持遮罩和着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_CACA,
@@ -1707,15 +1723,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_EXYNOS,
-   "低级 Exynos 视频驱动程序，使用 Samsung Exynos SoC 中的 G2D 块进行 blit 操作。软件渲染核心的性能应该是最佳的。"
+   "低级 Exynos 视频驱动程序。在三星 Exynos SoC 上使用 G2D 块进行块传输操作。软件渲染核心的性能应该是最佳的。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_DRM,
-   "普通 DRM 视频驱动程序。这是一个低级视频驱动程序，使用 libdrm 通过 GPU 遮罩进行硬件缩放。"
+   "Plain DRM 视频驱动程序。这是一个底层视频驱动程序，使用 libdrm 库利用 GPU 覆盖层实现硬件缩放。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_SUNXI,
-   "低级 Sunxi 视频驱动程序，在 Allwinner SoC 中使用 G2D 模块。"
+   "底层 Sunxi 视频驱动程序。在全志的 SoC 芯片上使用 G2D 块功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_WIIU,
@@ -1723,7 +1739,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_SWITCH,
-   "Switch 驱动程序。支持 GLSL 着色器格式。"
+   "Switch 驱动程序。支持 GLSL 着色器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_VG,
@@ -1731,7 +1747,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_GDI,
-   "GDI 驱动程序。使用旧版 Windows 接口。不建议。"
+   "GDI 驱动程序。使用旧版的 Windows API，不建议使用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_DRIVER_NO_DETAILS,
@@ -1743,59 +1759,59 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_DRIVER,
-   "使用的音频驱动。"
+   "要使用的音频驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_RSOUND,
-   "RSound 音频驱动。用于网络音频系统。"
+   "RSound 驱动，用于网络音频系统。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_OSS,
-   "旧版 Open Sound System 音频驱动。"
+   "旧版 Open Sound System 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_ALSA,
-   "默认 ALSA 音频驱动。"
+   "缺省 ALSA 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_ALSATHREAD,
-   "多线程的 ALSA 音频驱动。"
+   "带多线程支持的 ALSA 音频驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_TINYALSA,
-   "无依赖的 ALSA 音频驱动。"
+   "无其他依赖库的 ALSA 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_ROAR,
-   "RoarAudio 音频驱动。"
+   "RoarAudio 声音系统驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_AL,
-   "OpenAL 音频驱动。"
+   "OpenAL 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_SL,
-   "OpenSL 音频驱动。"
+   "OpenSL 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_DSOUND,
-   "DirectSound 音频驱动。主要用于 Windows 95 到 Windows XP 系统。"
+   "DirectSound 驱动。主要用于 Windows 95 到 Windows XP 系统。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_WASAPI,
-   "Windows Audio Session API 音频驱动。WASAPI 主要用于 Windows 7 及以上版本。"
+   "Windows Audio Session API 驱动。WASAPI 主要用于 Windows 7 及以上版本。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_PULSE,
-   "PulseAudio 音频驱动。如果系统有 PulseAudio，请不要使用其他驱动，比如 ALSA。"
+   "PulseAudio 驱动。如果系统使用 PulseAudio，请确保使用此驱动而不是其他驱动，比如 ALSA。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_PIPEWIRE,
-   "PipeWire 驱动。如果系统使用 PipeWire，请确保使用此驱动程序而不是 PulseAudio。"
+   "PipeWire 驱动。如果系统使用 PipeWire请，确保使用此驱动程序而不是其他驱动，比如 PulseAudio。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DRIVER_JACK,
-   "Jack 音频驱动。"
+   "Jack Audio Connection Kit 驱动。"
    )
 #ifdef HAVE_MICROPHONE
 MSG_HASH(
@@ -1812,7 +1828,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_RESAMPLER_DRIVER,
-   "要使用的麦克风重采样器驱动程序。"
+   "要使用的麦克风重采样器驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_BLOCK_FRAMES,
@@ -1825,19 +1841,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_DRIVER,
-   "使用的音频重采样器驱动。"
+   "要使用的音频重采样驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_RESAMPLER_DRIVER_SINC,
-   "Windowed Sinc 实现。"
+   "加床 Sinc 函数实现。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_RESAMPLER_DRIVER_CC,
-   "Convoluted Cosine 实现。"
+   "卷积余弦函数实现。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_RESAMPLER_DRIVER_NEAREST,
-   "Nearest resampling 实现。此重采样器忽略质量设置。"
+   "最临近重采样实现。此重采样器忽略质量设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CAMERA_DRIVER,
@@ -1845,7 +1861,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CAMERA_DRIVER,
-   "使用的摄像头驱动。"
+   "要使用的摄像头驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BLUETOOTH_DRIVER,
@@ -1853,11 +1869,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_BLUETOOTH_DRIVER,
-   "使用的蓝牙驱动。"
+   "要使用的蓝牙驱动。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_WIFI_DRIVER,
+   "Wi-Fi"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_WIFI_DRIVER,
-   "使用的 Wi-Fi 驱动。"
+   "要使用的 Wi-Fi 驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOCATION_DRIVER,
@@ -1865,7 +1885,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOCATION_DRIVER,
-   "使用的 GPS 定位驱动。"
+   "使用的定位驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_DRIVER,
@@ -1873,23 +1893,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_DRIVER,
-   "要使用的菜单驱动程序。(需要重启)"
+   "要使用的菜单驱动。(需要重启)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MENU_DRIVER_XMB,
-   "XMB 是 RetroArch 的一个 GUI，看起来像第 7 世代主机菜单。它可以支持与 Ozone 相同的功能。"
+   "XMB 是 RetroArch 的一个类似于第7代游戏主机菜单的图形界面，它支持和 Ozone 相同的功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MENU_DRIVER_OZONE,
-   "Ozone 是大多数平台上 RetroArch 的默认 GUI。它针对游戏控制器的导航进行了优化。"
+   "Ozone 是大多数平台上 RetroArch 的默认图形界面，它为使用游戏手柄进行导航而优化。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MENU_DRIVER_RGUI,
-   "RGUI 是 RetroArch 的内置简单 GUI。它在菜单驱动程序中的性能要求最低，并且可以在低分辨率屏幕上使用。"
+   "RGUI 是 RetroArch 内置的一个简单图形界面，它在所有菜单驱动中对硬件性能要求最低，并且可以在低分辨率屏幕上使用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MENU_DRIVER_MATERIALUI,
-   "在移动设备上，RetroArch 默认使用移动端 UI，MaterialUI。该界面是围绕触摸屏和指针设备（例如鼠标/轨迹球）设计的。"
+   "在移动设备上，RetroArch 默认使用移动端图形界面 MaterialUI，此界面是针对触摸屏和指针设备（例如鼠标/轨迹球）设计的。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RECORD_DRIVER,
@@ -1897,22 +1917,26 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RECORD_DRIVER,
-   "使用的录制驱动。"
+   "要使用的录制驱动。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MIDI_DRIVER,
+   "MIDI"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIDI_DRIVER,
-   "使用的 MIDI 驱动。"
+   "要使用的 MIDI 驱动。"
    )
 
 /* Settings > Video */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCHRES_SETTINGS,
-   "CRT 分辨率"
+   "CRT 分辨率切换"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCHRES_SETTINGS,
-   "在 CRT 显示器上输出原生低分辨率信号。"
+   "为 CRT 显示器输出原生低分辨率信号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_OUTPUT_SETTINGS,
@@ -1947,6 +1971,10 @@ MSG_HASH(
    "更改视频缩放设置。"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_HDR_SETTINGS,
+   "HDR"
+   )
+MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HDR_SETTINGS,
    "更改视频 HDR 设置。"
    )
@@ -1960,127 +1988,131 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SUSPEND_SCREENSAVER_ENABLE,
-   "阻止锁屏"
+   "阻止屏保"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SUSPEND_SCREENSAVER_ENABLE,
-   "阻止系统激活屏保和锁屏。"
+   "防止系统激活屏保。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_SUSPEND_SCREENSAVER_ENABLE,
-   "挂起屏幕保护程序。这是请求，视频驱动程序不必遵守该请求。"
+   "阻止屏幕保护程序。这只是一个提示（hint），视频驱动程序不一定必须遵循。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_THREADED,
-   "独立线程视频"
+   "多线程视频渲染"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_THREADED,
-   "以延迟和视频撕裂为代价换取高性能。当且仅当不能全速模拟时使用。"
+   "以增加延迟和视频卡顿为代价提升性能。仅在无法达到全速时使用此方法。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_THREADED,
-   "使用线程视频驱动。使用这个可能会提高性能，但可能会以延迟和更多的视频停顿为代价。"
+   "使用多线程视频驱动。使用此功能可能会提高性能，但可能会增加延迟和视频卡顿。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION,
-   "黑帧补间"
+   "黑帧插入"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_BLACK_FRAME_INSERTION,
-   "警告：快速闪烁可能在某些显示器上造成图像持续。使用风险//在帧之间插入黑帧。 可以通过模拟CRT扫描来大幅降低移动侦测模糊，但以亮度为代价。"
+   "警告：快速闪烁可能导致某些显示器出现图像残留（残影）。使用需自担风险。// 在帧间插入黑帧，可大幅减少动态模糊（模拟CRT扫描效果），但代价是会降低亮度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_BLACK_FRAME_INSERTION,
-   "为增强运动清晰度在帧之间插入黑帧。仅使用为您当前显示刷新率指定的选项。 不以非倍数60赫兹的刷新速率使用，例如144赫兹，165赫兹等。 不要与Swap Interval > 1, sub-frames, Frame Delay, 或者 Sync to Exact Content Framerate功能同时使用. 可以打开系统的 VRR 选项，仅仅不是那个设置。 如果你注意到-任何-临时图像保留, 你应该在 120hz 处禁用, 对于更高的hz 则调整下面的暗色帧设置。"
+   "在帧之间插入黑帧以增强动态清晰度。仅适用于和当前显示器刷新率对应的预设模式。 不适用于非60赫兹整数倍刷新率例如144赫兹、165赫兹等。不要与以下功能同时使用：交换间隔（Swap Interval）> 1、子帧（Sub-frames）、帧延迟（Frame Delay）、精确内容帧率同步（Sync to Exact Content Framerate）。 系统级VRR可保持开启，只需关闭上述冲突设置。如果发现任何临时图像残留，请在120赫兹下禁用此功能；在更高刷新率下需调整下方[黑帧数]设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_120,
-   "1-120Hz显示刷新率"
+   "1 - 120Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_180,
-   "2-180Hz显示刷新率"
+   "2 - 180Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_240,
-   "3 - 240赫兹显示刷新率"
+   "3 - 240Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_300,
-   "4 - 300赫兹显示刷新率"
+   "4 - 300Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_360,
-   "5 - 360赫兹显示刷新率"
+   "5 - 360Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_420,
-   "6 - 420赫兹显示刷新率"
+   "6 - 420Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_480,
-   "7 - 480Hz 显示刷新率"
+   "7 - 480Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_540,
-   "8 - 540赫兹显示刷新率"
+   "8 - 540Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_600,
-   "9 - 600赫兹显示刷新率"
+   "9 - 600Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_660,
-   "10 - 660赫兹显示刷新率"
+   "10 - 660Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_720,
-   "11 - 720赫兹显示刷新率"
+   "11 - 720Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_780,
-   "12 - 780Hz 显示刷新率"
+   "12 - 780Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_840,
-   "13 - 840赫兹显示刷新率"
+   "13 - 840Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_900,
-   "14 - 900Hz 显示刷新率"
+   "14 - 900Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BLACK_FRAME_INSERTION_VALUE_960,
-   "15 - 960赫兹显示刷新率"
+   "15 - 960Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_BFI_DARK_FRAMES,
-   "插入黑帧 - 暗色帧"
+   "黑帧插入 - 黑帧数"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_BFI_DARK_FRAMES,
-   "调整全部BFI扫描序列中的黑色帧数。更多等于更高的运动清晰度，较少等于更高的亮度。 不适用于120赫兹，因为只有1个BFI框架可以与总计一起工作。 设置高于可能的上限将限制您选择的刷新率。"
+   "调整黑帧插入（BFI）中的黑帧数量。值越高动态清晰度越高；值越低亮度越高。不适用于120赫兹刷新率，因为此刷新率下只有1个黑帧。若设定值超过当前刷新率允许的上限，系统会自动限制为最大可用值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_BFI_DARK_FRAMES,
-   "调整黑色的 bfi 序列中显示的帧数。更多黑色帧提高移动清晰度，但降低亮度。 不适用于120赫兹，因为只有一个额外的60赫兹帧， 所以它必须是黑色的，否则BFI将不会激活。"
+   "调整黑帧插入（BFI）序列中的黑帧显示数量。更多的黑帧会提高动态清晰度，但是会降低亮度。不适用于120赫兹刷新率，因为此刷新率下只有1个额外的帧（总计60Hz）可用，因此这一帧必须为黑帧，否则相当于关闭插黑功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_SUBFRAMES,
    "着色器子帧"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SHADER_SUBFRAMES,
+   "警告：快速闪烁可能导致某些显示器出现图像残留（残影）。使用需自担风险。 //  通过将屏幕垂直分割为多个子帧，并根据子帧数量逐部分渲染画面，模拟基础的滚动扫描线效果。"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_SHADER_SUBFRAMES,
-   "设计用来在任何可能的着色器特效上提升游戏本身的帧率，在帧之间插入额外的着色器帧。仅可以使用为您当前显示器刷新率指定的选项。 不要在非60赫兹倍数的屏幕刷新率使用，例如144赫兹，165赫兹等。 不要与“Swap 间隔 > 1”, “BFI”, “帧延迟”, 或者 “精确同步游戏帧率”功能同时使用. 可以保持系统的 VRR 功能打开，仅仅不是那个设置。"
+   "在帧间插入额外的着色器处理帧，用于在运行速度高于内容帧率时实现着色器特效处理。仅适用于和当前显示器刷新率对应的预设模式。 不适用于非60赫兹整数倍刷新率例如144赫兹、165赫兹等。不要与以下功能同时使用：交换间隔（Swap Interval）> 1、黑帧插入（BFI)、帧延迟（Frame Delay）、精确内容帧率同步（Sync to Exact Content Framerate）。 系统级VRR可保持开启，只需关闭上述冲突设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_SUBFRAMES_VALUE_120,
-   "2-120Hz显示刷新率"
+   "2 - 120Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_SUBFRAMES_VALUE_180,
-   "3-180Hz显示刷新率"
+   "3 - 180Hz显示刷新率"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SHADER_SUBFRAMES_VALUE_240,
@@ -2143,12 +2175,16 @@ MSG_HASH(
    "滚动扫描线模拟"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SCAN_SUBFRAMES,
+   "警告：快速闪烁可能导致某些显示器出现图像残留（残影）。使用需自担风险。 //  通过将屏幕垂直分割为多个子帧，并根据子帧数量逐部分渲染画面，模拟基础的滚动扫描线效果。"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_SCAN_SUBFRAMES,
-   "在多个子帧上模拟基本的滚动扫描线，方法是垂直分割屏幕，并根据从屏幕顶部向下的子帧数量渲染屏幕的每个部分。"
+   "通过将屏幕垂直分割为多个子帧，并根据子帧数量从上到下逐部分渲染画面，模拟基础的滚动扫描线效果。"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_GPU_SCREENSHOT,
-   "如果可以的话，截取 GPU 渲染材质的输出。"
+   "屏幕截图在可能的情况下截取经过 GPU 渲染的材质。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SMOOTH,
@@ -2156,7 +2192,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SMOOTH,
-   "向图像添加轻微的模糊以柔化硬像素边缘。此选项对性能影响很小。如果使用着色器，则应禁用本选项。"
+   "向图像添加轻微的模糊以柔化锐利的像素边缘。此选项对性能影响很小。如果使用着色器，则应禁用本选项。"
    )
 #if defined(DINGUX)
 MSG_HASH(
@@ -2165,11 +2201,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_DINGUX_IPU_FILTER_TYPE,
-   "指定通过内部 IPU 缩放内容时的图像插值方法。使用 CPU 驱动的视频滤镜时，建议使用“双三次”或“双线性”。此选项对性能没有影响。"
+   "指定通过内部 IPU 缩放内容时使用的图像插值算法。在使用基于 CPU 加速的视频滤镜时，推荐使用“双三次”或“双线性”。此选项对性能没有影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_IPU_FILTER_BICUBIC,
-   "双立方"
+   "双三次"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_IPU_FILTER_BILINEAR,
@@ -2186,7 +2222,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_DINGUX_RS90_SOFTFILTER_TYPE,
-   "指定禁用“整数比例”时的图像插值方法。“最近邻”对性能的影响最小。"
+   "指定禁用“整数缩放”时的图像插值算法。“最近邻”对性能的影响最小。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_RS90_SOFTFILTER_POINT,
@@ -2204,7 +2240,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SHADER_DELAY,
-   "延迟自动加载着色器 (毫秒)。可以解决录屏软件画面撕裂的问题。"
+   "延迟自动加载着色器 (毫秒)。可以解决使用截屏软件时图像异常的问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FILTER,
@@ -2212,15 +2248,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FILTER,
-   "应用 CPU 驱动的视频滤镜。这可能会显著降低游戏运行速度。某些视频滤镜仅对 32 位色或 16 位色核心生效。"
+   "使用基于 CPU 加速的视频滤镜。可能会有较高的性能损耗。有些视频滤镜可能仅对使用32位色深或16位色深的核心生效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_FILTER,
-   "应用 CPU 驱动的视频滤镜。可能会付出很高的性能成本。某些视频滤镜可能仅适用于使用 32 位或 16 位颜色的内核。可以选择动态链接的视频滤镜库。"
+   "使用基于 CPU 加速的视频滤镜。可能会有较高的性能损耗。有些视频滤镜可能仅对使用32位色深或16位色深的核心生效。可以选择动态链接库方式的视频滤镜。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_FILTER_BUILTIN,
-   "应用 CPU 驱动的视频滤镜。可能会付出很高的性能成本。某些视频滤镜可能仅适用于使用 32 位或 16 位颜色的内核。可选择内置视频滤镜库。"
+   "使用基于 CPU 加速的视频滤镜。可能会有较高的性能损耗。有些视频滤镜可能仅对使用32位色深或16位色深的核心生效。可以选择内置视频滤镜。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FILTER_REMOVE,
@@ -2228,22 +2264,22 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FILTER_REMOVE,
-   "卸载所有启用的 CPU 驱动的视频滤镜。"
+   "卸载所有激活的基于 CPU 加速的视频滤镜。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_NOTCH_WRITE_OVER,
-   "在 Android 和 iOS 刘海屏设备中启用全屏"
+   "在具有刘海屏的 Android 和 iOS 设备中启用全屏"
 )
 
 /* Settings > Video > CRT SwitchRes */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_RESOLUTION,
-   "CRT 原生输出"
+   "CRT 分辨率切换"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_RESOLUTION,
-   "仅适用于 CRT 显示器。尝试使用精确的核心/游戏分辨率和刷新率。"
+   "仅适用于 CRT 显示器。尝试使用原始的核心/游戏分辨率和刷新率。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_RESOLUTION_SUPER,
@@ -2251,7 +2287,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_RESOLUTION_SUPER,
-   "在原生和超宽超分辨率间切换。"
+   "在原生和超宽屏超分辨率间切换。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_X_AXIS_CENTERING,
@@ -2259,15 +2295,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_X_AXIS_CENTERING,
-   "循环这些选项，直到图像居中显示。"
+   "循环选项设置，直到图像居中显示。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_PORCH_ADJUST,
-   "孔径调整"
+   "消隐区调整"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_PORCH_ADJUST,
-   "遍历选项调整孔径设置以调整图像尺寸。"
+   "循环调整消隐区设置以更改图像大小。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_HIRES_MENU,
@@ -2275,7 +2311,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_HIRES_MENU,
-   "当没有加载任何内容时，切换到高分辨率模式以便与高分辨率菜单一起使用。"
+   "当没有加载内容时，切换到高分辨率模式以使用高分辨率菜单。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CRT_SWITCH_RESOLUTION_USE_CUSTOM_REFRESH_RATE,
@@ -2283,7 +2319,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CRT_SWITCH_RESOLUTION_USE_CUSTOM_REFRESH_RATE,
-   "在需要时使用配置文件中指定的自定义刷新率。"
+   "如有需要，使用配置文件中指定的自定义刷新率。"
    )
 
 /* Settings > Video > Output */
@@ -2298,16 +2334,16 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_MONITOR_INDEX,
-   "倾向于哪个显示器。0（默认）意味着不偏好任何特定的显示器，1及以上（1是第一个显示器），建议RetroArch使用该特定显示器。"
+   "首选显示器。0（默认）表示不指定特定的显示器；1及以上（1是第一个显示器）表示让 RetroArch 使用指定的显示器。"
    )
 #if defined (WIIU)
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WIIU_PREFER_DRC,
-   "Wii U 掌机优化 (需要重启)"
+   "为 Wii U 掌机优化 (需要重启)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WIIU_PREFER_DRC,
-   "使用掌机视图的精确两倍缩放。如果禁用，则使用原生电视分辨率。"
+   "当使用Wii U掌机显示时，进行两倍缩放。禁用此项则使用原生电视分辨率输出。"
    )
 #endif
 MSG_HASH(
@@ -2316,7 +2352,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_ROTATION,
-   "强制视频旋转。旋转角度于核心内置的旋转角度相叠加。"
+   "强制一定角度的视频旋转。此旋转叠将加于核心自身设置的旋转。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCREEN_ORIENTATION,
@@ -2324,7 +2360,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SCREEN_ORIENTATION,
-   "强制设定操作系统屏幕方向。"
+   "强制设定操作系统的屏幕方向。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_GPU_INDEX,
@@ -2340,7 +2376,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_OFFSET_X,
-   "强制视频水平偏移一定距离。偏移将应用于全局范围。"
+   "强制将视频水平偏移一定距离，此偏移应用于全局范围。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_OFFSET_Y,
@@ -2348,7 +2384,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_OFFSET_Y,
-   "强制视频垂直偏移一定距离。偏移将应用于全局范围。"
+   "强制视频垂直偏移一定距离，此偏移应用于全局范围。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE,
@@ -2356,19 +2392,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_REFRESH_RATE,
-   "屏幕的垂直刷新率。用于计算适当的音频输入速率。\n如果启用了「视频独立线程」，此选项将被忽略。"
+   "屏幕的垂直刷新率。用于计算合适的音频输入率。\n如果启用了「多线程视频渲染」，此选项将被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE_AUTO,
-   "预估屏幕刷新率"
+   "估算屏幕刷新率"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_REFRESH_RATE_AUTO,
-   "估算的显示器刷新率 (Hz)。"
+   "精确估算的屏幕刷新率 (Hz)。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_REFRESH_RATE_AUTO,
-   "你的显示器的准确刷新率（Hz）。这被用来计算音频输入率，公式为audio_input_rate = game input rate * display refresh rate / game refresh rate\n如果核心没有报告任何数值，为了兼容，将假定为NTSC默认值。这个值应该保持接近60Hz，以避免大的音调变化。如果你的显示器不能以60Hz运行或接近60Hz，请禁用VSync，并将其保留在默认值。"
+   "你的显示器的准确刷新率（Hz）。此值来计算音频输入率，公式为：音频输入绿 = 游戏输入率 * 显示刷新率 / 游戏刷新率\n如果核心没有报告任何值，为了兼容性，将假定为 NTSC 制式 的缺省值。\n这个值应该保持接近60Hz，以避免大的音调变化。如果你的显示器不能以60Hz或接近60Hz运行，请禁用VSync，并保持此项为缺省值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_REFRESH_RATE_POLLED,
@@ -2388,11 +2424,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_AUTOSWITCH_REFRESH_RATE_EXCLUSIVE_FULLSCREEN,
-   "在独占全屏模式下"
+   "仅用于独占全屏模式"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_AUTOSWITCH_REFRESH_RATE_WINDOWED_FULLSCREEN,
-   "仅在窗口全屏模式下"
+   "仅用于窗口化全屏模式"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_AUTOSWITCH_REFRESH_RATE_ALL_FULLSCREEN,
@@ -2400,11 +2436,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_AUTOSWITCH_PAL_THRESHOLD,
-   "自动刷新率PAL 阈值"
+   "自动刷新率 PAL 制式阈值"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_AUTOSWITCH_PAL_THRESHOLD,
-   "被视为PAL的最大刷新率。"
+   "PAL 制式的最大刷新率。"
    )
 #if defined(DINGUX) && defined(DINGUX_BETA)
 MSG_HASH(
@@ -2413,35 +2449,43 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_DINGUX_REFRESH_RATE,
-   "设置显示器的垂直刷新率。如果运行PAL游戏，只需设为“50 Hz”就可以得到平滑的体验。"
+   "设置显示器的垂直刷新率。运行PAL制内容时，“50 Hz”可以得到平滑视屏。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_REFRESH_RATE_60HZ,
+   "60 Hz"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_REFRESH_RATE_50HZ,
+   "50 Hz"
    )
 #endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FORCE_SRGB_DISABLE,
-   "强制禁止 sRGB 帧缓冲"
+   "强制禁用 sRGB 帧缓冲对象"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FORCE_SRGB_DISABLE,
-   "强制禁用 sRGB FBO 支持。如果启用 sRGB FBO 的话，某些 Intel 显卡的 OpenGL 驱动在 Windows 上会出问题。此选项可以解决这个问题。"
+   "强制禁用 sRGB 帧缓冲对象支持。某些 Intel 显卡的 Windows OpenGL 驱动在启用 sRGB 帧缓冲对象时会出现画面问题。打开此选项可以绕过这个问题。"
    )
 
 /* Settings > Video > Fullscreen Mode */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN,
-   "全屏模式启动"
+   "以全屏模式启动"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FULLSCREEN,
-   "以全屏模式启动。运行时可以切换到窗口模式。可以用命令行开关覆盖。"
+   "以全屏模式启动。可以在运行时切换到窗口模式。此行为可以用命令行开关覆盖。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOWED_FULLSCREEN,
-   "窗口全屏模式"
+   "窗口化全屏模式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOWED_FULLSCREEN,
-   "如果全屏，偏好使用全屏窗口来阻止显示模式切换。"
+   "使用全屏模式时，使用全屏窗口来防止显示模式切换。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_X,
@@ -2449,7 +2493,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FULLSCREEN_X,
-   "设置非窗口全屏模式的自定义宽度。留空则表示使用桌面分辨率。"
+   "设置非窗口化全屏模式的自定义宽度，留空则表示使用桌面分辨率。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FULLSCREEN_Y,
@@ -2457,15 +2501,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FULLSCREEN_Y,
-   "设置非窗口全屏模式的自定义高度。留空则表示使用桌面分辨率。"
+   "设置非窗口化全屏模式的自定义高度，留空则表示使用桌面分辨率。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FORCE_RESOLUTION,
-   "强制 UWP 平台分辨率"
+   "强制 UWP 分辨率"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_FORCE_RESOLUTION,
-   "强制分辨率为全屏。若设为0，则将使用默认值分辨率3840x2160。"
+   "强制分辨率为全屏尺寸。若设为0，则将使用固定分辨率3840x2160。"
    )
 
 /* Settings > Video > Windowed Mode */
@@ -2476,7 +2520,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_SCALE,
-   "将窗口大小设为核心视图大小的指定倍数。"
+   "将窗口大小设为核心输出视口大小的指定倍数。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_OPACITY,
@@ -2488,7 +2532,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_SHOW_DECORATIONS,
-   "显示视窗装饰"
+   "显示窗口装饰"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_SHOW_DECORATIONS,
@@ -2508,7 +2552,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_SAVE_POSITION,
-   "在“窗口宽度”和“窗口高度”指定的固定尺寸窗口中显示所有内容， 并在关闭RetroArch时保存当前窗口大小和位置。 禁用后窗口大小将根据“窗口缩放”动态设置。"
+   "所有内容都以在“窗口宽度”和“窗口高度”指定的固定尺寸的窗口显示，并在关闭 RetroArch 时保存当前窗口大小和位置。 如果禁用此项，窗口大小将根据“窗口缩放”设置的值动态设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_CUSTOM_SIZE_ENABLE,
@@ -2516,7 +2560,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_CUSTOM_SIZE_ENABLE,
-   "在“窗口宽度”和“窗口高度”指定的大小窗口中显示所有内容。 禁用后，窗口大小将根据“窗口缩放”动态设置。"
+   "所有内容都以在“窗口宽度”和“窗口高度”指定的固定尺寸的窗口显示。如果禁用此项，窗口大小将根据“窗口缩放”设置的值动态设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_WIDTH,
@@ -2540,7 +2584,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_AUTO_WIDTH_MAX,
-   "根据窗口缩放自动调整窗口大小时设置显示窗口的最大宽度。"
+   "设置基于“窗口缩放”值自动调整窗口大小时，窗口的最大宽度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_WINDOW_AUTO_HEIGHT_MAX,
@@ -2548,7 +2592,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_WINDOW_AUTO_HEIGHT_MAX,
-   "设置基于窗口缩放自动调整窗口大小时显示窗口的最大高度"
+   "设置基于“窗口缩放”值自动调整窗口大小时，窗口的最大高度。"
    )
 
 /* Settings > Video > Scaling */
@@ -2559,11 +2603,31 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SCALE_INTEGER,
-   "仅以整数步骤缩放视频。基本尺寸取决于核心报告的几何形状和宽高比。"
+   "仅以整数倍缩放视频。基本尺寸取决于核心报告的尺寸和宽高比。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_AXIS,
    "整数缩放轴"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SCALE_INTEGER_AXIS,
+   "在高度或者宽度上缩放，或者同时同时缩放。半倍缩放仅适用于高分辨率源。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_SCALING,
+   "整数缩放调整"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_SCALE_INTEGER_SCALING,
+   "向下或者向上舍入到下一个整数倍数。“智能”模式在图像剪切过多时使用“欠缩放”。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_SCALING_UNDERSCALE,
+   "欠缩放"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_SCALING_OVERSCALE,
+   "过缩放"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SCALE_INTEGER_SCALING_SMART,
@@ -2579,19 +2643,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO,
-   "自定义宽高比"
+   "配置宽高比"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_ASPECT_RATIO,
-   "视频宽高比浮点值 (宽度/高度)。"
+   "视频宽高比浮点数值 (宽度/高度)。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_CONFIG,
    "配置"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_SQUARE_PIXEL,
+   "1:1 像素宽高比 (%u:%u 显示宽高比)"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_CORE_PROVIDED,
-   "核心提供"
+   "由核心提供"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ASPECT_RATIO_CUSTOM,
@@ -2604,24 +2672,24 @@ MSG_HASH(
 #if defined(DINGUX)
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_DINGUX_IPU_KEEP_ASPECT,
-   "保持纵横比"
+   "保持宽高比"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_DINGUX_IPU_KEEP_ASPECT,
-   "通过内部 IPU 缩放内容时保持 1:1 像素宽高比。如果禁用，图像将被拉伸以填充整个屏幕。"
+   "通过内部 IPU 缩放内容时保持 1:1 像素宽高比。如果禁用此项，图像将被拉伸以填充整个屏幕。"
    )
 #endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_X,
-   "自定义宽高比 X 位置"
+   "自定义宽高比（X轴位置）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_X,
-   "自定义视图偏移用于定义视图的X轴位置。"
+   "自定义视口偏移量，用于决定视口的X轴位置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_Y,
-   "自定义宽高比 Y 位置"
+   "自定义宽高比（Y轴位置）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_Y,
@@ -2629,37 +2697,69 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_X,
-   "视口锚点偏置 X"
+   "视口锚点 X 轴偏置"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_X,
-   "视口锚点偏置 X"
+   "视口锚点 X 轴偏置"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_Y,
-   "视口锚点偏置 Y"
+   "视口锚点 Y 轴偏置"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_Y,
-   "视口锚点偏置 Y"
+   "视口锚点 Y 轴偏置"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_X,
+   "当视口宽度大于内容宽度时，指定内容的水平位置。0.0 表示靠最左；0.5 表示居中；1.0表示靠最右。"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_Y,
+   "当视口宽度大于内容宽度时，指定内容的垂直位置。0.0 表示靠最顶部；0.5 表示居中；1.0表示靠最底部。"
    )
 #if defined(RARCH_MOBILE)
+MSG_HASH(
+   MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "视口锚点 X 轴偏置（竖屏模式）"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "视口锚点 X 轴偏置（竖屏模式）"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "视口锚点 Y 轴偏置（竖屏模式）"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "视口锚点 Y 轴偏置（竖屏模式）"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_X,
+   "当视口宽度大于内容宽度时，指定内容的水平位置。0.0 表示靠最左；0.5 表示居中；1.0表示靠最右。（竖屏模式）"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_BIAS_PORTRAIT_Y,
+   "当视口宽度大于内容宽度时，指定内容的垂直位置。0.0 表示靠最顶部；0.5 表示居中；1.0表示靠最底部。（竖屏模式）"
+   )
 #endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_WIDTH,
-   "自定义宽高比宽度"
+   "自定义宽高比（宽度）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_WIDTH,
-   "自定义视图宽度，如果宽高比设置为「自定义宽高比」，则使用此数值。"
+   "宽高比设置为「自定义宽高比」时，使用的自定义视口宽度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_VIEWPORT_CUSTOM_HEIGHT,
-   "自定义宽高比高度"
+   "自定义宽高比（高度）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_VIEWPORT_CUSTOM_HEIGHT,
-   "自定义视图高度，如果宽高比设置为「自定义宽高比」，则使用此数值。"
+   "宽高比设置为「自定义宽高比」时，使用的自定义视口高度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_CROP_OVERSCAN,
@@ -2667,7 +2767,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_CROP_OVERSCAN,
-   "在图像边缘切掉一些像素，这通常是游戏开发者有意留下的白边或黑边，甚至也有可能包含垃圾像素。"
+   "在图像边缘剪切掉一些像素，这通常是游戏开发者留下的空白边，有时也可能包含垃圾像素。"
    )
 
 /* Settings > Video > HDR */
@@ -2686,15 +2786,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HDR_MAX_NITS,
-   "设置屏幕的峰值亮度(cd/m2)。如果您不知道设备的最大亮度，请查看 RTings 网站。"
+   "设置您的显示设备能达到的峰值亮度(cd/m2)。可在 RTings 网站查找您的显示器峰值亮度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HDR_PAPER_WHITE_NITS,
-   "白点亮度"
+   "纸张白亮度"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HDR_PAPER_WHITE_NITS,
-   "设置白点亮度，即可读文字或亮度在SDR(Standard Dynamic Range)范围的顶部。 有助于根据您环境中的不同照明条件进行调整。"
+   "设置纸张白亮度，即可读文字或 SDR (Standard Dynamic Range) 内容的最高亮度。根据您环境中的不同光照条件进行调整。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HDR_CONTRAST,
@@ -2702,15 +2802,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HDR_CONTRAST,
-   "HDR 的伽玛/对比度控制 HDR 使用颜色并增加图像最亮部分和最黑暗部分之间的总体范围。 人类发展报告对比率越高，差距就越大，而对比率越低，图像就越被冲破越多。 帮助用户根据自己的喜好和他们在显示上感觉最好的方式调整图像。"
+   "HDR的伽马/对比度控制。该功能通过扩展图像中最亮部分和最暗部分之间的整体范围来增强色彩表现。HDR对比度越高，明暗差异越大；对比度越低，图像会显得越灰淡。帮助用户根据个人喜好调整画面，使其在显示屏上呈现最佳效果。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HDR_EXPAND_GAMUT,
-   "扩展色阶"
+   "扩展色域"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HDR_EXPAND_GAMUT,
-   "一旦色域转换为渐变区，决定我们是否应该使用扩展色阶来达到HDR10。"
+   "当色彩空间转换为线性空间后，决定是否应该使用扩展色域以实现HDR10标准。"
    )
 
 /* Settings > Video > Synchronization */
@@ -2721,7 +2821,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_VSYNC,
-   "同步显卡的视频输出帧率和屏幕刷新率。推荐。"
+   "同步显卡的视频输出帧率和屏幕刷新率。建议打开。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SWAP_INTERVAL,
@@ -2729,7 +2829,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SWAP_INTERVAL,
-   "为VSync使用一个自定义的交换间隔。有效地减少显示器刷新率的指定系数。自动 \"根据核心报告的帧率设置系数，当在60赫兹显示器上运行30帧的内容或在120赫兹显示器上运行60帧的内容时，提供更好的帧速率。"
+   "使用自定义交换间隔实现垂直同步。该设置通过指定的系数有效降低显示器刷新率。‘自动’模式会根据核心报告的帧率自动设置系数，从而优化运行时的帧节奏，例如在 60Hz 显示器上运行 30fps 内容，或在 120Hz 显示器上运行 60fps 内容时。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_SWAP_INTERVAL_AUTO,
@@ -2737,15 +2837,35 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_ADAPTIVE_VSYNC,
-   "自适应垂直同步 (VSync)"
+   "自适应垂直同步"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_ADAPTIVE_VSYNC,
-   "垂直同步默认启用，除非性能降到低于目标刷新率。当性能低于实时水平，这可以最大限度地减少卡顿，并且更加节能。"
+   "垂直同步默认启用，除非性能降到低于目标刷新率。该机制可以在性能低于实时要求时减少卡顿，并且效能更高。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY,
+   "帧延迟"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_FRAME_DELAY,
+   "降低延迟，但是带来增高的视频卡顿的风险。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_VIDEO_FRAME_DELAY,
+   "设置在视频呈现后，运行核心前的休眠毫秒数。此举可降低延迟，但会增加卡顿的风险。数值≥20时将被视为帧时间百分比。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY_AUTO,
    "自动帧延迟"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_VIDEO_FRAME_DELAY_AUTO,
+   "动态调整有效‘帧延迟’。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_VIDEO_FRAME_DELAY_AUTO,
+   "尝试维持设定的‘帧延迟’目标的同时尽量减少丢帧。当‘帧延迟’为0（自动）时，初始基准值为3/4帧时间。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY_AUTOMATIC,
@@ -2753,39 +2873,39 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_FRAME_DELAY_EFFECTIVE,
-   "生效"
+   "当前生效"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HARD_SYNC,
-   "强制 GPU 同步"
+   "硬性 GPU 同步"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HARD_SYNC,
-   "强制同步 CPU 和 GPU，以性能为代价换取低延迟。"
+   "硬性同步 CPU 和 GPU，以性能为代价换取低延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_HARD_SYNC_FRAMES,
-   "强制 GPU 同步帧数"
+   "硬性 GPU 同步帧数"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_HARD_SYNC_FRAMES,
-   "当开启「强制 GPU 同步」时，CPU 可提前 GPU 多少帧。"
+   "设置当开启「硬性 GPU 同步」时，CPU 可超前运行的帧数。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VIDEO_HARD_SYNC_FRAMES,
-   "设置在使用 \"GPU 强制同步 \"时，CPU可以领先GPU多少帧。最大是3。\n0：立即同步到GPU。\n1：同步到前一帧。\n2：以此类推。"
+   "设置当开启「硬性 GPU 同步」时，CPU 可超前运行的帧数。最大值为3。\n0：立即同步到 GPU。\n1：同步到前一帧。\n2：以此类推。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VRR_RUNLOOP_ENABLE,
-   "精确同步游戏帧率 (G-Sync, FreeSync)"
+   "同步到精确内容帧率 (G-Sync, FreeSync)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VRR_RUNLOOP_ENABLE,
-   "不偏离请求核心时间。用于可变刷新率屏幕 (G-Sync，FreeSync，HDMI 2.1 VRR)。"
+   "不对核心要求的时序进行任何偏移。适用于可变刷新率屏幕 (G-Sync，FreeSync，HDMI 2.1 VRR)。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_VRR_RUNLOOP_ENABLE,
-   "同步到精确的游戏帧速率。这个选项相当于强制1倍速执行，同时仍然允许快进。不偏离核心要求的刷新率，没有声音动态速率控制。"
+   "同步至精确内容帧率。此选项等效于强制保持1倍速播放，同时仍允许快进功能。严格遵循核心请求的刷新率，对声音不启用动态速率控制。"
    )
 
 /* Settings > Audio */
@@ -2825,6 +2945,10 @@ MSG_HASH(
    "更改音频同步设置。"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_MIDI_SETTINGS,
+   "MIDI"
+   )
+MSG_HASH(
    MENU_ENUM_SUBLABEL_MIDI_SETTINGS,
    "更改 MIDI 设置。"
    )
@@ -2838,7 +2962,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SOUNDS,
-   "菜单声音"
+   "菜单音效"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SOUNDS,
@@ -2858,23 +2982,39 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MIXER_MUTE,
-   "静音混音器"
+   "混音器静音"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RESPECT_SILENT_MODE,
-   "避免干扰静音模式"
+   "遵循安静模式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESPECT_SILENT_MODE,
-   "静音模式下静音所有音频。"
+   "在安静模式下静音所有音频。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_FASTFORWARD_MUTE,
+   "快进时静音"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_FASTFORWARD_MUTE,
-   "快进时自动静音。"
+   "当使用快进功能时自动静音。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_FASTFORWARD_SPEEDUP,
+   "快进时音频加速"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_FASTFORWARD_SPEEDUP,
-   "快进时加快音频速度。防止噼啪声，但会改变音调。"
+   "快进时加快音频速度。防止爆音，但时会改变音调。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_REWIND_MUTE,
+   "回溯时静音"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_AUDIO_REWIND_MUTE,
+   "当使用回溯功能时自动静音。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_VOLUME,
@@ -2882,11 +3022,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_VOLUME,
-   "音量增益 (分贝)。0 分贝为正常音量，没有增益。"
+   "音量增益 (分贝)。0 分贝为正常音量，不应用增益。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_VOLUME,
-   "音频音量，以dB表示。0dB是正常音量，不应用增益。增益可以在运行时用输入音量增大/输入音量减小来控制。"
+   "音频音量，以分贝表示。0 分贝是正常音量，不应用增益。增益可以在运行时用 提高输入音量/降低输入音量 来控制。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_MIXER_VOLUME,
@@ -2894,7 +3034,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MIXER_VOLUME,
-   "全局混音器音量 (分贝)。0 分贝为正常音量，无增益。"
+   "全局混音器音量 (分贝)。0 分贝为正常音量，不应用增益。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_DSP_PLUGIN,
@@ -2910,15 +3050,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_DSP_PLUGIN_REMOVE,
-   "卸载所有活动的音频 DSP 插件。"
+   "卸载所有激活的音频 DSP 插件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_WASAPI_EXCLUSIVE_MODE,
-   "WASAPI 排他模式"
+   "WASAPI 独占模式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_WASAPI_EXCLUSIVE_MODE,
-   "允许 WASAPI 驱动程序独占控制音频设备。如果禁用，它将使用共享模式。"
+   "允许 WASAPI 驱动程序独占音频设备。如果禁用，则使用共享模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_WASAPI_FLOAT_FORMAT,
@@ -2926,7 +3066,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_WASAPI_FLOAT_FORMAT,
-   "如果音频设备支持 WASAPI 驱动程序，使用浮点格式。"
+   "如果音频设备支持，为 WASAPI 驱动程序使用浮点格式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_WASAPI_SH_BUFFER_LENGTH,
@@ -2934,7 +3074,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_WASAPI_SH_BUFFER_LENGTH,
-   "在共享模式下使用 WASAPI 驱动程序时，中间缓冲区的长度 (帧)。"
+   "在共享模式下使用 WASAPI 驱动时，中间缓冲区的长度 (帧数)。"
    )
 
 /* Settings > Audio > Output */
@@ -2953,31 +3093,35 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_DEVICE,
-   "覆盖音频驱动程序使用的默认音频设备。依赖于驱动程序。"
+   "覆盖音频驱动程序使用的默认音频设备，此项依赖于驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DEVICE,
-   "覆盖音频驱动程序使用的默认音频设备。依赖于驱动程序。"
+   "覆盖音频驱动程序使用的默认音频设备，此项依赖于驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DEVICE_ALSA,
-   "用于ALSA驱动的自定义PCM设备值。"
+   "自定义 ALSA 驱动的 PCM 设备值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DEVICE_OSS,
-   "OSS驱动的自定义路径（例如，/dev/dsp）。"
+   "自定义 OSS 驱动的路径值（例如 /dev/dsp）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DEVICE_JACK,
-   "JACK驱动的自定义端口名（例如，system:playback1,system:playback_2）。"
+   "自定义 JACK 驱动的端口名（例如 system:playback1,system:playback_2）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_DEVICE_RSOUND,
-   "RSound驱动程序的RSound服务器的自定义IP地址。"
+   "自定义 RSound 驱动的 RSound 服务器IP地址。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_LATENCY,
    "音频延迟 (毫秒)"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_AUDIO_LATENCY,
+   "最大音频延迟的毫秒数。驱动程序会尝试将实际延迟控制在此值的50%以内。若音频驱动无法支持设定的延迟值，可能无法生效。"
    )
 
 #ifdef HAVE_MICROPHONE
@@ -2988,7 +3132,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_ENABLE,
-   "在支持的内核中启用音频输入。如果内核不使用麦克风，则不影响效能。"
+   "在支持的核心中启用音频输入。如果核心不使用麦克风，此项没有额外损耗。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_DEVICE,
@@ -2996,11 +3140,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_DEVICE,
-   "覆盖麦克风驱动程序使用的默认输入设备。这取决于驱动程序。"
+   "覆盖麦克风驱动程序使用的默认输入设备，此项依赖于驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MICROPHONE_DEVICE,
-   "覆盖麦克风驱动程序使用的默认输入设备。这取决于驱动程序。"
+   "覆盖麦克风驱动程序使用的默认输入设备，此项依赖于驱动程序。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_RESAMPLER_QUALITY,
@@ -3008,7 +3152,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_RESAMPLER_QUALITY,
-   "降低此值可以提高性能、降低延迟但会降低音频质量，增加此值会得到更好的音质、但是性能会下降和延迟会增加。"
+   "降低此值可以提高性能、降低延迟但会降低音频质量；增加此值会得到更好的音频质量，但是会影响性能和增加延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_INPUT_RATE,
@@ -3016,7 +3160,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_INPUT_RATE,
-   "音频输入采样率，如果一个核心没有要求一个指定的数值，就会使用。"
+   "音频输入采样率。如果核心没有要求特定的数值，则使用此值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_LATENCY,
@@ -3024,15 +3168,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_LATENCY,
-   "希望的音频输入延时，单位是毫秒。如果麦克风驱动程序不能提供给定的延迟，则可能不被接受。"
+   "期望的音频输入延时，以毫秒计。如果麦克风驱动程序不能支持设定的延迟，则可能无法生效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_EXCLUSIVE_MODE,
-   "WASAPI 排他模式"
+   "WASAPI 独占模式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_WASAPI_EXCLUSIVE_MODE,
-   "当使用WASAPI麦克风驱动时，允许RetroArch对麦克风设备进行独占控制。如果禁用，RetroArch将使用共享模式代替。"
+   "当使用 WASAPI 麦克风驱动时，允许 RetroArch 独占麦克风设备。如果禁用此项，RetroArch 将使用共享模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_FLOAT_FORMAT,
@@ -3040,7 +3184,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_WASAPI_FLOAT_FORMAT,
-   "如果你的音频设备支持的话，为WASAPI驱动程序使用浮点输入。"
+   "如果音频设备支持，为 WASAPI 驱动程序使用浮点格式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MICROPHONE_WASAPI_SH_BUFFER_LENGTH,
@@ -3048,7 +3192,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MICROPHONE_WASAPI_SH_BUFFER_LENGTH,
-   "在共享模式下使用 WASAPI 驱动程序时，中间缓冲区的长度 (帧)。"
+   "在共享模式下使用 WASAPI 驱动时，中间缓冲区的长度 (帧数)。"
    )
 #endif
 
@@ -3060,15 +3204,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_QUALITY,
-   "降低此值可以提高性能、降低延迟但会降低音频质量，增加此值会得到更好的音质、但是性能会下降和延迟会增加。"
+   "降低此值可以提高性能、降低延迟但会降低音频质量；增加此值会得到更好的音频质量，但是会影响性能和增加延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_OUTPUT_RATE,
-   "输出率 (Hz)"
+   "输出频率 (Hz)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_OUTPUT_RATE,
-   "音频输出的采样率。"
+   "音频输出采样率。"
    )
 
 /* Settings > Audio > Synchronization */
@@ -3079,31 +3223,31 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_SYNC,
-   "同步音频。推荐。"
+   "同步音频输出。建议打开。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_MAX_TIMING_SKEW,
-   "最大时序偏斜"
+   "最大时序偏移"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_MAX_TIMING_SKEW,
-   "音频输入率的最大变化值。增加此值会使时间变化可以在很大的范围内变化，但是会导致音调不准 (比如在 NTSC 显示器上运行 PAL 核心)。"
+   "音频输入速率的最大变化范围。增大此值可允许更大幅度的时序调整，但会导致音调失真（例如在 NTSC 显示器上运行 PAL 制式核心时）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_MAX_TIMING_SKEW,
-   "最大的音频时间偏移。\n定义了输入速率的最大变化。你可能想增加它，以使时间发生非常大的变化，例如在NTSC显示器上运行PAL核心，代价是不准确的音频音高。输入率定义为：输入率*（1.0 +/-（最大定时偏移））。"
+   "最大音频时序偏移。\n定义输入速率的最大变化范围。在 NTSC 制的显示设备上运行 PAL 制 的核心时，可能需要增大此值以允许较大的时序变化，但是代价是音调会失真。\n输入速率计算公式：\n原始输入速率 * (1.0 +/- (最大时序偏移))"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_RATE_CONTROL_DELTA,
-   "动态音频率控制"
+   "动态音频速率控制"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_RATE_CONTROL_DELTA,
-   "同步音频和视频时帮助平滑时间错位。请注意，如果禁用，激活不可能获得良好的同步效果。"
+   "有助于平滑音视频同步时的时序瑕疵。需注意，若禁用此功能，几乎无法实现精准同步。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUDIO_RATE_CONTROL_DELTA,
-   "将此设置为0，可禁用速率控制。任何其他的值都可以控制音频速率控制差值。\n定义了输入率可以动态调整的程度。输入率被定义为： \n输入率 *（1.0 +/-（速率控制差值））。"
+   "若将此设置为0，则表示禁用速率控制。其他非零值表示音频速率控制的变化范围，定义了输入速率可以多大程度的动态调整。输入速率计算公式：\n原始输入速率 * (1.0 +/- (速率控制范围))"
    )
 
 /* Settings > Audio > MIDI */
@@ -3118,7 +3262,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MIDI_INPUT,
-   "设置输入设备（特定于驱动程序）。当设置为 \"关闭 \"时，MIDI输入将被禁用。设备名称也可以输入。"
+   "设置输入设备（特定于驱动程序）。设置为 ‘关闭 ’ 即禁用 MIDI 输入。设备名称也可以直接键入。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIDI_OUTPUT,
@@ -3130,7 +3274,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_MIDI_OUTPUT,
-   "设置输出设备（特定于驱动程序）。当设置为 \"关闭 \"时，MIDI输出将被禁用。设备名称也可以输入。\n当MIDI输出被启用并且核心和游戏/应用程序支持MIDI输出时，一些或所有声音（取决于游戏/应用程序）将由MIDI设备产生。在 \"空 \"MIDI驱动的情况下，这意味着这些声音将不会被听到。"
+   "设置输出设备（特定于驱动程序）。设置为 ‘关闭’ 即禁用 MIDI输出。设备名称也可以直接键入。\n当 启用 MIDI 输出并且核心和游戏/应用支持 MIDI 输出时，部分或所有声音（取决于游戏/应用）将由 MIDI 设备产生。如果 MIDI 驱动设为  ‘空’ ，这些声音将不会输出。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIDI_VOLUME,
@@ -3145,7 +3289,7 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_MIXER_STREAM,
-   "混合流 #%d: %s"
+   "混音流 #%d: %s"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_PLAY,
@@ -3153,7 +3297,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_PLAY,
-   "开始播放音频流。完成后将其从完全内存中删除。"
+   "开始播放音频流。播放完成后将其从内存中删除。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_PLAY_LOOPED,
@@ -3161,7 +3305,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_PLAY_LOOPED,
-   "开始播放音频流。完成后再次循环播放此音频流。"
+   "开始播放音频流。播放完成后循环播放。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_PLAY_SEQUENTIAL,
@@ -3169,7 +3313,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_PLAY_SEQUENTIAL,
-   "开始播放音频流。完成后跳转到下一个音频流，并重复这种行为。适合专辑的循环播放模式。"
+   "开始播放音频流。播放完成后按顺序跳转到下一个音频流，适合专辑播放模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_STOP,
@@ -3177,7 +3321,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_STOP,
-   "这将停止播放音频流，但不将其从内存中删除。你可以通过选择「播放」来再次播放。"
+   "停止播放音频流，但不将其从内存中删除。可以通过选择 ‘播放’ 来再次播放。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_REMOVE,
@@ -3185,7 +3329,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_REMOVE,
-   "这将停止播放音频流，并将其完全从内存中删除。"
+   "停止播放音频流，并将其从内存中完全删除。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MIXER_ACTION_VOLUME,
@@ -3194,6 +3338,26 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MIXER_ACTION_VOLUME,
    "调整音频流的音量。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_STREAM_STATE_NONE,
+   "状态: 不可用"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_STREAM_STATE_STOPPED,
+   "状态: 已停止"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_STREAM_STATE_PLAYING,
+   "状态: 正在播放"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_STREAM_STATE_PLAYING_LOOPED,
+   "状态: 正在播放 (循环)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_AUDIO_STREAM_STATE_PLAYING_SEQUENTIAL,
+   "状态: 正在播放 (顺序)"
    )
 
 /* Settings > Audio > Menu Sounds */
@@ -3204,7 +3368,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUDIO_ENABLE_MENU,
-   "在菜单中播放同步音频流。"
+   "在菜单中同时播放音频流。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SOUND_OK,
@@ -3224,7 +3388,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SOUND_SCROLL,
-   "启用 \"滚动 \"声音"
+   "启用「滚屏」声音"
    )
 
 /* Settings > Input */
@@ -3235,7 +3399,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_MAX_USERS,
-   "支持的最大玩家数量。"
+   "RetroArch 支持的最大用户数量。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_POLL_TYPE_BEHAVIOR,
@@ -3243,19 +3407,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_POLL_TYPE_BEHAVIOR,
-   "设置轮询方式。轮询是一种 Cpu 定时检查输入输出设备的方式。根据设备的性能，设置为「较早」或「稍晚」可以降低延迟。"
+   "设置 RetroArch 的输入轮询方式。选择"较早"或"较晚"模式可能降低输入延迟，具体效果取决于系统配置"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_POLL_TYPE_BEHAVIOR,
-   "影响在RetroArch中输入轮询的方式。\n较早——在帧处理之前执行。\n正常-在请求轮询时进行执行。\n稍晚 - 对每帧的第一次输入状态请求时执行。\n设置为“较早”或“稍晚”可降低延迟，取决于您的配置。当进行连线游戏时，此设定将被忽略。"
+   "该设置影响 RetroArch 内部输入轮询机制。\n‘较早’——在帧处理之前执行输入轮询；\n‘常规’——按请求时间执行输入轮询。\n‘延迟’——每帧首次请求输入状态时执行轮询。\n选择"较早"或"较晚"模式可能降低输入延迟，具体效果取决于系统配置。当进行联机游戏时，此设置将被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAP_BINDS_ENABLE,
-   "重映射核心键位控制"
+   "核心键位映射"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_REMAP_BINDS_ENABLE,
-   "用当前核心的重映射绑定覆盖输入绑定。"
+   "使用当前核心的键位映射设置覆盖默认输入绑定。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_REMAP_SORT_BY_CONTROLLER_ENABLE,
+   "手柄键位映设"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_REMAP_SORT_BY_CONTROLLER_ENABLE,
+   "根据连接不同的手柄分别保存键位映射设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTODETECT_ENABLE,
@@ -3263,7 +3435,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_AUTODETECT_ENABLE,
-   "自动配置已有配置文件的手柄，即插即玩。"
+   "自动配置已有配置文件的手柄，即插即用。"
    )
 #if defined(HAVE_DINPUT) || defined(HAVE_WINRAWINPUT)
 MSG_HASH(
@@ -3272,7 +3444,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_NOWINKEY_ENABLE,
-   "在应用中保留 Win 组合键。"
+   "在应用中保留 Win 键组合键。"
    )
 #endif
 #ifdef ANDROID
@@ -3282,11 +3454,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_SELECT_PHYSICAL_KEYBOARD,
-   "将此设备用作物理键盘，而不是一个游戏手柄。"
+   "将此设备用作物理键盘，而不是游戏手柄。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_SELECT_PHYSICAL_KEYBOARD,
-   "如果RetroArch将硬件键盘识别为某种类型的游戏手柄， 此设置可以用来强制将错误识别的设备作为键盘处理。\n如果您试图在某些安卓电视设备中模拟计算机，同时也拥有一个可附加到方框的物理键盘，这将是很有用的。"
+   "如果 RetroArch 将硬件键盘识别为某种类型的游戏手柄，此设置可以用来强制 RetroArch 将错误识别的设备作为键盘处理。\n如果您想在某些安卓电视设备中模拟某种计算机，同时也拥有一个可连接的物理键盘，此设置可能会有用。"
    )
 #endif
 MSG_HASH(
@@ -3295,15 +3467,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_SENSORS_ENABLE,
-   "如果硬件支持，则启用加速度计，陀螺仪和光线传感器。可能会影响性能或增加功耗。"
+   "如果当前硬件支持，启用加速度计，陀螺仪和光线传感器。在某些平台上可能会影响性能或增加功耗。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTO_MOUSE_GRAB,
-   "自动捕捉鼠标。"
+   "自动捕获鼠标"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_AUTO_MOUSE_GRAB,
-   "在应用程序焦点上启用鼠标捕捉"
+   "当应用程序获得焦点时启用鼠标捕获。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS,
@@ -3311,15 +3483,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_AUTO_GAME_FOCUS,
-   "启动和恢复游戏时总是启用「游戏焦点」模式。 当设置为「检测」时，如果当前核心实现前端键盘回调功能，将启用选项。"
+   "启动和恢复游戏时总是启用「游戏焦点」模式。当设置为‘检测’时，如果当前核心实现了前端键盘回调功能，则启用「游戏焦点」模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS_OFF,
-   "关"
+   "关闭"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS_ON,
-   "开"
+   "打开"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_AUTO_GAME_FOCUS_DETECT,
@@ -3327,11 +3499,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PAUSE_ON_DISCONNECT,
-   "当控制器断开连接时暂停游戏"
+   "当控制器断开连接时暂停内容"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PAUSE_ON_DISCONNECT,
-   "当任何控制器断开连接时暂停内容，按Start恢复。"
+   "当任何控制器断开连接时暂停内容，按开始键恢复。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_BUTTON_AXIS_THRESHOLD,
@@ -3339,19 +3511,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BUTTON_AXIS_THRESHOLD,
-   "当使用“摇杆到数字化”时，要触发按钮，必须倾斜多远。"
+   "当使用“模拟到数字”转换时，模拟摇杆转动多少角度被认定为触发按键按下动作。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_DEADZONE,
-   "模拟输入死区"
+   "模拟摇杆死区"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_ANALOG_DEADZONE,
-   "忽略摇杆在死区值以内的移动。"
+   "摇杆转动角度小于此值时忽略移动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_SENSITIVITY,
-   "模拟输入灵敏度"
+   "模拟摇杆灵敏度"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_ANALOG_SENSITIVITY,
@@ -3363,7 +3535,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BIND_TIMEOUT,
-   "继续下一个绑定前等待的秒数。"
+   "继续处理下一个绑定前等待的秒数。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_BIND_HOLD,
@@ -3375,11 +3547,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_INPUT_BIND_PRESS,
-   "按压键盘、鼠标或控制器"
+   "按下键盘、鼠标或控制器"
    )
 MSG_HASH(
    MSG_INPUT_BIND_RELEASE,
-   "释放按键和按钮！"
+   "松开按键和按钮！"
    )
 MSG_HASH(
    MSG_INPUT_BIND_TIMEOUT,
@@ -3387,7 +3559,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MSG_INPUT_BIND_HOLD,
-   "长按"
+   "按住"
    )
 
 MSG_HASH(
@@ -3395,8 +3567,28 @@ MSG_HASH(
    "连发"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_ENABLE,
+   "禁用此项停止所有连发操作。"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_PERIOD,
-   "连发周期"
+   "连发键信号周期"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_PERIOD,
+   "连发键按住时的连发信号周期，以帧数计。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_DUTY_CYCLE,
+   "连发键信号占空比"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_DUTY_CYCLE,
+   "一个连发键信号周期中，按键按住的时间（帧数）。如果此数值大于或者等于连发键信号周期，则表示按键永远不会被松开。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_TURBO_DUTY_CYCLE_HALF,
+   "一半周期"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_MODE,
@@ -3408,23 +3600,67 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TURBO_MODE_CLASSIC,
-   "经典"
+   "经典模式"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TURBO_MODE_CLASSIC_TOGGLE,
-   "经典(切换)"
+   "经典模式 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TURBO_MODE_SINGLEBUTTON,
-   "单个按钮 (翻转)"
+   "单键模式 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TURBO_MODE_SINGLEBUTTON_HOLD,
-   "单个按钮 (长按)"
+   "单键模式 (按住)"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_CLASSIC,
+   "经典模式，双按键操作的模式。按住一个按键的同时按一下连发切换键，开始连发，松开按键连发失效。\n连发切换键可以在 [设置/输入/端口 X 控制] 中进行设置。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_CLASSIC_TOGGLE,
+   "经典切换模式，双按键操作的模式。按住一个按键的同时按一下连发切换键，打开/关闭此按键的连发功能。\n连发切换键可以在 [设置/输入/端口 X 控制] 中进行设置。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_SINGLEBUTTON,
+   "切换模式。按一下连发切换键开始自动连发指定的缺省连发键，再按一下连发切换键取消连发。\n连发切换键可以在 [设置/输入/端口 X 控制] 中进行设置。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_HELP_TURBO_MODE_SINGLEBUTTON_HOLD,
+   "按住模式。按住连发切换键开始自动连发指定的缺省连发键，松开连发切换键停止连发。\n连发切换键可以在 [设置/输入/端口 X 控制] 中进行设置。\n要模拟早期家用机的连发功能，可以把连发切换键和缺省连发键设为同一个按键。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BIND,
+   "连发切换键"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_BIND,
+   "RetroPad 全能手柄连发切换键绑定。留空则使用端口指定的按键绑定。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_BUTTON,
+   "连发键"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_BUTTON,
+   "‘单键模式’下需要进行连发的目标按键。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO_ALLOW_DPAD,
+   "允许方向键连发"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_ALLOW_DPAD,
+   "如果启用此项，数字方向键输入也可以设为连发键。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_TURBO_FIRE_SETTINGS,
-   "连发"
+   "自动开火"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_TURBO_FIRE_SETTINGS,
+   "更改自动开火设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_HAPTIC_FEEDBACK_SETTINGS,
@@ -3440,7 +3676,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_MENU_SETTINGS,
-   "更改菜单控制设置。"
+   "更改菜单设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BINDS,
@@ -3456,11 +3692,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_RETROPAD_BINDS,
-   "更改物理输入设备映射到虚拟全能手柄 (RetroPad) 的方式。 如果输入设备被正确地识别并自动配置，用户可能不需要使用此菜单。\n注意：对于核心特定的输入设备配置更改，请使用快速菜单的“控制”子菜单。"
+   "更改虚拟全能手柄 (RetroPad) 如何映射到物理输入设备。如果输入设备被正确地识别和自动配置，可能不需要使用此菜单。\n注意：要更改核心特定的输入配置，请用快速菜单的‘控制’子菜单。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_RETROPAD_BINDS,
-   "Libretro 使用一个名叫“全能手柄 (RetroPad)”的虚拟抽像手柄，在前端 (例如 RetroArch) 和核心之间通讯。 此菜单决定虚拟的全能手柄 (RetroPad) 如何映射到物理输入设备以及这些设备使用的虚拟输入端口。\n如果物理输入设备被正确地识别并自动配置，用户可能根本不需要使用此菜单。对于核心特定的输入配置更改，请使用快速菜单的“控制”子菜单。"
+   "Libretro 使用一个名为“全能手柄 (RetroPad)”的虚拟手柄抽象层，在前端 (例如 RetroArch) 和核心之间通讯。此菜单决定虚拟全能手柄 (RetroPad) 如何映射到物理输入设备，以及这些设备使用的虚拟输入端口。\n如果物理输入设备被正确地识别和自动配置，可能根本不需要使用此菜单。要更改核心特定的输入配置，请用快速菜单的‘控制’子菜单。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_USER_BINDS,
@@ -3472,15 +3708,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_USER_REMAPS,
-   "更改特定核心输入映射。"
+   "更改核心特定的输入映射。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ANDROID_INPUT_DISCONNECT_WORKAROUND,
-   "Android断开连接解决方法"
+   "Android 断连解决方案"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ANDROID_INPUT_DISCONNECT_WORKAROUND,
-   "处理控制器断开连接和重新连接，防止2名玩家使用相同的控制器。"
+   "控制器断连重连的临时解决方案，该方案会阻碍两个使用相同控制器的玩家同时操作。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_QUIT_PRESS_TWICE,
@@ -3488,7 +3724,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_QUIT_PRESS_TWICE,
-   "按两次「退出」快捷键退出全能模拟器。"
+   "要求连按两次「退出」快捷键来退出 RetroArch。"
    )
 
 /* Settings > Input > Haptic Feedback/Vibration */
@@ -3499,7 +3735,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ENABLE_DEVICE_VIBRATION,
-   "启用设备振动 (对支持的核心)"
+   "启用设备振动 (对于支持的核心)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_RUMBLE_GAIN,
@@ -3518,7 +3754,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_UNIFIED_MENU_CONTROLS,
-   "在菜单和游戏中使用相同的控制配置。应用于键盘。"
+   "在菜单和游戏中使用相同的控制配置（针对于键盘操作）。即使用全能手柄按键映射中的配置按键，以手柄方式下的默认快捷键操作菜单，禁用 RetroArch 内置的针对键盘设置的默认菜单快捷键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DISABLE_INFO_BUTTON,
@@ -3526,7 +3762,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DISABLE_INFO_BUTTON,
-   "如果启用信息按钮按下将被忽略。"
+   "启用此项忽略「信息」按键行为。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DISABLE_SEARCH_BUTTON,
@@ -3534,7 +3770,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DISABLE_SEARCH_BUTTON,
-   "如果启用搜索按钮按键将被忽略。"
+   "启用此项忽略「搜索」按键行为。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_DISABLE_LEFT_ANALOG_IN_MENU,
+   "在菜单中禁用左摇杆"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_DISABLE_LEFT_ANALOG_IN_MENU,
+   "禁用左模拟摇杆进行菜单导航。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_DISABLE_RIGHT_ANALOG_IN_MENU,
+   "在菜单中禁用右摇杆"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_DISABLE_RIGHT_ANALOG_IN_MENU,
+   "禁用右模拟摇杆进行菜单导航。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_INPUT_SWAP_OK_CANCEL,
@@ -3542,58 +3794,58 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_INPUT_SWAP_OK_CANCEL,
-   "交换确认键和取消键的键位。关闭为日版键位，开启则为美版键位。"
+   "交换确认键和取消键的键位。关闭为日式风格键位，开启则为美式风格键位。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_INPUT_SWAP_SCROLL,
-   "菜单交换滚动按钮"
+   "对调菜单滚动按键"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_INPUT_SWAP_SCROLL,
-   "交换滚动按钮。禁用滚动10个以L/R 和 L2/R2 字母表示的滚动项目。"
+   "对调滚屏按键。禁用此项时，使用L/R键一次滚动10个项目，使用L2/R2键以字母顺序滚动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ALL_USERS_CONTROL_MENU,
-   "全部用户控制菜单"
+   "允许所有用户控制菜单"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_ALL_USERS_CONTROL_MENU,
-   "允许任何用户打开菜单。如果禁用，则只有用户 1 能打开菜单。"
+   "允许任何用户控制菜单。如果禁用此项，则只有用户 1 可以控制菜单。"
    )
 
 /* Settings > Input > Hotkeys */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_ENABLE_HOTKEY,
-   "启用快捷键"
+   "快捷键组合键"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_ENABLE_HOTKEY,
-   "分配时，必须先持有'快捷键启用'密钥'，然后才能识别其他热键。 允许控制器按钮映射到热键函数，而不影响正常输入。 将修饰符分配给控制器将不需要键盘快捷键，反之亦然，但两种修饰符都适用于两种设备。"
+   "如果指定了快捷键组合键，必须先按住该键，再按其它快捷键才能被识别。此功能允许将控制器按键设为快捷功能键，而不影响普通正常输入。如果仅分配了控制器上的组合键，则键盘上的快捷键无需组合此键使用，反之亦然；但可以同时为两种设备设置组合键。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_ENABLE_HOTKEY,
-   "如果这个快捷键绑定到键盘，请按键或joyaxis， 所有其他快捷键都将被禁用，除非该快捷键同时保持。\n这对RETRO_KEYBOARD中心实现非常有用，可以查询键盘的大片区域。 如果热键不宜进入。"
+   "如果此热键绑定到键盘、手柄按键或者摇杆，其他快捷键将会失效，除非同时按住此键。\n此设计特别适用于以 RETRO_KEYBOARD 为核心的实现方案（例如需扫描键盘大面积区域时），可避免热键操作干扰正常输入流程。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_BLOCK_DELAY,
-   "快捷键启用延迟 (帧)"
+   "快捷键组合键延迟 (帧)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_HOTKEY_BLOCK_DELAY,
-   "按“快捷键启用”键后，在正常输入被阻止之前添加帧延迟。 允许在映射到另一个动作时从 '快捷键启用' 键的正常输入(例如RetroPad '选择')。"
+   "按住‘快捷键启用’键后，在正常输入被阻止之前添加一定的帧数延迟。这允许在‘快捷键启用键’同时也绑定到了一个的正常输入（例如 RetroPad ‘选择’键）时，正常输入也能被识别。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_HOTKEY_DEVICE_MERGE,
-   "快捷键设备类型融合"
+   "融合快捷键设备"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_HOTKEY_DEVICE_MERGE,
-   "如果键盘和控制器设备类型中的任何类型有'开启'快捷键'，则阻止所有快捷键。"
+   "如果键盘和控制器设备类型中的任何一个开启了'快捷键组合键'，则没有按住该键时阻止所有设备的快捷键。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO,
-   "菜单切换 (控制器组合)"
+   "菜单切换 (控制器组合键)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_MENU_ENUM_TOGGLE_GAMEPAD_COMBO,
@@ -3601,15 +3853,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_MENU_TOGGLE,
-   "菜单开关"
+   "菜单切换"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_MENU_TOGGLE,
+   "在菜单和运行内容之间切换。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_QUIT_GAMEPAD_COMBO,
-   "退出 (控制器组合)"
+   "退出 (控制器组合键)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_QUIT_GAMEPAD_COMBO,
-   "退出RetroArch的控制器組合鍵"
+   "退出 RetroArch 的控制器组合键。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_QUIT_KEY,
@@ -3617,11 +3873,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_QUIT_KEY,
-   "关闭全能模拟器，确保所有存档数据和配置文件已被保存到磁盘。"
+   "关闭 RetroArch，同时确保所有存档数据和配置文件保存到磁盘。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_CLOSE_CONTENT_KEY,
-   "关闭游戏"
+   "关闭内容"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_CLOSE_CONTENT_KEY,
@@ -3633,11 +3889,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_RESET,
-   "从头重新开始游戏。"
+   "重新开始运行当前内容。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FAST_FORWARD_KEY,
-   "快进 (开关)"
+   "快进 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_FAST_FORWARD_KEY,
@@ -3645,15 +3901,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FAST_FORWARD_HOLD_KEY,
-   "快进 (保持)"
+   "快进 (按住)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_FAST_FORWARD_HOLD_KEY,
-   "按住按键时启用快进模式。松开按键后以正常速度运行游戏。"
+   "按住按键时进行快进。松开按键恢复正常速度运行。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SLOWMOTION_KEY,
-   "慢放 (开关)"
+   "慢放 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SLOWMOTION_KEY,
@@ -3661,11 +3917,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SLOWMOTION_HOLD_KEY,
-   "慢放 (保持)"
+   "慢放 (按住)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SLOWMOTION_HOLD_KEY,
-   "按住按键时启用慢动作模式。松开按键时以正常速度运行游戏。"
+   "按住按键时进入慢动作模式。松开按键恢复正常速度运行。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_REWIND,
@@ -3673,19 +3929,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_REWIND_HOTKEY,
-   "长按快捷键时回溯当前内容。必须启用\"回溯功能\"。"
+   "按住按键时进行回溯，必须先启用‘回溯支持’。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_PAUSE_TOGGLE,
    "暂停"
    )
 MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_PAUSE_TOGGLE,
+   "在暂停和继续之间切换。"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FRAMEADVANCE,
-   "框架进度"
+   "步进"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_FRAMEADVANCE,
-   "暂停时提升一个帧的内容。"
+   "暂停时向前运行一帧。"
    )
 
 MSG_HASH(
@@ -3715,19 +3975,19 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_LOAD_STATE_KEY,
-   "加载状态"
+   "载入及时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_LOAD_STATE_KEY,
-   "加载当前选中槽位的存档"
+   "载入当前选则槽位的即时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SAVE_STATE_KEY,
-   "保存状态"
+   "保存即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SAVE_STATE_KEY,
-   "将存档保存到当前选中的槽位。"
+   "将即时存档保存到当前选则的槽位。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_PLUS,
@@ -3735,7 +3995,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_STATE_SLOT_PLUS,
-   "增加当前选中的状态卡槽编号。"
+   "增加当前即时存档槽号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STATE_SLOT_MINUS,
@@ -3743,62 +4003,62 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_STATE_SLOT_MINUS,
-   "减少当前选中的状态卡槽编号。"
+   "减少当前即时存档槽号。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_EJECT_TOGGLE,
-   "盘片弹出(Toggle)"
+   "弹出/关闭光驱托盘（切换）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_DISK_EJECT_TOGGLE,
-   "如果虚拟光盘托盘关闭，打开并移除加载的光盘。否则，插入选中的光盘并关闭托盘。"
+   "如果虚拟光驱托盘当前是关闭状态，打开托盘并移除加载的光盘；反之则插入选中的光盘并关闭托盘。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_NEXT,
-   "下个光盘"
+   "下一张光盘"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_DISK_NEXT,
-   "增加当前选中的磁盘索引。虚拟磁盘托盘必须打开。"
+   "增加当前选则的光盘序号。虚拟光盘托盘必须打开。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_DISK_PREV,
-   "上个光盘"
+   "上一张光盘"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_DISK_PREV,
-   "解码当前选中的光盘索引。虚拟磁盘托盘必须打开。"
+   "减少当前选则的光盘序号。虚拟光盘托盘必须打开。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_TOGGLE,
-   "着色器(开关)"
+   "着色器（切换）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SHADER_TOGGLE,
-   "切换当前选中的着色器开关。"
+   "切换当前选则的着色器的开关。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_NEXT,
-   "下个着色器"
+   "下一个着色器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SHADER_NEXT,
-   "加载并应用「视频着色器」文件夹中的下一个渲染器预设文件。"
+   "加载并应用「视频着色器」文件夹根目录下的下一个着色器预设文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_SHADER_PREV,
-   "上个着色器"
+   "上一个着色器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SHADER_PREV,
-   "加载并应用「视频着色器」文件夹中的上一个渲染器预设文件。"
+   "加载并应用「视频着色器」文件夹根目录下的上一个着色器预设文件。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_CHEAT_TOGGLE,
-   "金手指 (开关)"
+   "金手指 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_CHEAT_TOGGLE,
@@ -3806,7 +4066,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_CHEAT_INDEX_PLUS,
-   "下个金手指编号"
+   "下一个金手指"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_CHEAT_INDEX_PLUS,
@@ -3814,7 +4074,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_CHEAT_INDEX_MINUS,
-   "上个金手指编号"
+   "上一个金手指"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_CHEAT_INDEX_MINUS,
@@ -3827,19 +4087,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SCREENSHOT,
-   "抓取当前游戏的图像截屏。"
+   "抓取当前运行内容的画面。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_RECORDING_TOGGLE,
-   "录像 (开关)"
+   "录像 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_RECORDING_TOGGLE,
-   "开始/停止录制本地视频。"
+   "开始/停止录制视频。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STREAMING_TOGGLE,
-   "直播 (开关)"
+   "直播 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_STREAMING_TOGGLE,
@@ -3847,11 +4107,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_PLAY_REPLAY_KEY,
-   "播放回放"
+   "播放回放文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_PLAY_REPLAY_KEY,
-   "从当前选中的栏位播放文件。"
+   "播放当前选择槽位的回放文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_RECORD_REPLAY_KEY,
@@ -3867,7 +4127,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_HALT_REPLAY_KEY,
-   "停止录制/播放当前重放。"
+   "停止录制/播放当前回放。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_REPLAY_SLOT_PLUS,
@@ -3875,7 +4135,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_REPLAY_SLOT_PLUS,
-   "增加当前选中的重放栏位索引。"
+   "增加当前选则的回放槽位序号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_REPLAY_SLOT_MINUS,
@@ -3883,81 +4143,89 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_REPLAY_SLOT_MINUS,
-   "减少当前选中的重放栏位索引。"
+   "减少当前选则的回放槽位序号。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_TURBO_FIRE_TOGGLE,
+   "连发（切换）"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_META_TURBO_FIRE_TOGGLE,
+   "打开/关闭连发功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_GRAB_MOUSE_TOGGLE,
-   "捕获鼠标 (开关)"
+   "鼠标捕获 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_GRAB_MOUSE_TOGGLE,
-   "捕获或释放鼠标。捕获后，系统鼠标指针将隐藏并限制在全能模拟器窗口中，以改善相对鼠标输入。"
+   "捕获或释放鼠标。捕获鼠标后，系统鼠标指针将隐藏并移动范围被限制在 RetroArch 窗口内，以改善鼠标输入的相关问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_GAME_FOCUS_TOGGLE,
-   "游戏焦点 (开关)"
+   "游戏焦点 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_GAME_FOCUS_TOGGLE,
-   "切换“游戏焦点”模式开/关。当内容有焦点时，快捷键被禁用(全部键盘输入被传递到运行的核心) 并且鼠标被抓取。"
+   "打开/关闭‘游戏焦点’模式。当运行内容获得焦点时，快捷键将被禁用（所有键盘输入被传递到运行的核心），并且鼠标被捕获。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FULLSCREEN_TOGGLE_KEY,
-   "全屏 (开关)"
+   "全屏模式 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_FULLSCREEN_TOGGLE_KEY,
-   "切换全屏和窗口显示模式。"
+   "在全屏和窗口模式之间切换。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_UI_COMPANION_TOGGLE,
-   "桌面菜单 (开关)"
+   "桌面菜单 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_UI_COMPANION_TOGGLE,
-   "打开附带的 WIMP (窗口，图标，菜单，指针) 桌面用户界面。"
+   "打开配套的 WIMP（窗口、图标、菜单、指针） 桌面用户界面。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_VRR_RUNLOOP_TOGGLE,
-   "同步到精确内容帧率(开关)"
+   "与运行内容帧率精确同步（切换）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_VRR_RUNLOOP_TOGGLE,
-   "切换精确同步帧率开/关。"
+   "打开/关闭与运行内容帧率精确同步功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_RUNAHEAD_TOGGLE,
-   "超前运行 (开关)"
+   "超前运行 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_RUNAHEAD_TOGGLE,
-   "打开/关闭超前运行。"
+   "打开/关闭超前运行功能。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_PREEMPT_TOGGLE,
-   "优先帧(Toggle)"
+   "抢占帧（切换）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_PREEMPT_TOGGLE,
-   "开/关优先帧。"
+   "打开/关闭抢先帧功能。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_FPS_TOGGLE,
-   "显示 FPS (开关)"
+   "帧率显示 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_FPS_TOGGLE,
-   "打开/关闭 FPS 状态指示器。"
+   "显示/隐藏帧率状态指示器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_STATISTICS_TOGGLE,
-   "显示技术统计(Toggle)"
+   "显示技术性统计 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_STATISTICS_TOGGLE,
-   "打开/关闭屏幕技术统计显示。"
+   "显示/隐藏技术性统计信息。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_OSK,
@@ -3965,15 +4233,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_OSK,
-   "切换键盘遮罩开关"
+   "打开/关闭键盘遮罩。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_OVERLAY_NEXT,
-   "下个遮罩"
+   "下一个遮罩"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_OVERLAY_NEXT,
-   "切换当前活动屏幕遮罩的下个可用布局。"
+   "切换到当前激活的屏幕遮罩的下一个可用布局。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_AI_SERVICE,
@@ -3981,32 +4249,32 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_AI_SERVICE,
-   "截取当前内容的图像以翻译或朗读屏幕上的文本。必须启用和配置“AI Service”。"
+   "截取当前内容的图像以翻译或朗读屏幕上的文本。必须先启用和配置 ‘AI 服务’。"
    )
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_NETPLAY_PING_TOGGLE,
-   "网播Ping (Toggle)"
+   "联机 Ping (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_NETPLAY_PING_TOGGLE,
-   "切换当前网络播放室开/关的ping 计数器。"
+   "显示/隐藏前网络联机房间的 ping 值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_NETPLAY_HOST_TOGGLE,
-   "联机主机 (开关)"
+   "联机主机 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_NETPLAY_HOST_TOGGLE,
-   "打开/关闭联机游戏房主。"
+   "打开/关闭网络联机主机服务。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_NETPLAY_GAME_WATCH,
-   "联机对战/观战模式 (开关)"
+   "联机玩家/观战模式 (切换)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_NETPLAY_GAME_WATCH,
-   "切换当前联机游戏的玩家和观战模式。"
+   "当前联机游戏中，在‘玩家’和‘观战’模式之间切换。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_META_NETPLAY_PLAYER_CHAT,
@@ -4017,8 +4285,12 @@ MSG_HASH(
    "发送一条聊天消息到当前的联机会话。"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_META_NETPLAY_FADE_CHAT_TOGGLE,
+   "联机聊天消息渐隐（切换）"
+   )
+MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_NETPLAY_FADE_CHAT_TOGGLE,
-   "在淡出和静态网络播放聊天消息之间切换。"
+   "在渐隐和静态网络联机聊天消息之间切换。"
    )
 
 MSG_HASH(
@@ -4027,7 +4299,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_META_SEND_DEBUG_INFO,
-   "发送设备诊断信息和全能模拟器配置到我们的服务器进行分析。"
+   "发送设备诊断信息和 RetroArch 配置到我们的服务器以进行分析。"
    )
 
 /* Settings > Input > Port # Controls */
@@ -4038,7 +4310,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DEVICE_TYPE,
-   "指定模拟控制器类型。"
+   "指定模拟的控制器类型。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ADC_TYPE,
@@ -4046,11 +4318,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_ADC_TYPE,
-   "设置十字键使用类比摇杆输入，强制模式下核心预设的类比摇杆输入将无法使用。"
+   "使用指定的模拟摇杆做为数字方向键输入，‘强制’模式将覆盖核心自身的模拟输入设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_ADC_TYPE,
-   "将特定的类比摇杆映射到十字键。\n如果核心有原生摇杆支持，除非选择“(强制)”选项，否则十字键映射将被禁用。\n如果强制使用十字键映射，核心将不会从指定的摇杆收到输入。"
+   "将指定的模拟摇杆映射为数字方向键。\n如果核心原生支持模拟摇杆，除非选择‘强制’模式，否则数字方向键映射处于禁用状态；\n如果选择了‘强制’模式，核心将不会从指定的摇杆接收到模拟输入信号。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_INDEX,
@@ -4058,35 +4330,35 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DEVICE_INDEX,
-   "RetroArch识别的物理控制器。"
+   "RetroArch 识别的物理控制器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_RESERVED_DEVICE_NAME,
-   "为此播放器所保留的设备"
+   "为此玩家保留的设备"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DEVICE_RESERVED_DEVICE_NAME,
-   "根据预设模式，该控制器将分配给此玩家。"
+   "该控制器将根据保留方式分配给此玩家。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DEVICE_RESERVATION_NONE,
-   "无预设"
+   "不保留"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DEVICE_RESERVATION_PREFERRED,
-   "偏好"
+   "首选"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DEVICE_RESERVATION_RESERVED,
-   "已预设"
+   "保留"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_DEVICE_RESERVATION_TYPE,
-   "设备预设类型"
+   "设备保留方式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_DEVICE_RESERVATION_TYPE,
-   "首选：如果存在指定设备，将为该播放器分配该设备。保留：不会为该播放器分配其他控制器。"
+   "首选 - 如果指定设备存在，将分配该设备给此玩家；保留 - 除了指定设备外，不会为该玩家分配其他控制器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAP_PORT,
@@ -4098,27 +4370,27 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_BIND_ALL,
-   "设置所有控制"
+   "设置所有控制键"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BIND_ALL,
-   "映射所有的方向键和按键，按照它们在菜单中出现的顺序陆续设定。"
+   "分配所有的方向键和按键，按照它们在菜单中出现的顺序陆续设定。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_BIND_DEFAULT_ALL,
-   "重置默认控制"
+   "重置为默认"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_BIND_DEFAULTS,
-   "重置映射设置到默认值。"
+   "清除所有按键绑定，恢复到默认值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_SAVE_AUTOCONFIG,
-   "保存手柄配置文件"
+   "保存控制器配置文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_SAVE_AUTOCONFIG,
-   "保存自动配置文件，每当再次检测到此控制器时将会自动应用。"
+   "保存为自动配置文件，当再次检测到此控制器时将会自动应用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_MOUSE_INDEX,
@@ -4126,7 +4398,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_MOUSE_INDEX,
-   "RetroArch识别的物理鼠标。"
+   "RetroArch 识别到的物理鼠标。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_B,
@@ -4146,19 +4418,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_UP,
-   "十字键上"
+   "数字方向键上"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_DOWN,
-   "十字键下"
+   "数字方向键下"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_LEFT,
-   "十字键左"
+   "数字方向键左"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_RIGHT,
-   "十字键右"
+   "数字方向键右"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_A,
@@ -4178,19 +4450,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_L2,
-   "L2 键 (扳机)"
+   "L2 键 (扳机键)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_R2,
-   "R2 键 (扳机)"
+   "R2 键 (扳机键)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_L3,
-   "L3 键 (摇杆)"
+   "L3 键 (摇杆下压键)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_JOYPAD_R3,
-   "R3 键 (摇杆)"
+   "R3 键 (摇杆下压键)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_LEFT_X_PLUS,
@@ -4226,47 +4498,51 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_TRIGGER,
-   "光枪扳机"
+   "光枪扳机键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_RELOAD,
-   "光枪装弹"
+   "光枪装弹键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_AUX_A,
-   "光枪 Aux A"
+   "光枪辅助键 A"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_AUX_B,
-   "光枪 Aux B"
+   "光枪辅助键 B"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_AUX_C,
-   "光枪 Aux C"
+   "光枪辅助键 C"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_START,
-   "光枪开始"
+   "光枪开始键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_SELECT,
-   "光枪选择"
+   "光枪选择键"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_UP,
-   "光枪十字键上"
+   "光枪数字方向键上"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_DOWN,
-   "光枪十字键下"
+   "光枪数字方向键下"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_LEFT,
-   "光枪十字键左"
+   "光枪数字方向键左"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_LIGHTGUN_DPAD_RIGHT,
-   "光枪十字键右"
+   "光枪数字方向键右"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_TURBO,
+   "连发键"
    )
 
 /* Settings > Latency */
@@ -4277,7 +4553,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RUN_AHEAD_UNSUPPORTED,
-   "由于缺少确定性存档支持，当前的核心与超前运行不兼容。"
+   "当前核心由于缺少即时存档支持，与超前运行功能不兼容。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RUNAHEAD_MODE,
+   "超前运行"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RUN_AHEAD_FRAMES,
@@ -4285,25 +4565,45 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RUN_AHEAD_FRAMES,
-   "设置要超前运行的帧数。如果滞后于游戏本体的帧数将导致类似于抖动之类的游戏问题。"
+   "设置要超前运行的帧数。如果该数值超过游戏内部的滞后帧数，可能导致游戏顿挫/跳动等问题。"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_RUNAHEAD_MODE,
+   "运行更多的核心逻辑来缩减延迟。‘单实例模式’运行到一个未来帧，然后重新载入当前状态；‘双实例模式’使用第二个视频核心实例运行未来帧，以避免音频状态的问题；‘抢先帧模式’在接收到新的输入信号后按需重新运行过往帧，以提高效率。"
    )
 #if !(defined(HAVE_DYNAMIC) || defined(HAVE_DYLIB))
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_RUNAHEAD_MODE_NO_SECOND_INSTANCE,
+   "运行更多的核心逻辑来缩减延迟。‘单实例模式’运行到一个未来帧，然后重新载入当前状态；‘抢先帧模式’在接收到新的输入信号后按需重新运行过往帧，以提高效率。"
+   )
 #endif
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RUNAHEAD_MODE_SINGLE_INSTANCE,
+   "单实例模式"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RUNAHEAD_MODE_SECOND_INSTANCE,
+   "双实例模式"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_RUNAHEAD_MODE_PREEMPTIVE_FRAMES,
+   "抢先帧模式"
+   )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RUN_AHEAD_HIDE_WARNINGS,
    "隐藏超前运行警告"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_RUN_AHEAD_HIDE_WARNINGS,
-   "当使用「超前运行」功能而核心不支持即时存档时，隐藏警告信息。"
+   "当开启「超前运行」功能而核心不支持即时存档时，隐藏警告信息。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PREEMPT_FRAMES,
-   "设定优先帧数"
+   "设定抢先帧数"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PREEMPT_FRAMES,
-   "设置要重新运行的帧数。如果滞后于游戏本体的帧数将导致类似于抖动之类的游戏问题。"
+   "设置要重新运行的帧数。如果该数值超过游戏内部的滞后帧数，可能导致游戏顿挫/跳动等问题。"
    )
 
 /* Settings > Core */
@@ -4314,7 +4614,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_SHARED_CONTEXT,
-   "给硬件渲染的核心他们自己的私有环境。避免去考虑帧之间发生硬件状态变化。"
+   "给硬件渲染的核心私有上下文，以避免每帧之间都不得不假定硬件状态发生改变。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DRIVER_SWITCH_ENABLE,
@@ -4322,19 +4622,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DRIVER_SWITCH_ENABLE,
-   "允许核心从当前加载的视频驱动切换到不同的视频驱动。"
+   "允许核心从当前加载的视频驱动切换到另一个不同的视频驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_DUMMY_ON_CORE_SHUTDOWN,
-   "核心关闭时加载替代核心"
+   "核心关闭时加载空核心"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_DUMMY_ON_CORE_SHUTDOWN,
-   "一些核心具有关机功能，加载虚设核心可以防止全能模拟器意外关机。"
+   "一些核心具有关机功能，加载空核心可以防止 RetroArch 被关闭。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_DUMMY_ON_CORE_SHUTDOWN,
-   "某些核心可能具有关闭程序功能。如果此选项被禁用，选择关闭进程时会触发RetroArch关闭。\n启用此选项将会加载替代核心，从而使我们继续使用应用程序，免去重启操作。"
+   "某些核心可能具有关机功能。如果此选项被禁用，选择关闭核心时会导致 RetroArch 被关闭。\n启用此选项将会加载一个空核心代替关闭核心，从而能继续留在菜单内，RetroArch 不会被关闭。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_SET_SUPPORTS_NO_CONTENT_ENABLE,
@@ -4346,15 +4646,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CHECK_FOR_MISSING_FIRMWARE,
-   "在加载游戏之前，先检查必要固件的完整性。"
+   "在加载内容之前，先检查必要固件的完整性。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_CHECK_FOR_MISSING_FIRMWARE,
-   "某些核心可能需要固件或 bios 文件。 如果启用此选项，RetroArch将不允许在缺少必须固件情况下启动核心。"
+   "某些核心可能需要固件或 bios 文件。 如果启用此选项，RetroArch 将不会允许在缺少必要固件的情况下启动核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_OPTION_CATEGORY_ENABLE,
-   "核心选项类别"
+   "分类显示核心选项"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_OPTION_CATEGORY_ENABLE,
@@ -4366,20 +4666,24 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_INFO_CACHE_ENABLE,
-   "对已安装核心的信息进行本地持久化缓存。 大大减少了磁盘访问速度较慢的平台上的加载时间。"
+   "对已安装核心的信息进行本地持久化缓存，可以大幅减少磁盘访问速度较慢的平台上的加载时间。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_INFO_SAVESTATE_BYPASS,
-   "绕过核心信息保存状态功能"
+   "忽略核心信息中的及时存档功能"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_CORE_INFO_SAVESTATE_BYPASS,
+   "指定是否忽略核心信息中对是否支持及时存档的功能的说明，以允许对相关功能进行测试（超前运行、回溯等）。"
    )
 #ifndef HAVE_DYNAMIC
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ALWAYS_RELOAD_CORE_ON_RUN_CONTENT,
-   "运行游戏时总是重载核心"
+   "运行内容时总是重新加载核心"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ALWAYS_RELOAD_CORE_ON_RUN_CONTENT,
-   "加载游戏时重启全能模拟器，即使请求的核心已经加载了。这可能会提高系统稳定性，但是会增加加载时间。"
+   "启动内容时总是重启 RetroArch，即时需要的核心已经加载。此行为可以提高系统稳定性，但是会增加加载时间。"
    )
 #endif
 MSG_HASH(
@@ -4388,7 +4692,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_ALLOW_ROTATE,
-   "允许核心设置旋转。启用后，选装请求会被忽略。对手动旋转屏幕很有用。"
+   "允许核心设置旋转。如果禁用此项，旋转请求会被忽略。此项在要手动旋转屏幕时很有用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_MANAGER_LIST,
@@ -4396,7 +4700,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_MANAGER_LIST,
-   "在已安装的核心上执行离线维护任务(备份、恢复、删除等)，并查看核心信息。"
+   "对已安装的核心执行离线维护任务（备份、恢复、删除等)，同时可以查看核心信息。"
    )
 #ifdef HAVE_MIST
 MSG_HASH(
@@ -4406,7 +4710,7 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_MANAGER_STEAM_LIST,
-   "安装或卸载通过Steam分发的核心。"
+   "安装或卸载通过 Steam 分发的核心。"
    )
 
 MSG_HASH(
@@ -4421,11 +4725,11 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_SHOW_CORE_MANAGER_STEAM,
-   "显示“管理核心”"
+   "显示‘管理核心’"
 )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_SHOW_CORE_MANAGER_STEAM,
-   "在主菜单中显示“管理核心”选项。"
+   "在主菜单中显示‘管理核心’选项。"
 )
 
 MSG_HASH(
@@ -4435,12 +4739,12 @@ MSG_HASH(
 
 MSG_HASH(
    MSG_CORE_STEAM_UNINSTALLED,
-   "当退出RetroArch时，核心将被卸载."
+   "此核心将在退出 RetroArch 时被卸载。"
 )
 
 MSG_HASH(
    MSG_CORE_STEAM_CURRENTLY_DOWNLOADING,
-   "核心正在下载"
+   "正在下载核心"
 )
 #endif
 /* Settings > Configuration */
@@ -4455,47 +4759,47 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_CONFIG_SAVE_ON_EXIT,
-   "退出时保存对配置文件的更改。对菜单中的更改很有用。覆盖配置文件，#include和注释不会被保存。"
+   "退出时保存更改到配置文件，针对在菜单中进行的更改。配置文件会被覆盖，#include 语句和注释不会被保存。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REMAP_SAVE_ON_EXIT,
-   "退出时保存重映射文件"
+   "退出时保存键位映射文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REMAP_SAVE_ON_EXIT,
-   "关闭内容或退出RetroArch时，将更改保存到任何活动的输入重新映射文件。"
+   "关闭内容或退出 RetroArch 时，将更改保存到活动的键位映射文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_GAME_SPECIFIC_OPTIONS,
-   "自动加载游戏特定的核心选项"
+   "自动加载内容特定的核心选项"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GAME_SPECIFIC_OPTIONS,
-   "启动时默认启用自定义核心选项"
+   "启动时默认加载自定义的核心选项。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_OVERRIDES_ENABLE,
-   "自动加载独立配置文件"
+   "自动加载覆盖配置文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTO_OVERRIDES_ENABLE,
-   "启动时加载自定义配置。"
+   "启动时加载自定义配置文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_REMAPS_ENABLE,
-   "自动加载重映射文件"
+   "自动加载键位映射文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTO_REMAPS_ENABLE,
-   "程序启动时默认启用自定义重映射。"
+   "启动时加载自定义控制器键位设置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INITIAL_DISK_CHANGE_ENABLE,
-   "自动加载初始光盘索引文件"
+   "自动加载初始光盘文件"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INITIAL_DISK_CHANGE_ENABLE,
-   "开始多盘片内容时更改为上次使用的盘片。"
+   "启动多盘片内容时自动载入上次使用的盘片。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTO_SHADERS_ENABLE,
@@ -4507,209 +4811,213 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_GLOBAL_CORE_OPTIONS,
-   "将所有核心选项保存到一个通用设置文件 (retroarch-core-options.cfg)。当禁用时，每个核心的选项将被保存到全能模拟器的配置文件夹中一个独立的核心文件夹/文件。"
+   "将所有核心选项保存到一个通用设置文件中 (retroarch-core-options.cfg)。如果禁用此项，每个核心的选项将被分别保存到 RetroArch '配置文件' 目录中核心特定的文件夹/文件中。"
    )
 
 /* Settings > Saving */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SAVEFILES_ENABLE,
-   "按核心名称分文件夹排序存档"
+   "按核心分类存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SAVEFILES_ENABLE,
-   "将存档文件分组排序到以核心名称命名的文件夹中。"
+   "将存档文件按所使用的模拟器核心名称分类到对应的文件夹中。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SAVESTATES_ENABLE,
-   "按核心名称分文件夹排序状态存储"
+   "按核心分类即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SAVESTATES_ENABLE,
-   "将状态存储分租排序到以核心名称命名的文件夹中。"
+   "将即时存档文件按所使用的模拟器核心名称分类到对应的文件夹中。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SAVEFILES_BY_CONTENT_ENABLE,
-   "按游戏文件夹排序存档"
+   "按内容目录分类存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SAVEFILES_BY_CONTENT_ENABLE,
-   "将存档文件分组排序到和游戏所在文件夹同名的文件夹中。"
+   "将存档文件按当前内容所在的目录名称分类到对应的文件夹中。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SAVESTATES_BY_CONTENT_ENABLE,
-   "按游戏文件夹排序状态存储"
+   "按内容目录分类及时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SAVESTATES_BY_CONTENT_ENABLE,
-   "将状态存储分组排序到和游戏所在文件夹同名的文件夹中。"
+   "将即时存档文件按当前内容所在的目录名称分类到对应的文件夹中。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BLOCK_SRAM_OVERWRITE,
-   "加载状态时不覆盖卡带内存"
+   "加载及时存档时不覆盖卡带的存档内存（SaveRAM）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_BLOCK_SRAM_OVERWRITE,
-   "读取状态时不覆盖游戏卡带内存。可能会导致某些游戏出错。"
+   "读取及时存档时不覆盖游戏卡带的存档内存 SaveRAM，此举可能导致潜在的游戏问题。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUTOSAVE_INTERVAL,
-   "卡带内存自动保存间隔"
+   "卡带存档内存（SaveRAM）自动保存间隔"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_AUTOSAVE_INTERVAL,
-   "按一定时间间隔 (秒) 自动保存非易失卡带内存卡带内存。"
+   "按一定时间间隔 (秒) 自动保存卡带的存档内存（SaveRAM）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_AUTOSAVE_INTERVAL,
-   "每隔一段时间自动保存非易失性卡带内存。此选项默认关闭。间隔单位为秒。设置为 0 则关闭自动保存。"
+   "每隔一段时间自动保存卡带的存档内存（SaveRAM）。此选项默认关闭。间隔单位为秒，设置为 0 表示关闭自动保存。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REPLAY_CHECKPOINT_INTERVAL,
-   "重放检查点间隔"
+   "回放检查点间隔"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REPLAY_CHECKPOINT_INTERVAL,
-   "在正常时间间隔内自动将游戏状态添加书签(秒)。"
+   "在回放录制过程中，按一定时间间隔（秒）自动保存游戏状态。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_REPLAY_CHECKPOINT_INTERVAL,
-   "在重放录制期间自动保存游戏状态。除非另行设置，否则默认将被禁用。 间隔以秒为单位测量。值为0表示禁用检查点录制。"
+   "在回放录制过程中，按一定时间间隔自动保存游戏状态。此选项默认关闭。间隔单位为秒，设置为 0 表示关闭自动保存。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_INDEX,
-   "自动增加状态存储编号"
+   "自动增加即时存档槽编号"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_INDEX,
-   "保存状态存储前，状态存储编号自动增加。加载游戏时，编号自动设置为最大的编号。"
+   "保存即时存档前，自动增加即时存档槽编号。加载内容时，存档槽编号自动设为已存在的大值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REPLAY_AUTO_INDEX,
-   "自动增加回放索引"
+   "自动增加回放编号"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REPLAY_AUTO_INDEX,
-   "在重播前，回放索引将自动增加。当加载内容时，索引将设置为现有的最高索引。"
+   "录制回放前，自动增加回放编号。加载内容时，回放编号自动设为已存在的最大值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_MAX_KEEP,
-   "增量状态存储的最大数量"
+   "最大自动增加存档槽编号数量"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_MAX_KEEP,
-   "限制「自动增加状态存储编号」选项开启时所创建的存储状态数量。若保存新状态时达到限制，拥有最低编号的状态将被自动删除。设置为「0」表示不限制。"
+   "当‘自动增加即时存档槽编号’启用时，限制生成的最大存档数量。当存档数量超过此数值时，最低编号的存档将被删除。设置为 ‘0’ 表示不限制最大存档数量。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REPLAY_MAX_KEEP,
-   "保留的最大自动增量回放数"
+   "最大自动增加回放编号数量"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REPLAY_MAX_KEEP,
-   "启用 \"自动增加重放索引 \"后，限制将创建的重放的数量。如果在录制新的重放时超过了限制，现有的具有最低索引的重放将被删除。值为'0'意味着将记录无限的重放。"
+   "当‘自动增加回放编号’启用时，限制生成的最大回放数量。当回放数量超过此数值时，最低编号的回放将被删除。设置为 ‘0’ 表示不限制最大回放数量。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_SAVE,
-   "自动保存状态"
+   "自动保存即时存档"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_SAVE,
+   "关闭内容时自动保存一份即时存档。如果启用了‘自动加载即时存档’，此存档将在下一次启动内容时自动加载。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_AUTO_LOAD,
-   "自动加载存档"
+   "自动加载即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_AUTO_LOAD,
-   "开始游戏时，自动加载最近自动保存的状态。"
+   "启动内容时，自动加载最近自动保存的即时存档。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_THUMBNAIL_ENABLE,
-   "状态存储缩略图"
+   "保存即时存档缩略图"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_THUMBNAIL_ENABLE,
-   "在菜单中显示状态存储缩略图。"
+   "在菜单中显示即时存档的储缩略图。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVE_FILE_COMPRESSION,
-   "卡带内存压缩"
+   "压缩卡带存档内存（SaveRAM）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVE_FILE_COMPRESSION,
-   "以压缩包格式写入非易失卡带内存文件。这会大幅减小文件大小，但是会增加保存/加载时间(很小，可忽略)。\n仅用于使用标准全能模拟器卡带内存接口的核心。"
+   "以压缩格式保存卡带存档内存（SaveRAM）。可以大幅减小文件大小，略微增加（可忽略不计）保存/加载时间。\n仅用适用于通过标准 libretro SaveRAM 接口保存存档内存的核心。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATE_FILE_COMPRESSION,
-   "状态存储压缩"
+   "压缩即时存档"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATE_FILE_COMPRESSION,
-   "以压缩格式写入状态存储文件。能大幅缩小文件大小，但保存/加载状态会更慢。"
+   "以压缩格式保存即时存档文件。可以大幅减小文件大小，代价是增加保存/加载的时间。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SORT_SCREENSHOTS_BY_CONTENT_ENABLE,
-   "按游戏文件夹排序截屏"
+   "按内容目录分类截屏"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SORT_SCREENSHOTS_BY_CONTENT_ENABLE,
-   "将截屏分组排序到和游戏所在文件夹同名的文件夹中。"
+   "将截屏文件按当前内容所在的目录名称分类到对应的文件夹中。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVEFILES_IN_CONTENT_DIR_ENABLE,
-   "写入存档到游戏文件夹"
+   "保存存档到内容目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVEFILES_IN_CONTENT_DIR_ENABLE,
-   "使用内容目录作为保存文件目录。"
+   "使用内容目录作为存档文件的目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SAVESTATES_IN_CONTENT_DIR_ENABLE,
-   "写入状态存储到游戏文件夹"
+   "保存即时存档到内容目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SAVESTATES_IN_CONTENT_DIR_ENABLE,
-   "使用内容目录作为存档目录。"
+   "使用内容目录作为即时存档文件的目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEMFILES_IN_CONTENT_DIR_ENABLE,
-   "系统文件在游戏文件夹中"
+   "系统文件在内容目录中"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SYSTEMFILES_IN_CONTENT_DIR_ENABLE,
-   "将内容目录作为系统/BIOS 目录。"
+   "将内容目录作为系统文件/BIOS文件目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCREENSHOTS_IN_CONTENT_DIR_ENABLE,
-   "写入截屏到游戏文件夹"
+   "保存截屏到内容目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SCREENSHOTS_IN_CONTENT_DIR_ENABLE,
-   "使用内容目录作为截图目录。"
+   "使用内容目录作为截图文件的目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_RUNTIME_LOG,
-   "保存运行日志 (每个核心)"
+   "保存时长日志 (每核心)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_RUNTIME_LOG,
-   "跟踪记录每个游戏的运行时间，按核心分开记录。"
+   "跟踪记录每个内容的运行时长，按核心分开记录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_RUNTIME_LOG_AGGREGATE,
-   "保存运行日志 (聚合)"
+   "保存时长日志 (聚合)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_RUNTIME_LOG_AGGREGATE,
-   "跟踪记录每个游戏的运行时间，所有核心合并记录。"
+   "跟踪记录每个内容的运行时长，所有核心合并记录。"
    )
 
 /* Settings > Logging */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOG_VERBOSITY,
-   "完整日志记录"
+   "详细日志记录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOG_VERBOSITY,
-   "记录事件日志到控制台或文件。"
+   "记录事件日志到终端或文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRONTEND_LOG_LEVEL,
@@ -4717,7 +5025,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRONTEND_LOG_LEVEL,
-   "设置前端日志级别。如果前端发布的日志低于这个级别，就将被忽略。"
+   "设置前端日志级别。低于此级别的前端日志记录将被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LIBRETRO_LOG_LEVEL,
@@ -4725,11 +5033,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LIBRETRO_LOG_LEVEL,
-   "设置核心日志级别。如果核心发布的日志低于这个级别，就将被忽略。"
+   "设置核心日志级别。低于此级别的核心日志记录将被忽略"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_LIBRETRO_LOG_LEVEL,
-   "设置libretro核心的日志级别(GET_LOG_INTERFACE)。如果librettro 核心发布的日志级别低于libret_log 级别，它将被忽略。 除非激活详细模式，否则DEBUG 日志总是被忽略(--verbose)。\nDEBUG = 0\nINFO = 1\nWARN = 2\nERROR = 3"
+   "设置 libretro 核心的日志级别（GET_LOG_INTERFACE）。如果核心日志记录级别低于此级别，将被忽略。 如果没有激活详细模式（--verbose），DEBUG 级别日志永远不会被记录。\nDEBUG = 0\nINFO = 1\nWARN = 2\nERROR = 3"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOG_VERBOSITY_DEBUG,
@@ -4753,7 +5061,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOG_TO_FILE,
-   "将系统事件日志消息重定向到文件。需要启用「记录详情」。"
+   "将系统事件日志消息重定向到文件，需要启用「记录详情」。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_LOG_TO_FILE_TIMESTAMP,
@@ -4761,7 +5069,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_LOG_TO_FILE_TIMESTAMP,
-   "记录到文件时，重定向每个会话的输出到一个新的时间戳文件。如果禁用，日志文件每次都重启都会被覆盖。"
+   "记录到文件时，重定向每个会话的输出到一个新的时间戳文件。如果禁用，每次重启 RetroArach 日志文件都会被覆盖。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PERFCNT_ENABLE,
@@ -4769,18 +5077,18 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PERFCNT_ENABLE,
-   "全能模拟器和核心的性能计数器。计数器数据可以帮助确定系统的瓶颈并优化调节性能。"
+   "RetroArch 和核心的性能计数器，计数器数据可以帮助确定系统的瓶颈和优化调节性能。"
    )
 
 /* Settings > File Browser */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SHOW_HIDDEN_FILES,
-   "显示隐藏文件和文件夹"
+   "显示隐藏文件和目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SHOW_HIDDEN_FILES,
-   "在文件浏览器中显示隐藏的文件和文件夹。"
+   "在文件浏览器中显示隐藏的文件和目录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE,
@@ -4788,27 +5096,31 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NAVIGATION_BROWSER_FILTER_SUPPORTED_EXTENSIONS_ENABLE,
-   "按支持的扩展名过滤文件管理器中显示的文件。"
+   "根据支持的扩展名过滤文件浏览器中显示的文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FILTER_BY_CURRENT_CORE,
-   "过滤当前核心支持文件"
+   "根据当前核心过滤"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_FILTER_BY_CURRENT_CORE,
+   "根据当前核心过滤文件浏览器中显示的文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USE_LAST_START_DIRECTORY,
-   "记住上次使用的开始文件夹"
+   "记住上次使用的目录"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_USE_LAST_START_DIRECTORY,
-   "在起始目录加载游戏时，于最后打开的位置开启文件浏览器。注：重启全能模拟器后，此位置将重置。"
+   "打开文件浏览器时自动定位到上次使用的目录。注意：重启 RetroAch 后，此位置将重置为缺省值。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USE_BUILTIN_PLAYER,
-   "使用内建媒体播放器"
+   "使用内置媒体播放器"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_USE_BUILTIN_IMAGE_VIEWER,
-   "使用内建图像查看器"
+   "使用内置图像查看器"
    )
 
 /* Settings > Frame Throttle */
@@ -4827,7 +5139,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_TIME_COUNTER_SETTINGS,
-   "更改影响帧时间计数器的设置。\n仅当线程视频禁用时才激活。"
+   "更改帧时间计数器的设置。\n仅当禁用多线程视频渲染时有效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FASTFORWARD_RATIO,
@@ -4835,11 +5147,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FASTFORWARD_RATIO,
-   "快进时最多以几倍速运行。设置为 0 代表不限速。"
+   "快进时的最大速率（例如：对于 60 fps 内容来说 5.0 倍速 = 300 fps）。设为 0 表示不限速（无帧率限制）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_FASTFORWARD_RATIO,
-   "使用快速前进时内容运行的最大速率(例如：60 fps content => 300 fps cap)。\n回车将进入睡眠状态，以确保不会超过最大速率。 不要依赖这个上限是完全准确的。"
+   "快进时的最大速率（例如：对于 60 fps 内容来说 5.0 倍速 = 300 fps）。\nRetoroArch 会用进入睡眠的方式保证不超过最大速率。不要依赖此限制会非常精确。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FASTFORWARD_FRAMESKIP,
@@ -4847,7 +5159,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FASTFORWARD_FRAMESKIP,
-   "根据快进速率跳帧。这将节省电力，并允许使用第三方帧限制。"
+   "根据快进速率进行跳帧。这可以省电，并允许使用第三方帧率限制器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SLOWMOTION_RATIO,
@@ -4855,7 +5167,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_SLOWMOTION_RATIO,
-   "使用慢动作时的游戏播放速度比率。"
+   "使用慢动作时的播放速率。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_MENU_ENUM_THROTTLE_FRAMERATE,
@@ -4863,18 +5175,18 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_ENUM_THROTTLE_FRAMERATE,
-   "确保菜单内的帧率上限。"
+   "确保菜单内的帧率不超过上限。"
    )
 
 /* Settings > Frame Throttle > Rewind */
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_ENABLE,
-   "启用回溯"
+   "回溯支持"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REWIND_ENABLE,
-   "返回最近游戏中的前一个点。这会在玩游戏时造成严重的性能下降。"
+   "返回最近游戏中的前一个点。打开此项会有一个极大的性能损耗。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_GRANULARITY,
@@ -4882,7 +5194,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REWIND_GRANULARITY,
-   "每步回溯的帧数，数值越大速度越快。"
+   "回溯的步进帧数，数值越大回溯速度越快。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_BUFFER_SIZE,
@@ -4890,15 +5202,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REWIND_BUFFER_SIZE,
-   "回溯缓冲区保留的内存量 (单位为 MB)。增加内存量可增加回溯历史的时间。"
+   "回溯缓冲区保留的内存量 (单位为 MB)。增加此值可以增加可回溯历史的长度。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_REWIND_BUFFER_SIZE_STEP,
-   "回溯缓冲区大小步长 (MB)"
+   "回溯缓冲区增减步长 (MB)"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_REWIND_BUFFER_SIZE_STEP,
-   "每次通过此页面调整回溯缓存大小，都会更改这个数值。"
+   "回溯缓冲区每次增大或者减少的步长。"
    )
 
 /* Settings > Frame Throttle > Frame Time Counter */
@@ -4913,19 +5225,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_TIME_COUNTER_RESET_AFTER_LOAD_STATE,
-   "加载存档后重置"
+   "加载即时存档后重置"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_TIME_COUNTER_RESET_AFTER_LOAD_STATE,
-   "加载状态后重置帧时间计数器。"
+   "加载即时存档后重置帧时间计数器。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRAME_TIME_COUNTER_RESET_AFTER_SAVE_STATE,
-   "保存存档后重置"
+   "保存即时存档后重置"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_FRAME_TIME_COUNTER_RESET_AFTER_SAVE_STATE,
-   "保存状态后重置帧时间计数器。"
+   "保存即时存档后重置帧时间计数器。"
    )
 
 /* Settings > Recording */
@@ -4944,7 +5256,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_RECORDING_MED_QUALITY,
-   "中等"
+   "中"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_RECORDING_HIGH_QUALITY,
@@ -4963,6 +5275,14 @@ MSG_HASH(
    "WebM 高质量"
    )
 MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_RECORDING_GIF,
+   "GIF"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_RECORDING_APNG,
+   "APNG"
+   )
+MSG_HASH(
    MENU_ENUM_LABEL_VALUE_RECORD_CONFIG,
    "自定义录像配置"
    )
@@ -4972,11 +5292,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_POST_FILTER_RECORD,
-   "使用后期滤镜录制"
+   "应用后处理滤镜录制"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_POST_FILTER_RECORD,
-   "抓取图像时保留滤镜 (但不保留着色器)，使录制的视频与您在屏幕上看到的一样好看。"
+   "抓取经过滤镜（不是色器）处理后的图像，使录制的视频与在屏幕上看到的一致。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_GPU_RECORD,
@@ -4984,11 +5304,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_VIDEO_GPU_RECORD,
-   "如果可以的话，录制 GPU 渲染材质的输出。"
+   "在可能的情况下，录制 GPU 渲染后的材质输出。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STREAMING_MODE,
    "直播模式"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_STREAMING_MODE_TWITCH,
+   "Twitch"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_VIDEO_STREAMING_MODE_YOUTUBE,
+   "YouTube"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_STREAMING_MODE_FACEBOOK,
@@ -5016,7 +5344,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_STREAMING_MED_QUALITY,
-   "中等"
+   "中"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_RECORD_CONFIG_TYPE_STREAMING_HIGH_QUALITY,
@@ -5043,11 +5371,11 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONSCREEN_OVERLAY_SETTINGS,
-   "遮罩"
+   "屏幕遮罩"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONSCREEN_OVERLAY_SETTINGS,
-   "调整边框和屏幕遮罩按键显示。"
+   "调整边框和屏幕按键显示。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONSCREEN_VIDEO_LAYOUT_SETTINGS,
@@ -5059,7 +5387,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_ONSCREEN_NOTIFICATIONS_SETTINGS,
-   "通知"
+   "屏幕通知"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_ONSCREEN_NOTIFICATIONS_SETTINGS,
@@ -5087,11 +5415,11 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_BEHIND_MENU,
-   "在菜单后显示遮罩"
+   "在菜单下层显示遮罩"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_BEHIND_MENU,
-   "在菜单后面显示遮罩。"
+   "在菜单下层而不是上层显示遮罩。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_HIDE_IN_MENU,
@@ -5103,33 +5431,33 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_HIDE_WHEN_GAMEPAD_CONNECTED,
-   "连接控制器时隐藏遮罩"
+   "已连接控制器时隐藏遮罩"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_HIDE_WHEN_GAMEPAD_CONNECTED,
-   "实体手柄连接到端口 1 后隐藏遮罩。手柄断开后重新显示。"
+   "实体控制器连接到端口 1 时隐藏遮罩，控制器断开后重新显示。"
    )
 #if defined(ANDROID)
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_HIDE_WHEN_GAMEPAD_CONNECTED_ANDROID,
-   "实体手柄连接到端口 1 后隐藏遮罩。手柄断开后不会自动重新显示。"
+   "实体控制器连接到端口 1 时隐藏遮罩，控制器断开后不会自动重新显示。"
    )
 #endif
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_INPUTS,
-   "在按键上显示动态"
+   "在遮罩上显示输入"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_SHOW_INPUTS,
-   "输入状态将会在屏幕遮罩上显示。按下/点击等“已触摸”输入将高亮显示。从已连接的手柄或键盘等物理控制器传递到内核的真实输入也会高亮显示。"
+   "在屏幕遮罩上显示已设置的按键输入动态，按下/点击等‘触摸’输入将高亮显示对应遮罩元素。从已连接的手柄或键盘等物理控制器传递到内核的真实输入也会高亮显示。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_INPUTS_TOUCHED,
-   "已触摸的"
+   "触摸"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_INPUTS_PHYSICAL,
-   "物理（控制器）"
+   "物理控制器"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_INPUTS_PORT,
@@ -5137,7 +5465,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_SHOW_INPUTS_PORT,
-   "选择要监控的输入设备端口，当“物理（控制器）”被设置为“在遮罩上显示输入”时生效。"
+   "当‘在遮罩上显示输入’设为‘物理控制器’时，选择要监控的输入设备端口。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_SHOW_MOUSE_CURSOR,
@@ -5153,7 +5481,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_AUTO_ROTATE,
-   "如果当前遮罩支持，自动旋转布局匹配屏幕方向/宽高比。"
+   "如果当前遮罩支持，自动旋转布局以匹配屏幕方向/宽高比。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_AUTO_SCALE,
@@ -5161,15 +5489,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_AUTO_SCALE,
-   "自动调节遮罩缩放和 UI 元素间距以匹配屏幕宽高比。可以得到最佳的控制遮罩效果。"
+   "自动调节遮罩缩放和 UI 元素间距以匹配屏幕宽高比，从而得到最佳的控制器遮罩显示效果。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_DPAD_DIAGONAL_SENSITIVITY,
-   "十字键对角线灵敏度"
+   "十字键对角方向灵敏度"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_DPAD_DIAGONAL_SENSITIVITY,
-   "调整对角区域的大小。设置为 100% 时8方向对称。"
+   "调整对角区域的大小，设置为 100% 时8方向对称。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_ABXY_DIAGONAL_SENSITIVITY,
@@ -5178,6 +5506,14 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_OVERLAY_ABXY_DIAGONAL_SENSITIVITY,
    "调整按钮菱形重叠区域大小。设置为 100% 时8方向对称。"
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_INPUT_OVERLAY_ANALOG_RECENTER_ZONE,
+   "模拟摇杆回中区域"
+   )
+MSG_HASH(
+   MENU_ENUM_SUBLABEL_INPUT_OVERLAY_ANALOG_RECENTER_ZONE,
+   "如果在此区域内按下，模拟摇杆的后续输入将相对于该触点计算位置。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_OVERLAY,
