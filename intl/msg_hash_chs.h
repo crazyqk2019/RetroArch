@@ -3407,11 +3407,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_INPUT_POLL_TYPE_BEHAVIOR,
-   "设置 RetroArch 的输入轮询方式。选择"较早"或"较晚"模式可能降低输入延迟，具体效果取决于系统配置"
+   "设置 RetroArch 的输入轮询方式。选择‘较早’或‘较晚’模式可能降低输入延迟，具体效果取决于系统配置"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_INPUT_POLL_TYPE_BEHAVIOR,
-   "该设置影响 RetroArch 内部输入轮询机制。\n‘较早’——在帧处理之前执行输入轮询；\n‘常规’——按请求时间执行输入轮询。\n‘延迟’——每帧首次请求输入状态时执行轮询。\n选择"较早"或"较晚"模式可能降低输入延迟，具体效果取决于系统配置。当进行联机游戏时，此设置将被忽略。"
+   "该设置影响 RetroArch 内部输入轮询机制。\n‘较早’——在帧处理之前执行输入轮询；\n‘常规’——按请求时间执行输入轮询。\n‘延迟’——每帧首次请求输入状态时执行轮询。\n选择‘较早’或‘较晚’模式可能降低输入延迟，具体效果取决于系统配置。当进行联机游戏时，此设置将被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_INPUT_REMAP_BINDS_ENABLE,
