@@ -79,10 +79,6 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SWITCH_INSTALLED_CORES_PFD,
    "Switch Cores to the Play Store versions"
    )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_THUMBNAILS_UPDATER_LIST,
-   "Download complete thumbnail package for the selected system."
-   )
 
 /* Main Menu > Information */
 
@@ -116,13 +112,6 @@ MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FRONTEND_OS,
    "Front-End OS"
    )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETPLAY_SUPPORT,
-   "Net-play (Peer-to-Peer) Support"
-   )
-
-/* Main Menu > Information > Database Manager */
-
 
 /* Main Menu > Information > Database Manager > Information */
 
@@ -139,7 +128,6 @@ MSG_HASH(
 
 
 /* Main Menu > Help */
-
 
 /* Main Menu > Help > Basic Menu Controls */
 
@@ -416,14 +404,6 @@ MSG_HASH(
 #ifdef HAVE_MICROPHONE
 #endif
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_AUDIO_RESAMPLER_SETTINGS,
-   "Re-sampler"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_AUDIO_RESAMPLER_SETTINGS,
-   "Change audio re-sampler settings."
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_AUDIO_SYNCHRONIZATION_SETTINGS,
    "Synchronisation"
    )
@@ -572,10 +552,6 @@ MSG_HASH(
 
 /* Settings > Input > Menu Controls */
 
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_MENU_INPUT_SWAP_OK_CANCEL,
-   "Menu Swap Okay and Cancel Buttons"
-   )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_MENU_INPUT_SWAP_OK_CANCEL,
    "Swap buttons for Okay/Cancel. When disabled, the Japanese button orientation is on by default, when this is enabled, it is the western orientation instead."
@@ -886,9 +862,6 @@ MSG_HASH(
    )
 
 /* Settings > On-Screen Display > On-Screen Overlay > Overlay Mouse */
-
-
-/* Settings > On-Screen Display > Video Layout */
 
 
 /* Settings > On-Screen Display > On-Screen Notifications */
@@ -1490,8 +1463,6 @@ MSG_HASH(
    "Force current settings to be written to active options file. Ensures options are preserved in the event that a core bug causes improper shutdown of the front-end."
    )
 
-/* - Legacy (unused) */
-
 /* Quick Menu > Controls */
 
 
@@ -1538,7 +1509,6 @@ MSG_HASH(
 
 /* Quick Menu > Disc Control */
 
-/* deprecated */
 
 /* Quick Menu > Shaders */
 
@@ -1855,10 +1825,6 @@ MSG_HASH(
 /* Unsorted */
 
 MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_TURBO_DEADZONE_LIST,
-   "Turbo/Dead Zone"
-   )
-MSG_HASH(
    MENU_ENUM_LABEL_VALUE_FRONTEND_COUNTERS,
    "Front-End Counters"
    )
@@ -1885,68 +1851,6 @@ MSG_HASH(
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_VIDEO_MAX_FRAME_LATENCY,
    "Maximum Frame Latency"
-   )
-
-/* Unused (Only Exist in Translation Files) */
-
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_ENABLE,
-   "Net-play"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_DELAY_FRAMES,
-   "Net-play Delay Frames"
-   )
-MSG_HASH(
-   MENU_ENUM_SUBLABEL_NETPLAY_LAN_SCAN_SETTINGS,
-   "Search for and connect to net-play hosts on the local network."
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_MODE,
-   "Net-play Client"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_SPECTATOR_MODE_ENABLE,
-   "Net-play Spectator"
-   )
-
-/* Unused (Needs Confirmation) */
-
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_LEFT_X,
-   "Left Analogue X"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_LEFT_Y,
-   "Left Analogue Y"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_RIGHT_X,
-   "Right Analogue X"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_INPUT_ANALOG_RIGHT_Y,
-   "Right Analogue Y"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_DATABASE_CURSOR_LIST_ENTRY_MAX_USERS,
-   "Database - Filter: Maximum Users"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_CONFIG,
-   "Configured"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_SETTINGS,
-   "Net-play settings"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FBO_SUPPORT,
-   "OpenGL/Direct3D Render-to-Texture (Multi-Pass Shaders) Support"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_BASIC_MENU_ENUM_CONTROLS_CONFIRM,
-   "Confirm/Okay"
    )
 
 /* Discord Status */

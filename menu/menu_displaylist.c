@@ -1911,6 +1911,7 @@ static unsigned menu_displaylist_parse_system_info(file_list_t *list)
 {
    char entry[NAME_MAX_LENGTH];
    unsigned count = 0;
+
    /* RetroArch Version */
    size_t _len = strlcpy(entry,
          msg_hash_to_str(MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RETROARCH_VERSION),
@@ -2192,22 +2193,6 @@ static unsigned menu_displaylist_parse_system_info(file_list_t *list)
                count++;
          }
 
-         /* RetroRating Level */
-         if (frontend->get_rating)
-         {
-            _len  = strlcpy(entry,
-                  msg_hash_to_str(
-                     MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RETRORATING_LEVEL),
-                  sizeof(entry));
-            _len += strlcpy(entry + _len, ": ", sizeof(entry) - _len);
-            snprintf(entry + _len, sizeof(entry) - _len, "%d",
-                  frontend->get_rating());
-            if (menu_entries_append(list, entry, "",
-                  MENU_ENUM_LABEL_SYSTEM_INFO_ENTRY, MENU_SETTINGS_CORE_INFO_NONE,
-                  0, 0, NULL))
-               count++;
-         }
-
          /* Memory */
          {
             uint64_t memory_total = frontend_driver_get_total_memory();
@@ -2344,192 +2329,198 @@ static unsigned menu_displaylist_parse_system_info(file_list_t *list)
       static const struct menu_features_info
       {
          bool enabled;
-         enum msg_hash_enums msg;
+         const char *msg;
       } info_list[] = {
+#ifdef HAVE_DYLIB
+         {SUPPORTS_DYLIB, "Dynamic Library"},
+#endif
+         {SUPPORTS_DYNAMIC, "Dynamic run-time loading of libretro library"},
 #ifdef HAVE_LIBRETRODB
-         {SUPPORTS_LIBRETRODB, MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_LIBRETRODB_SUPPORT},
+         {SUPPORTS_LIBRETRODB, "LibretroDB"},
+#endif
+#ifdef HAVE_THREADS
+         {SUPPORTS_THREAD, "Threading"},
 #endif
 #ifdef HAVE_OVERLAY
-         {SUPPORTS_OVERLAY,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OVERLAY_SUPPORT},
+         {SUPPORTS_OVERLAY, "Overlay"},
 #endif
 #ifdef HAVE_COMMAND
-         {SUPPORTS_COMMAND,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_COMMAND_IFACE_SUPPORT},
+         {SUPPORTS_COMMAND, "Command interface"},
 #endif
 #ifdef HAVE_NETWORK_CMD
-         {SUPPORTS_NETWORK_COMMAND,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETWORK_COMMAND_IFACE_SUPPORT},
+         {SUPPORTS_NETWORK_COMMAND, "Network Command interface"},
 #endif
 #ifdef HAVE_NETWORKGAMEPAD
-         {SUPPORTS_NETWORK_GAMEPAD,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETWORK_REMOTE_SUPPORT},
+         {SUPPORTS_NETWORK_GAMEPAD, "Network Gamepad"},
 #endif
-#ifdef HAVE_COCOA
-         {SUPPORTS_COCOA          ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_COCOA_SUPPORT},
+#ifdef HAVE_NETWORKING
+         {SUPPORTS_NETPLAY, "Netplay (Peer-to-Peer)"},
+#endif
+#ifdef HAVE_SSL
+         {SUPPORTS_SSL , "SSL"},
+#endif
+#ifdef HAVE_CG
+         {SUPPORTS_CG, "Cg"},
+#endif
+#ifdef HAVE_GLSL
+         {SUPPORTS_GLSL, "GLSL"},
+#endif
+#ifdef HAVE_HLSL
+         {SUPPORTS_HLSL, "HLSL"},
+#endif
+#ifdef HAVE_SLANG
+         {SUPPORTS_SLANG, "Slang"},
 #endif
 #ifdef HAVE_RPNG
-         {SUPPORTS_RPNG        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RPNG_SUPPORT},
+         {SUPPORTS_RPNG, "PNG (RPNG)"},
 #endif
 #ifdef HAVE_RJPEG
-         {SUPPORTS_RJPEG       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RJPEG_SUPPORT},
+         {SUPPORTS_RJPEG, "JPEG (RJPEG)"},
 #endif
 #ifdef HAVE_RBMP
-         {SUPPORTS_RBMP        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RBMP_SUPPORT},
+         {SUPPORTS_RBMP, "BMP (RBMP)"},
 #endif
 #ifdef HAVE_RTGA
-         {SUPPORTS_RTGA        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RTGA_SUPPORT},
+         {SUPPORTS_RTGA, "TGA (RTGA)"},
 #endif
 #ifdef HAVE_SDL
-         {SUPPORTS_SDL         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_SDL_SUPPORT},
+         {SUPPORTS_SDL, "SDL 1.2"},
 #endif
 #ifdef HAVE_SDL2
-         {SUPPORTS_SDL2        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_SDL2_SUPPORT},
+         {SUPPORTS_SDL2, "SDL 2"},
+#endif
+#ifdef HAVE_X11
+         {SUPPORTS_X11, "X11"},
+#endif
+#ifdef HAVE_UDEV
+         {SUPPORTS_UDEV, "udev"},
+#endif
+#ifdef HAVE_WAYLAND
+         {SUPPORTS_WAYLAND, "Wayland"},
 #endif
 #ifdef HAVE_GDI
 #if defined(_WIN32) && !defined(_XBOX) && !defined(__WINRT__)
-         {SUPPORTS_GDI         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_GDI_SUPPORT},
+         {SUPPORTS_GDI, "GDI"},
 #endif
 #endif
 #ifdef HAVE_D3D8
-         {SUPPORTS_D3D8        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_D3D8_SUPPORT},
+         {SUPPORTS_D3D8, "Direct3D 8"},
 #endif
 #ifdef HAVE_D3D9
-         {SUPPORTS_D3D9        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_D3D9_SUPPORT},
+         {SUPPORTS_D3D9, "Direct3D 9"},
 #endif
 #ifdef HAVE_D3D10
-         {SUPPORTS_D3D10       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_D3D10_SUPPORT},
+         {SUPPORTS_D3D10, "Direct3D 10"},
 #endif
 #ifdef HAVE_D3D11
-         {SUPPORTS_D3D11       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_D3D11_SUPPORT},
+         {SUPPORTS_D3D11, "Direct3D 11"},
 #endif
 #ifdef HAVE_D3D12
-         {SUPPORTS_D3D12       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_D3D12_SUPPORT},
+         {SUPPORTS_D3D12, "Direct3D 12"},
 #endif
 #ifdef HAVE_VULKAN
-         {SUPPORTS_VULKAN      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_VULKAN_SUPPORT},
+         {SUPPORTS_VULKAN, "Vulkan"},
 #endif
 #ifdef HAVE_METAL
-         {SUPPORTS_METAL       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_METAL_SUPPORT},
+         {SUPPORTS_METAL, "Metal"},
 #endif
-         {SUPPORTS_OPENGL      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OPENGL_SUPPORT},
-         {SUPPORTS_OPENGLES    ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OPENGLES_SUPPORT},
-#ifdef HAVE_THREADS
-         {SUPPORTS_THREAD      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_THREADING_SUPPORT},
-#endif
-#ifdef HAVE_KMS
-         {SUPPORTS_KMS         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_KMS_SUPPORT},
-#endif
-#ifdef HAVE_UDEV
-         {SUPPORTS_UDEV        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_UDEV_SUPPORT},
-#endif
-#ifdef HAVE_VG
-         {SUPPORTS_VG          ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OPENVG_SUPPORT},
+         {SUPPORTS_OPENGL, "OpenGL"},
+         {SUPPORTS_OPENGLES, "OpenGL ES"},
+#ifdef HAVE_XVIDEO
+         {SUPPORTS_XVIDEO, "XVideo"},
 #endif
 #ifdef HAVE_EGL
-         {SUPPORTS_EGL         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_EGL_SUPPORT},
+         {SUPPORTS_EGL, "EGL"},
 #endif
-#ifdef HAVE_X11
-         {SUPPORTS_X11         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_X11_SUPPORT},
+#ifdef HAVE_KMS
+         {SUPPORTS_KMS, "KMS"},
 #endif
-#ifdef HAVE_WAYLAND
-         {SUPPORTS_WAYLAND     ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_WAYLAND_SUPPORT},
-#endif
-#ifdef HAVE_XVIDEO
-         {SUPPORTS_XVIDEO      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_XVIDEO_SUPPORT},
+#ifdef HAVE_VG
+         {SUPPORTS_VG, "OpenVG"},
 #endif
 #ifdef HAVE_ALSA
-         {SUPPORTS_ALSA        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_ALSA_SUPPORT},
-#endif
-#ifdef HAVE_OSS
-         {SUPPORTS_OSS         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OSS_SUPPORT},
-#endif
-#ifdef HAVE_AL
-         {SUPPORTS_AL          ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OPENAL_SUPPORT},
-#endif
-#ifdef HAVE_SL
-         {SUPPORTS_SL          ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_OPENSL_SUPPORT},
-#endif
-#ifdef HAVE_RSOUND
-         {SUPPORTS_RSOUND      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_RSOUND_SUPPORT},
-#endif
-#ifdef HAVE_ROAR
-         {SUPPORTS_ROAR        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_ROARAUDIO_SUPPORT},
-#endif
-#ifdef HAVE_JACK
-         {SUPPORTS_JACK        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_JACK_SUPPORT},
-#endif
-#ifdef HAVE_PULSE
-         {SUPPORTS_PULSE       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_PULSEAUDIO_SUPPORT},
+         {SUPPORTS_ALSA, "ALSA"},
 #endif
 #ifdef HAVE_COREAUDIO
-         {SUPPORTS_COREAUDIO   ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_COREAUDIO_SUPPORT},
+         {SUPPORTS_COREAUDIO, "CoreAudio"},
 #endif
 #ifdef HAVE_COREAUDIO3
-         {SUPPORTS_COREAUDIO3  ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_COREAUDIO3_SUPPORT},
+         {SUPPORTS_COREAUDIO3, "CoreAudio V3"},
+#endif
+#ifdef HAVE_JACK
+         {SUPPORTS_JACK, "JACK"},
+#endif
+#ifdef HAVE_AL
+         {SUPPORTS_AL, "OpenAL"},
+#endif
+#ifdef HAVE_SL
+         {SUPPORTS_SL, "OpenSL"},
+#endif
+#ifdef HAVE_OSS
+         {SUPPORTS_OSS, "OSS"},
 #endif
 #ifdef HAVE_PIPEWIRE
-         {SUPPORTS_PIPEWIRE    ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_PIPEWIRE_SUPPORT},
+         {SUPPORTS_PIPEWIRE, "PipeWire"},
+#endif
+#ifdef HAVE_PULSE
+         {SUPPORTS_PULSE, "PulseAudio"},
+#endif
+#ifdef HAVE_ROAR
+         {SUPPORTS_ROAR, "RoarAudio"},
+#endif
+#ifdef HAVE_RSOUND
+         {SUPPORTS_RSOUND, "RSound"},
 #endif
 #ifdef HAVE_DSOUND
-         {SUPPORTS_DSOUND      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_DSOUND_SUPPORT},
+         {SUPPORTS_DSOUND, "DirectSound"},
 #endif
 #ifdef HAVE_WASAPI
-         {SUPPORTS_WASAPI      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_WASAPI_SUPPORT},
+         {SUPPORTS_WASAPI, "WASAPI"},
 #endif
 #ifdef HAVE_XAUDIO
-         {SUPPORTS_XAUDIO      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_XAUDIO2_SUPPORT},
+         {SUPPORTS_XAUDIO, "XAudio2"},
 #endif
 #ifdef HAVE_ZLIB
-         {SUPPORTS_ZLIB        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_ZLIB_SUPPORT},
+         {SUPPORTS_ZLIB, "zlib"},
 #endif
 #ifdef HAVE_7ZIP
-         {SUPPORTS_7ZIP        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_7ZIP_SUPPORT},
+         {SUPPORTS_7ZIP, "7zip"},
 #endif
 #ifdef HAVE_ZSTD
-         {SUPPORTS_ZSTD        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_ZSTD_SUPPORT},
-#endif
-#ifdef HAVE_DYLIB
-         {SUPPORTS_DYLIB       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_DYLIB_SUPPORT},
-#endif
-         {SUPPORTS_DYNAMIC     ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_DYNAMIC_SUPPORT},
-#ifdef HAVE_CG
-         {SUPPORTS_CG          ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_CG_SUPPORT},
-#endif
-#ifdef HAVE_GLSL
-         {SUPPORTS_GLSL        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_GLSL_SUPPORT},
-#endif
-#ifdef HAVE_HLSL
-         {SUPPORTS_HLSL        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_HLSL_SUPPORT},
-#endif
-#ifdef HAVE_SLANG
-         {SUPPORTS_SLANG       ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_SLANG_SUPPORT},
-#endif
-#ifdef HAVE_SDL_IMAGE
-         {SUPPORTS_SDL_IMAGE   ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_SDL_IMAGE_SUPPORT},
+         {SUPPORTS_ZSTD, "Zstandard"},
 #endif
 #ifdef HAVE_FFMPEG
-         {SUPPORTS_FFMPEG      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FFMPEG_SUPPORT},
+         {SUPPORTS_FFMPEG, "FFmpeg"},
 #endif
 #ifdef HAVE_MPV
-         {SUPPORTS_MPV         ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_MPV_SUPPORT},
+         {SUPPORTS_MPV, "mpv"},
+#endif
+#ifdef HAVE_SDL_IMAGE
+         {SUPPORTS_SDL_IMAGE, "SDL Image"},
 #endif
 #ifdef HAVE_CORETEXT
-         {SUPPORTS_CORETEXT    ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_CORETEXT_SUPPORT},
+         {SUPPORTS_CORETEXT, "CoreText"},
 #endif
 #ifdef HAVE_FREETYPE
-         {SUPPORTS_FREETYPE    ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_FREETYPE_SUPPORT},
+         {SUPPORTS_FREETYPE, "FreeType"},
 #endif
 #ifdef HAVE_STB_FONT
-         {SUPPORTS_STBFONT     ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_STB_TRUETYPE_SUPPORT},
-#endif
-#ifdef HAVE_NETWORKING
-         {SUPPORTS_NETPLAY     ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_NETPLAY_SUPPORT},
-#endif
-#ifdef HAVE_SSL
-         {SUPPORTS_SSL     ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_SSL_SUPPORT},
+         {SUPPORTS_STBFONT, "STB TrueType"},
 #endif
 #ifdef HAVE_V4L2
-         {SUPPORTS_V4L2        ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_V4L2_SUPPORT},
+         {SUPPORTS_V4L2, "Video4Linux2"},
 #endif
 #ifdef HAVE_LIBUSB
-         {SUPPORTS_LIBUSB      ,    MENU_ENUM_LABEL_VALUE_SYSTEM_INFO_LIBUSB_SUPPORT},
+         {SUPPORTS_LIBUSB, "libusb"},
+#endif
+#ifdef HAVE_COCOA
+         {SUPPORTS_COCOA, "Cocoa UI companion"},
+#endif
+#ifdef HAVE_QT
+         {SUPPORTS_QT, "Qt UI companion"},
+#endif
+#ifdef HAVE_QT6
+         {SUPPORTS_QT, "Qt6 UI companion"},
 #endif
       };
       unsigned info_idx;
@@ -2538,14 +2529,13 @@ static unsigned menu_displaylist_parse_system_info(file_list_t *list)
 
       for (info_idx = 0; info_idx < ARRAY_SIZE(info_list); info_idx++)
       {
-         size_t _len     = strlcpy(entry,
-               msg_hash_to_str(info_list[info_idx].msg),
+         size_t _len = strlcpy(entry,
+               info_list[info_idx].msg,
                sizeof(entry));
          _len += strlcpy(entry + _len, ": ", sizeof(entry) - _len);
-         if (info_list[info_idx].enabled)
-            strlcpy(entry + _len, val_yes_str, sizeof(entry) - _len);
-         else
-            strlcpy(entry + _len, val_no_str,  sizeof(entry) - _len);
+         _len += strlcpy(entry + _len,
+               (info_list[info_idx].enabled) ? val_yes_str : val_no_str, sizeof(entry) - _len);
+
          if (menu_entries_append(list, entry, "",
                MENU_ENUM_LABEL_SYSTEM_INFO_ENTRY, MENU_SETTINGS_CORE_INFO_NONE,
                0, 0, NULL))
@@ -7953,14 +7943,6 @@ unsigned menu_displaylist_build_list(
       case DISPLAYLIST_INFORMATION_LIST:
          count              = menu_displaylist_parse_information_list(list);
          break;
-      case DISPLAYLIST_HELP_SCREEN_LIST:
-         if (menu_entries_append(list,
-                  msg_hash_to_str(MENU_ENUM_LABEL_VALUE_HELP_CONTROLS),
-                  msg_hash_to_str(MENU_ENUM_LABEL_HELP_CONTROLS),
-                  MENU_ENUM_LABEL_HELP_CONTROLS,
-                  0, 0, 0, NULL))
-            count++;
-         break;
       case DISPLAYLIST_AUDIO_OUTPUT_SETTINGS_LIST:
          {
             if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
@@ -8190,17 +8172,6 @@ unsigned menu_displaylist_build_list(
                      MENU_ENUM_LABEL_BRIGHTNESS_CONTROL,
                      PARSE_ONLY_UINT, false) == 0)
                count++;
-#ifdef HAVE_SCREENSHOTS
-            {
-               video_driver_state_t *video_st    = video_state_get_ptr();
-               if (     video_st->current_video->read_viewport
-                     && video_st->current_video->viewport_info)
-                  if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
-                           MENU_ENUM_LABEL_VIDEO_GPU_SCREENSHOT,
-                           PARSE_ONLY_BOOL, false) == 0)
-                     count++;
-            }
-#endif
             if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
                      MENU_ENUM_LABEL_VIDEO_CTX_SCALING,
                      PARSE_ONLY_BOOL, false) == 0)
@@ -8338,9 +8309,11 @@ unsigned menu_displaylist_build_list(
          {
             const char *menu_driver     = menu_driver_ident();
             menu_displaylist_build_info_selective_t build_list[] = {
-               {MENU_ENUM_LABEL_INPUT_UNIFIED_MENU_CONTROLS,        PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_MOUSE_ENABLE,                       PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_POINTER_ENABLE,                     PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_MENU_INPUT_SWAP_OK_CANCEL,          PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_MENU_INPUT_SWAP_SCROLL,             PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_INPUT_UNIFIED_MENU_CONTROLS,        PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_INPUT_ALL_USERS_CONTROL_MENU,       PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_MENU_SINGLECLICK_PLAYLISTS,         PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_MENU_ALLOW_TABS_BACK,               PARSE_ONLY_BOOL, true},
@@ -8405,8 +8378,8 @@ unsigned menu_displaylist_build_list(
                {MENU_ENUM_LABEL_INPUT_BUTTON_AXIS_THRESHOLD,           PARSE_ONLY_FLOAT, true},
                {MENU_ENUM_LABEL_INPUT_ANALOG_DEADZONE,                 PARSE_ONLY_FLOAT, true},
                {MENU_ENUM_LABEL_INPUT_ANALOG_SENSITIVITY,              PARSE_ONLY_FLOAT, true},
-               {MENU_ENUM_LABEL_INPUT_SENSOR_ACCELEROMETER_SENSITIVITY,PARSE_ONLY_FLOAT, true  },
-               {MENU_ENUM_LABEL_INPUT_SENSOR_GYROSCOPE_SENSITIVITY,    PARSE_ONLY_FLOAT, true  },
+               {MENU_ENUM_LABEL_INPUT_SENSOR_ACCELEROMETER_SENSITIVITY,PARSE_ONLY_FLOAT, true},
+               {MENU_ENUM_LABEL_INPUT_SENSOR_GYROSCOPE_SENSITIVITY,    PARSE_ONLY_FLOAT, true},
 #if defined(GEKKO)
                {MENU_ENUM_LABEL_INPUT_MOUSE_SCALE,                     PARSE_ONLY_UINT,  true},
 #endif
@@ -8515,6 +8488,7 @@ unsigned menu_displaylist_build_list(
                {MENU_ENUM_LABEL_AI_SERVICE_ENABLE,        PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_AI_SERVICE_MODE,          PARSE_ONLY_UINT,   false},
                {MENU_ENUM_LABEL_AI_SERVICE_URL,           PARSE_ONLY_STRING, false},
+               {MENU_ENUM_LABEL_AI_SERVICE_BACKEND,       PARSE_ONLY_STRING_OPTIONS, false},
                {MENU_ENUM_LABEL_AI_SERVICE_PAUSE,         PARSE_ONLY_BOOL,   false},
                {MENU_ENUM_LABEL_AI_SERVICE_SOURCE_LANG,   PARSE_ONLY_UINT,   false},
                {MENU_ENUM_LABEL_AI_SERVICE_TARGET_LANG,   PARSE_ONLY_UINT,   false},
@@ -8525,6 +8499,7 @@ unsigned menu_displaylist_build_list(
                switch (build_list[i].enum_idx)
                {
                   case MENU_ENUM_LABEL_AI_SERVICE_MODE:
+                  case MENU_ENUM_LABEL_AI_SERVICE_BACKEND:
                   case MENU_ENUM_LABEL_AI_SERVICE_URL:
                   case MENU_ENUM_LABEL_AI_SERVICE_PAUSE:
                   case MENU_ENUM_LABEL_AI_SERVICE_SOURCE_LANG:
@@ -9913,6 +9888,7 @@ unsigned menu_displaylist_build_list(
             menu_displaylist_build_info_selective_t build_list[] = {
                {MENU_ENUM_LABEL_MENU_SETTINGS,                                         PARSE_ACTION,      true},
                {MENU_ENUM_LABEL_MENU_VIEWS_SETTINGS,                                   PARSE_ACTION,      true},
+               {MENU_ENUM_LABEL_INPUT_MENU_SETTINGS,                                   PARSE_ACTION,      true},
                {MENU_ENUM_LABEL_ONSCREEN_NOTIFICATIONS_SETTINGS,                       PARSE_ACTION,      true},
 #if defined(HAVE_OVERLAY)
                {MENU_ENUM_LABEL_ONSCREEN_OVERLAY_SETTINGS,                             PARSE_ACTION,      true},
@@ -9930,8 +9906,6 @@ unsigned menu_displaylist_build_list(
                {MENU_ENUM_LABEL_SHOW_ADVANCED_SETTINGS,                                PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_MENU_ENABLE_KIOSK_MODE,                                PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_MENU_KIOSK_MODE_PASSWORD,                              PARSE_ONLY_STRING, false},
-               {MENU_ENUM_LABEL_MOUSE_ENABLE,                                          PARSE_ONLY_BOOL,   true},
-               {MENU_ENUM_LABEL_POINTER_ENABLE,                                        PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_THREADED_DATA_RUNLOOP_ENABLE,                          PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_MENU_SCREENSAVER_TIMEOUT,                              PARSE_ONLY_UINT,   false},
                {MENU_ENUM_LABEL_MENU_SCREENSAVER_ANIMATION,                            PARSE_ONLY_UINT,   false},
@@ -10341,9 +10315,9 @@ unsigned menu_displaylist_build_list(
             {
                if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
                         MENU_ENUM_LABEL_VIDEO_HDR_ENABLE,
-                        PARSE_ONLY_BOOL, false) == 0)
+                        PARSE_ONLY_UINT, false) == 0)
                   count++;
-               if (settings->bools.video_hdr_enable)
+               if (settings->uints.video_hdr_mode > 0)
                {
                   if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
                            MENU_ENUM_LABEL_VIDEO_HDR_MAX_NITS,
@@ -10356,7 +10330,7 @@ unsigned menu_displaylist_build_list(
 
                   if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
                            MENU_ENUM_LABEL_VIDEO_HDR_EXPAND_GAMUT,
-                           PARSE_ONLY_BOOL, false) == 0)
+                           PARSE_ONLY_UINT, false) == 0)
                      count++;
 
                   if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(list,
@@ -11273,34 +11247,37 @@ unsigned menu_displaylist_build_list(
             bool replay_auto_index    = settings->bools.replay_auto_index;
 
             menu_displaylist_build_info_selective_t build_list[] = {
+#if HAVE_CLOUDSYNC
+               {MENU_ENUM_LABEL_CLOUD_SYNC_SETTINGS,                PARSE_ACTION,    true},
+#endif
                {MENU_ENUM_LABEL_SORT_SAVEFILES_ENABLE,              PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SORT_SAVESTATES_ENABLE,             PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_SORT_SAVEFILES_BY_CONTENT_ENABLE,   PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SORT_SAVESTATES_BY_CONTENT_ENABLE,  PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SORT_SCREENSHOTS_BY_CONTENT_ENABLE, PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_SAVEFILES_IN_CONTENT_DIR_ENABLE,    PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SAVESTATES_IN_CONTENT_DIR_ENABLE,   PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SCREENSHOTS_IN_CONTENT_DIR_ENABLE,  PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_AUTOSAVE_INTERVAL,                  PARSE_ONLY_UINT, true},
                {MENU_ENUM_LABEL_BLOCK_SRAM_OVERWRITE,               PARSE_ONLY_BOOL, true},
 #if defined(HAVE_ZLIB)
                {MENU_ENUM_LABEL_SAVE_FILE_COMPRESSION,              PARSE_ONLY_BOOL, true},
-               {MENU_ENUM_LABEL_SAVESTATE_FILE_COMPRESSION,         PARSE_ONLY_BOOL, true},
 #endif
-               {MENU_ENUM_LABEL_SAVESTATE_THUMBNAIL_ENABLE,         PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SORT_SAVESTATES_ENABLE,             PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SORT_SAVESTATES_BY_CONTENT_ENABLE,  PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SAVESTATES_IN_CONTENT_DIR_ENABLE,   PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_SAVESTATE_AUTO_SAVE,                PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_SAVESTATE_AUTO_LOAD,                PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SAVESTATE_THUMBNAIL_ENABLE,         PARSE_ONLY_BOOL, true},
+#if defined(HAVE_ZLIB)
+               {MENU_ENUM_LABEL_SAVESTATE_FILE_COMPRESSION,         PARSE_ONLY_BOOL, true},
+#endif
                {MENU_ENUM_LABEL_SAVESTATE_AUTO_INDEX,               PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_SAVESTATE_MAX_KEEP,                 PARSE_ONLY_UINT, false},
                {MENU_ENUM_LABEL_REPLAY_AUTO_INDEX,                  PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_REPLAY_MAX_KEEP,                    PARSE_ONLY_UINT, false},
                {MENU_ENUM_LABEL_REPLAY_CHECKPOINT_INTERVAL,         PARSE_ONLY_UINT, true},
                {MENU_ENUM_LABEL_REPLAY_CHECKPOINT_DESERIALIZE,      PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SORT_SCREENSHOTS_BY_CONTENT_ENABLE, PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_SCREENSHOTS_IN_CONTENT_DIR_ENABLE,  PARSE_ONLY_BOOL, true},
+               {MENU_ENUM_LABEL_VIDEO_GPU_SCREENSHOT,               PARSE_ONLY_BOOL, false},
                {MENU_ENUM_LABEL_CONTENT_RUNTIME_LOG,                PARSE_ONLY_BOOL, true},
                {MENU_ENUM_LABEL_CONTENT_RUNTIME_LOG_AGGREGATE,      PARSE_ONLY_BOOL, true},
-#if HAVE_CLOUDSYNC
-               {MENU_ENUM_LABEL_CLOUD_SYNC_SETTINGS,                PARSE_ACTION,    true},
-#endif
             };
 
             for (i = 0; i < ARRAY_SIZE(build_list); i++)
@@ -11313,6 +11290,16 @@ unsigned menu_displaylist_build_list(
                   case MENU_ENUM_LABEL_REPLAY_MAX_KEEP:
                      build_list[i].checked = replay_auto_index;
                      break;
+                  case MENU_ENUM_LABEL_VIDEO_GPU_SCREENSHOT:
+                  {
+#ifdef HAVE_SCREENSHOTS
+                     video_driver_state_t *video_st    = video_state_get_ptr();
+                     if (     video_st->current_video->read_viewport
+                           && video_st->current_video->viewport_info)
+                        build_list[i].checked = true;
+#endif
+                     break;
+                  }
                   default:
                      break;
                }
@@ -11433,7 +11420,6 @@ unsigned menu_displaylist_build_list(
 #ifdef HAVE_NETWORKING
                {MENU_ENUM_LABEL_WIFI_SETTINGS,               PARSE_ACTION, true},
                {MENU_ENUM_LABEL_NETWORK_SETTINGS,            PARSE_ACTION, true},
-               {MENU_ENUM_LABEL_NETPLAY_LAN_SCAN_SETTINGS,   PARSE_ACTION, true},
 #endif
 #ifdef HAVE_CHEEVOS
                {MENU_ENUM_LABEL_RETRO_ACHIEVEMENTS_SETTINGS, PARSE_ACTION},
@@ -11527,7 +11513,6 @@ unsigned menu_displaylist_build_list(
                      /* MISSING:
                       * MENU_ENUM_LABEL_BLUETOOTH_SETTINGS
                       * MENU_ENUM_LABEL_WIFI_SETTINGS
-                      * MENU_ENUM_LABEL_NETPLAY_LAN_SCAN_SETTINGS
                       * MENU_ENUM_LABEL_LAKKA_SERVICES
                       */
                   default:
@@ -12132,8 +12117,6 @@ unsigned menu_displaylist_build_list(
                {MENU_ENUM_LABEL_MATERIALUI_LANDSCAPE_LAYOUT_OPTIMIZATION,     PARSE_ONLY_UINT,   true},
                {MENU_ENUM_LABEL_MATERIALUI_SHOW_NAV_BAR,                      PARSE_ONLY_BOOL,   true},
                {MENU_ENUM_LABEL_MATERIALUI_AUTO_ROTATE_NAV_BAR,               PARSE_ONLY_BOOL,   false},
-               {MENU_ENUM_LABEL_MATERIALUI_MENU_HEADER_OPACITY,               PARSE_ONLY_FLOAT,  true},
-               {MENU_ENUM_LABEL_MATERIALUI_MENU_FOOTER_OPACITY,               PARSE_ONLY_FLOAT,  true},
                {MENU_ENUM_LABEL_MATERIALUI_MENU_THUMBNAIL_VIEW_PORTRAIT,      PARSE_ONLY_UINT,   true},
                {MENU_ENUM_LABEL_MATERIALUI_MENU_THUMBNAIL_VIEW_LANDSCAPE,     PARSE_ONLY_UINT,   true},
                {MENU_ENUM_LABEL_MATERIALUI_DUAL_THUMBNAIL_LIST_VIEW_ENABLE,   PARSE_ONLY_BOOL,   true},
@@ -13506,10 +13489,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
             info->flags       |= MD_FLAG_NEED_REFRESH
                                | MD_FLAG_NEED_PUSH
                                | MD_FLAG_NEED_CLEAR;
-            break;
-         case DISPLAYLIST_NETPLAY_LAN_SCAN_SETTINGS_LIST:
-         case DISPLAYLIST_OPTIONS_MANAGEMENT:
-            /* TODO/FIXME ? */
             break;
          case DISPLAYLIST_NETPLAY:
             menu_entries_clear(info->list);
@@ -16121,15 +16100,6 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
             }
             load_content       = false;
             use_filebrowser    = true;
-            break;
-         case DISPLAYLIST_CONTENT_HISTORY:
-            menu_entries_clear(info->list);
-            filebrowser_clear_type();
-            info->type_default = FILE_TYPE_PLAIN;
-            use_filebrowser    = true;
-            if (!string_is_empty(info->exts))
-               free(info->exts);
-            info->exts         = strldup("lpl", sizeof("lpl"));
             break;
          case DISPLAYLIST_DATABASE_PLAYLISTS:
          case DISPLAYLIST_DATABASE_PLAYLISTS_HORIZONTAL:

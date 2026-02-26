@@ -1923,12 +1923,8 @@ bool runloop_environment_cb(unsigned cmd, void *data)
       }
 
       case RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL:
-         if (sys_info)
-         {
-            sys_info->performance_level = *(const unsigned*)data;
-            RARCH_LOG("[Environ] SET_PERFORMANCE_LEVEL: %u.\n",
-                  sys_info->performance_level);
-         }
+         RARCH_DBG("[Environ] SET_PERFORMANCE_LEVEL: %u (Deprecated).\n",
+               *(const unsigned*)data);
          break;
 
       case RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY:
@@ -3387,6 +3383,16 @@ bool runloop_environment_cb(unsigned cmd, void *data)
          }
          break;
 
+      case RETRO_ENVIRONMENT_SET_SAVE_STATE_DISABLE_UNDO:
+         {
+            bool state = *(const bool*)data;
+
+            RARCH_LOG("[Environ] RETRO_ENVIRONMENT_SET_SAVE_STATE_DISABLE_UNDO: %s.\n", state ? "yes" : "no");
+
+            set_save_state_disable_undo(state);
+         }
+         break;
+
       case RETRO_ENVIRONMENT_SET_CONTENT_INFO_OVERRIDE:
          {
             const struct retro_system_content_info_override *overrides =
@@ -4049,7 +4055,7 @@ static void runloop_apply_fastmotion_override(runloop_state_t *runloop_st,
 #if defined(HAVE_GFX_WIDGETS)
       if (      p_dispwidget->active
             && !(runloop_st->flags & RUNLOOP_FLAG_FASTMOTION))
-         video_st->flags &= ~VIDEO_FLAG_WIDGETS_FAST_FORWARD;
+         video_st->flags &= ~VIDEO_FLAG_WIDGETS_FASTMOTION;
 #endif
    }
 
@@ -4449,7 +4455,7 @@ void runloop_set_frame_limit(
       float fastforward_ratio)
 {
    runloop_state_t *runloop_st  = &runloop_state;
-   if (fastforward_ratio < 1.0f)
+   if (fastforward_ratio < 0.1f)
       runloop_st->frame_limit_minimum_time = 0.0f;
    else
       runloop_st->frame_limit_minimum_time = (retro_time_t)
@@ -5731,15 +5737,26 @@ static enum runloop_state_enum runloop_check_state(
          static bool last_controller_connected = false;
          bool controller_connected             = (input_config_get_device_name(0) != NULL);
 
-         if (controller_connected != last_controller_connected)
+         /* When pointer input is enabled, soft-hide instead of
+          * unloading so mouse/lightgun input remains functional.
+          * Level-triggered: enforce flag state every frame. */
+         if (   settings->bools.input_overlay_pointer_enable
+             && input_st->overlay_ptr)
+         {
+            if (controller_connected)
+               input_st->overlay_ptr->flags |=  INPUT_OVERLAY_GAMEPAD_HIDDEN;
+            else
+               input_st->overlay_ptr->flags &= ~INPUT_OVERLAY_GAMEPAD_HIDDEN;
+         }
+         else if (controller_connected != last_controller_connected)
          {
             if (controller_connected)
                input_overlay_unload();
             else
                input_overlay_init();
-
-            last_controller_connected = controller_connected;
          }
+
+         last_controller_connected = controller_connected;
       }
 
       /* Check next overlay hotkey */
@@ -6471,7 +6488,7 @@ static enum runloop_state_enum runloop_check_state(
 #if defined(HAVE_GFX_WIDGETS)
          if (widgets_active)
          {
-            if (rewinding)
+            if (rewinding && settings->bools.notification_show_fast_forward)
                video_st->flags |=  VIDEO_FLAG_WIDGETS_REWINDING;
             else
                video_st->flags &= ~VIDEO_FLAG_WIDGETS_REWINDING;
@@ -6479,7 +6496,7 @@ static enum runloop_state_enum runloop_check_state(
          else
 #endif
          {
-            if (rewinding)
+            if (rewinding && settings->bools.notification_show_fast_forward)
                runloop_msg_queue_push(s, strlen(s), 0, t, true, NULL,
                      MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
          }
@@ -6792,12 +6809,12 @@ static enum runloop_state_enum runloop_check_state(
          if (settings->bools.notification_show_fast_forward)
          {
             if (runloop_st->flags & RUNLOOP_FLAG_FASTMOTION)
-               video_st->flags |=  VIDEO_FLAG_WIDGETS_FAST_FORWARD;
+               video_st->flags |=  VIDEO_FLAG_WIDGETS_FASTMOTION;
             else
-               video_st->flags &= ~VIDEO_FLAG_WIDGETS_FAST_FORWARD;
+               video_st->flags &= ~VIDEO_FLAG_WIDGETS_FASTMOTION;
          }
          else
-            video_st->flags    &= ~VIDEO_FLAG_WIDGETS_FAST_FORWARD;
+            video_st->flags    &= ~VIDEO_FLAG_WIDGETS_FASTMOTION;
       }
       else
 #endif
@@ -6815,7 +6832,7 @@ static enum runloop_state_enum runloop_check_state(
    }
 #if defined(HAVE_GFX_WIDGETS)
    else
-      video_st->flags &= ~VIDEO_FLAG_WIDGETS_FAST_FORWARD;
+      video_st->flags &= ~VIDEO_FLAG_WIDGETS_FASTMOTION;
 #endif
 
 #ifdef HAVE_CHEEVOS
@@ -6892,6 +6909,21 @@ static enum runloop_state_enum runloop_check_state(
          old_slowmotion_button_state                  = new_slowmotion_button_state;
          old_slowmotion_hold_button_state             = new_slowmotion_hold_button_state;
       }
+
+#if defined(HAVE_GFX_WIDGETS)
+      if (widgets_active)
+      {
+         if (settings->bools.notification_show_fast_forward)
+         {
+            if (runloop_st->flags & RUNLOOP_FLAG_SLOWMOTION)
+               video_st->flags |=  VIDEO_FLAG_WIDGETS_SLOWMOTION;
+            else
+               video_st->flags &= ~VIDEO_FLAG_WIDGETS_SLOWMOTION;
+         }
+         else
+            video_st->flags    &= ~VIDEO_FLAG_WIDGETS_SLOWMOTION;
+      }
+#endif
    }
 
    /* Check save state slot hotkeys */

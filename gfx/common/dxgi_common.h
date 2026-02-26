@@ -38,9 +38,10 @@ typedef struct ALIGN(16)
    float             max_nits;            /* 1000.0f */
    unsigned          subpixel_layout;     /* 0       */
    float             scanlines;           /* 1.0f    */
-   float             expand_gamut;        /* 0.0f    */
+   unsigned          expand_gamut;        /* 0       */
    float             inverse_tonemap;     /* 1.0f    */
    float             hdr10;               /* 1.0f    */
+   unsigned          hdr_mode;            /* 0 = off, 1 = HDR10, 2 = scRGB, 3 = PQ->scRGB */
 } dxgi_hdr_uniform_t;
 
 enum dxgi_swapchain_bit_depth

@@ -815,6 +815,7 @@ endif
 ifeq ($(HAVE_LAKKA), 1)
    OBJ += network/drivers_wifi/connmanctl.o
    OBJ += misc/cpufreq/cpufreq.o
+   LIBS += -lsystemd
 endif
 
 ifeq ($(HAVE_WIFI), 1)
@@ -2370,6 +2371,12 @@ ifeq ($(HAVE_NETWORKING), 1)
       OBJ += tasks/task_cloudsync.o \
              network/cloud_sync/webdav.o \
              network/cloud_sync_driver.o
+      ifeq ($(HAVE_SSL), 1)
+         OBJ += network/cloud_sync/google_drive.o
+      endif
+      ifneq (,$(filter 1,$(HAVE_SMBCLIENT) $(HAVE_BUILTINSMBCLIENT)))
+         OBJ += network/cloud_sync/smb.o
+      endif
    endif
 
    ifeq ($(HAVE_BUILTINBEARSSL), 1)
