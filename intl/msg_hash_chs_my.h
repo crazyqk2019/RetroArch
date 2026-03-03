@@ -7583,35 +7583,35 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_PUBLIC_ANNOUNCE,
-   "是否使用公共的在线游戏网络。\n如果未设置，客户端必须手动连接而不使用\n公共的在线游戏网络。"
+   "是否公开发布游戏联机。如果不公开，客户端必须手动连接而不是使用公共游戏大厅。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_USE_MITM_SERVER,
-   "启用代理服务器"
+   "启用转发服务器"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_USE_MITM_SERVER,
-   "通过代理服务器进行网络连接。如果主机位于\n防火墙之后或具有NAT／UPnP问题时，建议开启。"
+   "通过中间服务器进行转发联机游戏的网络连接。如果主机位于防火墙之后或者NAT/UPnP有问题时，此项可能有用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER,
-   "代理服务器位置"
+   "转发服务器位置"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_MITM_SERVER,
-   "选择一个代理服务器。服务器位置较近的\n一般网络延迟更低。"
+   "选择一个转发服务器。地理位置较近的服务器一般网络延迟更低。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_CUSTOM_MITM_SERVER,
-   "自定义代理服务器地址"
+   "自定义转发服务器地址"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_CUSTOM_MITM_SERVER,
-   "在此输入您自定义代理服务器的地址。格式：地址或地址|端口。"
+   "在此输入您自定义的转发服务器的地址。格式：地址或地址|端口。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_1,
-   "北美(美国东海岸)"
+   "北美（美国东海岸）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_2,
@@ -7619,15 +7619,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_3,
-   "南美洲(巴西东南部)"
+   "南美洲（巴西东南部）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_4,
    "东南亚"
-   )
-MSG_HASH(
-   MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_5,
-   "东亚(春川市, 韩国)"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MITM_SERVER_LOCATION_CUSTOM,
@@ -7639,15 +7635,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_IP_ADDRESS,
-   "要连接到在线游戏网络服务器的地址。"
+   "要连接的主机地址。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_TCP_UDP_PORT,
-   "在线游戏 TCP/UDP 端口"
+   "联机 TCP/UDP 端口"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_TCP_UDP_PORT,
-   "服务器 IP 地址端口。可以是 TCP 或 UDP 端口。"
+   "主机 IP 地址的端口,可以是 TCP 或 UDP 端口。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MAX_CONNECTIONS,
@@ -7655,15 +7651,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_MAX_CONNECTIONS,
-   "主机在拒绝新连接之前接受的活动连接的最大数量。"
+   "主机可接受的最大同时连接数量，超过此连接数是主机会拒绝新的连接。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_MAX_PING,
-   "Ping限制"
+   "Ping 限制"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_MAX_PING,
-   "主机将接受的最大连接延迟(ping)。设置为0为无限制。"
+   "主机可接受的最大连接延迟(ping)，设置为0为无限制。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_PASSWORD,
@@ -7675,7 +7671,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_SPECTATE_PASSWORD,
-   "服务器观战的密码"
+   "服务器的观战密码"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_SPECTATE_PASSWORD,
@@ -7683,7 +7679,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_START_AS_SPECTATOR,
-   "在线游戏观众模式"
+   "联机观战模式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_START_AS_SPECTATOR,
@@ -7691,19 +7687,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_NETPLAY_START_AS_SPECTATOR,
-   "是否在旁观者模式下启动网络播放。如果设置为 true，网络播放将在启动时使用旁观者模式。 以后总是可以更改模式。"
+   "是否在观战模式下启动联机游戏。如果开启此项，联机游戏将以观战模式启动，可以在之后更改模式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_FADE_CHAT,
-   "淡化聊天"
+   "聊天信息淡出"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_FADE_CHAT,
-   "一段时间内淡出聊天消息。"
+   "一段时间后淡出聊天信息框。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_CHAT_COLOR_NAME,
-   "聊天颜色 (昵称)"
+   "聊天颜色（昵称）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_CHAT_COLOR_NAME,
@@ -7711,7 +7707,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_CHAT_COLOR_MSG,
-   "聊天颜色 (消息)"
+   "聊天颜色（信息）"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_CHAT_COLOR_MSG,
@@ -7731,11 +7727,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_ALLOW_SLAVES,
-   "允许从属模式连接。从属模式客户端各自都只需极小的性能，但是会受到网络延迟的严重影响。"
+   "允许从属模式连接。从属模式客户端对双方的处理能力要求都很低，但会受到网络延迟的显著影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_REQUIRE_SLAVES,
-   "只允许从属模式客户端"
+   "不允许非从属模式客户端"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_REQUIRE_SLAVES,
@@ -7743,15 +7739,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_CHECK_FRAMES,
-   "在线游戏检查帧数"
+   "联机游戏检查帧数"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_CHECK_FRAMES,
-   "确认主机和客户端同步的周期(以帧为单位)。"
+   "联机游戏确认主机和客户端同步的周期（以帧为单位）。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_NETPLAY_CHECK_FRAMES,
-   "联机将验证主机和客户端是否同步的帧频率。 大多数内核，没有明显影响，可以忽略。 非确定内核会定期检查同步时间。使用错误的内核，将此设定为任何非零值将导致严重的性能问题。 设置为零以不执行检查。此值仅用于网络联机。"
+   "联机游戏确认主机和客户端之间是否同步的帧数间隔。对于大多数内核，此值没有可见影响，可以忽略；对于某些内核，此值决定了联机端之间同步的频率；对于有bug内核，此值设为任何非零值都会导致严重的性能问题。设置为零表示不作检查。此项仅对联机游戏主机端有效。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_INPUT_LATENCY_FRAMES_MIN,
@@ -7759,11 +7755,11 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_INPUT_LATENCY_FRAMES_MIN,
-   "设定按键输入延迟帧数, 用于掩盖网络延迟, 可降低CPU使用率并减少画面误差, 代价是很明显的按键延迟。"
+   "用于掩盖网络延迟的输入延迟帧数, 可以减少画面抖动并降低对CPU性能的依赖，代价是明显的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_NETPLAY_INPUT_LATENCY_FRAMES_MIN,
-   "用于隐藏网络延迟的输入延迟帧数。\n在netplay中，此选项会延迟本地输入，所以正在运行的帧靠近从网络收到的帧。 这减少了喷雾器，并使得净化降低了CPU强度，但是以明显的输入滞后为代价。"
+   "用于掩盖网络延迟的输入延迟帧数。\n在联机游戏中，此选项延迟本地输入，以使运行帧更接近于从网络接收到的帧数。这可以减少画面抖动，降低联机游戏对CPU性能的依赖，但是代价是明显的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_INPUT_LATENCY_FRAMES_RANGE,
@@ -7771,23 +7767,23 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_INPUT_LATENCY_FRAMES_RANGE,
-   "设置按键延迟范围以掩盖网络的延迟。\n用一定的按键延迟换取在线游戏时\n降低 CPU 负载并减少顿卡。"
+   "用于掩盖网络延迟的输入延迟帧数范围。可以减少画面抖动并降低对CPU性能的依赖，代价是不可预测的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_HELP_NETPLAY_INPUT_LATENCY_FRAMES_RANGE,
-   "用于隐藏网络延迟的输入延迟帧范围。\n如果设置，netplay将动态调整输入延迟的帧数，以平衡CPU时间、输入延迟和网络延迟。 这就减少了喷雾器，减少了净值，但是以不可预测的输入滞后为代价。"
+   "用于隐藏网络延迟的输入延迟帧范围。\n如果设置了此值，联机游戏将动态调整输入延迟的帧数，以平衡CPU时间、输入延迟和网络延迟。可以减少画面抖动并降低对CPU性能的依赖，代价是不可预测的输入延迟。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_NAT_TRAVERSAL,
-   "主机内网穿透"
+   "联机 NAT 地址转换"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_NAT_TRAVERSAL,
-   "当联机时，侦听来自公共互联网的连接，\n使用 UPnP 或类似的技术来规避局域网问题。"
+   "当作为主机联机时，尝试监听公网连接，使用 UPnP 或者其他类似技术以突破局域网限制。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_SHARE_DIGITAL,
-   "数字输入分配"
+   "数字输入共享"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETPLAY_REQUEST_DEVICE_I,
@@ -7795,7 +7791,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETPLAY_REQUEST_DEVICE_I,
-   "请求播放给予的输入设备"
+   "请求使用指定的输入设备游玩"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETWORK_CMD_ENABLE,
@@ -7807,15 +7803,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETWORK_REMOTE_ENABLE,
-   "网络全能手柄 (RetroPad)"
+   "网络全能手柄（RetroPad）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETWORK_REMOTE_PORT,
-   "网络全能手柄 (RetroPad) 基础端口"
+   "网络全能手柄（RetroPad）基础端口"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETWORK_USER_REMOTE_ENABLE,
-   "用户 %d 的网络全能手柄 (RetroPad)"
+   "玩家 %d 的网络全能手柄（RetroPad）"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_STDIN_CMD_ENABLE,
@@ -7823,7 +7819,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_STDIN_CMD_ENABLE,
-   "启用标准命令行输入。"
+   "标准输入命令接口。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_NETWORK_ON_DEMAND_THUMBNAILS,
@@ -7831,7 +7827,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_NETWORK_ON_DEMAND_THUMBNAILS,
-   "在浏览列表时自动下载缺失的缩略图图像。有严重的性能影响。"
+   "在浏览游戏列表时自动下载缺失的缩略，会有严重的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_UPDATER_SETTINGS,
@@ -7846,19 +7842,19 @@ MSG_HASH(
 
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_UPDATER_BUILDBOT_URL,
-   "构建机器人内核 URL"
+   "自动构建内核 URL"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_BUILDBOT_URL,
-   "Libretro 构建机器人内核更新文件夹的 URL。"
+   "Libretro 自动构建内核更新文件夹的 URL。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_BUILDBOT_ASSETS_URL,
-   "构建机器人素材 URL"
+   "自动构建素材 URL"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_BUILDBOT_ASSETS_URL,
-   "Libretro 构建机器人素材更新文件夹的 URL。"
+   "Libretro 自动构建素材更新文件夹的 URL。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_UPDATER_AUTO_EXTRACT_ARCHIVE,
@@ -7866,15 +7862,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_AUTO_EXTRACT_ARCHIVE,
-   "下载后自动解压。"
+   "下载后自动解压压缩包中的文件。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES,
-   "显示实验性内核"
+   "显示试验性内核"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_SHOW_EXPERIMENTAL_CORES,
-   "在内核下载列表中包含实验性内核。它们通常只用于开发或测试目的，不推荐日常使用。"
+   "在内核下载列表中包含试验性内核，它们通常只用于开发或测试目的，不推荐日常使用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_UPDATER_AUTO_BACKUP,
@@ -7882,7 +7878,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_AUTO_BACKUP,
-   "执行在线更新时，自动创建已安装内核的备份。启用后如果更新后出现问题，可以轻松回滚到之前能用的版本。"
+"执行在线更新时，自动创建已安装内核的备份。如果更新后出现问题，可以轻松回滚到之前正常工作的版本。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CORE_UPDATER_AUTO_BACKUP_HISTORY_SIZE,
@@ -7890,7 +7886,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CORE_UPDATER_AUTO_BACKUP_HISTORY_SIZE,
-   "指定每个安装的内核最多保留多少个自动备份。当达到这个限制后，创建新的备份会删除最老的备份。手动备份不受此设置影响。"
+"指定为每个已安装的内核保留的最大自动备份数量。达到此限制后，创建新的备份会删除最老的备份。手动备份不受此设置影响。"
    )
 
 /* Settings > Playlists */
@@ -7901,15 +7897,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_HISTORY_LIST_ENABLE,
-   "为游戏、图片、音乐和视频启用/禁用历史记录。"
+   "为游戏、图片、音乐和视频保留历史记录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_HISTORY_SIZE,
-   "历史大小"
+   "历史记录大小"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_HISTORY_SIZE,
-   "游戏、图片、音乐和视频历史记录的数量限制。"
+   "游戏、图片、音乐和视频历史记录的条数限制。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_CONTENT_FAVORITES_SIZE,
@@ -7917,7 +7913,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_CONTENT_FAVORITES_SIZE,
-   "限制“收藏夹”播放列表中的条目数量。一旦达到上限，将会防止新增，直到删除旧条目。 设置值为 -1 允许“无限制”条目。\n警告：减少值将删除现有条目！"
+   "限制‘收藏夹’列表中的条目数量。达到数量上限后，将不会新增收藏条目，除非删除旧有收藏条目。设置为 -1 将不限制条目数量。\n警告：减少该值可能会删除现有条目！"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_ENTRY_RENAME,
@@ -7925,7 +7921,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_ENTRY_RENAME,
-   "允许重命名播放列表。"
+   "允许重命名列表条目。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_ENTRY_REMOVE,
@@ -7933,7 +7929,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_ENTRY_REMOVE,
-   "允许移除播放列表。"
+   "允许移除列表条目。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SORT_ALPHABETICAL,
@@ -7941,7 +7937,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SORT_ALPHABETICAL,
-   "字母排序列表中的游戏，除了‘历史’，‘图像’，‘音乐’和‘视频’。"
+   "按字母排序列表，‘历史’、‘图像’、‘音乐’和‘视频’列表除外。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_USE_OLD_FORMAT,
@@ -7949,7 +7945,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_USE_OLD_FORMAT,
-   "使用淘汰的纯文本格式保存列表。禁用后，将使用 JSON 格式。"
+   "使用淘汰的纯文本格式保存列表，禁用此项将使用 JSON 格式。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_COMPRESSION,
@@ -7957,15 +7953,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_COMPRESSION,
-   "写入磁盘时压缩播放列表。减小文件大小和加载时间，但是会 (轻微) 增加 CPU 开小。新旧列表文件格式都可以压缩。"
+   "写入磁盘时压缩列表数据，减小文件大小和加载时间，但是会轻微增加 CPU 开销。新旧格式列表文件都可以压缩。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_INLINE_CORE_NAME,
-   "在列表中显示绑定的内核"
+   "在列表中显示关联的内核"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_INLINE_CORE_NAME,
-   "指定何时将列表条目绑定当前关联的内核(如果有的话)。\n当显示列表子标签时，此设置会被忽略。"
+   "指定何时标记出列表条目当前关联的内核（如果有的话）。\n当列表副标签启用时，此设置会被忽略。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_SUBLABELS,
@@ -7973,7 +7969,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_SUBLABELS,
-   "显示每个游戏的附加信息，例如当前绑定的内核和游戏时长 (如果有)。有一些性能影响。"
+   "显示每个列表条目的附加信息，例如当前关联的内核和游戏时长（如果有）。有一些不确定的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_HISTORY_ICONS,
@@ -7981,7 +7977,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_HISTORY_ICONS,
-   "显示每个历史记录和收藏夹播放列表条目的特定图标。有一个变量性能影响。"
+   "显示每个历史记录和收藏夹播放列表条目的特定图标。有一些不确定的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_CORE,
@@ -7989,11 +7985,15 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_RUNTIME,
-   "运行时间："
+   "游玩时长："
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_LAST_PLAYED,
    "上次游戏："
+   )
+MSG_HASH(
+   MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_PLAY_COUNT,
+   "玩家数量："
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_SECONDS_SINGLE,
@@ -8025,7 +8025,7 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_DAYS_PLURAL,
-   "日"
+   "天"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_WEEKS_SINGLE,
@@ -8037,19 +8037,19 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_MONTHS_SINGLE,
-   " 月"
+   "月"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_MONTHS_PLURAL,
-   " 月"
+   "月"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_YEARS_SINGLE,
-   " 年"
+   "年"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_YEARS_PLURAL,
-   " 年"
+   "年"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_TIME_UNIT_AGO,
@@ -8057,35 +8057,35 @@ MSG_HASH(
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SHOW_ENTRY_IDX,
-   "显示游戏列表条目索引"
+   "显示列表条目索引"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SHOW_ENTRY_IDX,
-   "查看游戏列表时显示条目编号。 显示格式取决于当前选择的菜单驱动。"
+   "查看游戏列表时显示条目编号，显示格式取决于当前选择的菜单驱动。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_RUNTIME_TYPE,
-   "列表副标签运行时"
+   "列表副标签游戏时间"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SUBLABEL_RUNTIME_TYPE,
-   "选择游戏列表子标签显示的运行时间记录类型。\n对应的运行时间记录必须通过菜单的‘保存’选项启用。"
+   "选择列表副标签显示的已记录的游戏时间类型。\n对应的游戏时间记录必须已经通过菜单的‘保存’选项启用。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_SUBLABEL_LAST_PLAYED_STYLE,
-   "‘上次游戏’时间和日期格式"
+   "‘上次游戏’的日期和时间格式"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_SUBLABEL_LAST_PLAYED_STYLE,
-   "设置‘最后游戏’时间戳的日期和时间显示格式。‘AM/PM’选项在某些平台有轻微性能影响。"
+   "设置‘上次游戏’时间的日期和时间显示格式。‘(AM/PM)’选项在某些平台会有轻微的性能影响。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_PLAYLIST_FUZZY_ARCHIVE_MATCH,
-   "模糊压缩包匹配"
+   "压缩包模糊匹配"
    )
 MSG_HASH(
    MENU_ENUM_SUBLABEL_PLAYLIST_FUZZY_ARCHIVE_MATCH,
-   "在游戏列表中搜索与压缩文件关联的条目时，只匹配压缩包文件名而不是‘文件名’+‘游戏名’。启用此选项可以避免加载压缩文件时产生重复的历史记录。"
+"在游戏列表中搜索与压缩文件关联的条目时，只匹配压缩包文件名而不是‘文件名’+‘游戏名’。启用此选项可以避免加载压缩文件时产生重复的历史记录。"
    )
 MSG_HASH(
    MENU_ENUM_LABEL_VALUE_SCAN_WITHOUT_CORE_MATCH,
